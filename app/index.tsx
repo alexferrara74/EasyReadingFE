@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, Text } from 'react-native';
+import { Button } from 'react-native-paper';
 
 const App = () => {
   const [responseData, setResponseData] = useState('');
 
-  // Function to handle the API call
+  // Function to handle the API call 
   const fetchData = () => {
-    fetch('http://localhost:3030')
+    fetch(`http://${process.env.EXPO_PRIVATE_IP_ADDRESS}:3030`)
       .then(response => response.json())
       .then(data => {
         setResponseData(data);
@@ -18,8 +19,13 @@ const App = () => {
 
   return (
     <View style={{ padding: 20 }}>
-      <Button title="Fetch Data" onPress={fetchData} />
       {responseData ? <Text>{JSON.stringify(responseData)}</Text> : null}
+
+      <Button icon="camera" mode="contained" onPress={() => console.log('Pressed')}>
+        Alex gay :D
+      </Button>
+
+
     </View>
   );
 };
