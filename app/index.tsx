@@ -1,27 +1,43 @@
-import React, { useState } from 'react';
-import { View, Button, Text } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { HomeScreen } from './home';
+import { ProfileScreen } from './user';
+import { StatusBar } from 'react-native';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 
-const App = () => {
-  const [responseData, setResponseData] = useState('');
+const Tab = createBottomTabNavigator();
+StatusBar.setHidden(true);
 
-  // Function to handle the API call
-  const fetchData = () => {
-    fetch('http://localhost:3030')
-      .then(response => response.json())
-      .then(data => {
-        setResponseData(data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  };
-
+export default function App() {
   return (
-    <View style={{ padding: 20 }}>
-      <Button title="Fetch Data" onPress={fetchData} />
-      {responseData ? <Text>{JSON.stringify(responseData)}</Text> : null}
-    </View>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconSource;
+          if (route.name === 'Home') {
+            iconSource = require('../assets/images/home.png');
+          } else if (route.name === 'Profile') {
+            iconSource = require('../assets/images/user.png');
+          } else if (route.name === 'History') {
+            iconSource = require('../assets/images/chatbot.png');
+          }
+          return (
+            <Image
+              source={iconSource}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          );},
+            tabBarActiveTintColor: '#e5383b',
+            tabBarInactiveTintColor: 'gray',
+            tabBarStyle: { backgroundColor: '#1a1a1a' },
+            headerShown: false,
+          })}
+        >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        {/* <Tab.Screen name="ChatBot" component={ChatBotScreen} /> */}
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
   );
-};
-
-export default App;
+}
