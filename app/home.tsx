@@ -9,7 +9,7 @@ import { uploadFile } from '../scripts/uploadFile'
 export function HomeScreen() {
 
     return (
-      <View style={styles.container}>
+      <View style={styles.homeContainer}>
         <View style={styles.homeHeader}>
             <Text style={styles.homeMiniTitle}>Buongiorno,</Text>
             <Text style={styles.homeTitle}>Utente!</Text>
@@ -19,7 +19,7 @@ export function HomeScreen() {
             <TextInput style={styles.homeTextInput} placeholder='Inserire testo da riassumere' numberOfLines={4} editable multiline/>
             <IconButton style={styles.homeUploadButton} mode='contained-tonal'
                 icon="chevron-right" 
-                iconColor='#ffff'></IconButton>
+                iconColor='#ffff' size={35}></IconButton>
         </View>
         <View style={styles.homeDivider}></View>
         <View style={styles.uploadView}>
@@ -33,7 +33,7 @@ export function HomeScreen() {
 }  
 
 const styles = StyleSheet.create({
-    container: {
+    homeContainer: {
         flex: 1,
         backgroundColor: '#232725'
     },

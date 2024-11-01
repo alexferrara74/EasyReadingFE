@@ -6,6 +6,7 @@ import { HomeScreen } from './home';
 import { ProfileScreen } from './user';
 import { StatusBar } from 'react-native';
 import { Header } from 'react-native/Libraries/NewAppScreen';
+import { SummaryScreen } from './summary';
 
 const Tab = createBottomTabNavigator();
 StatusBar.setHidden(true);
@@ -36,7 +37,7 @@ export default function App() {
           })}
         >
         <Tab.Screen name="Home" component={HomeScreen} />
-        {/* <Tab.Screen name="ChatBot" component={ChatBotScreen} /> */}
+        <Tab.Screen name="Summary" component={SummaryScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
   );

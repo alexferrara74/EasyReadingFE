@@ -27,6 +27,7 @@ export const uploadFile = async () => {
         {
             console.log("ok");
             const data = await response.json();
+            // TODO: Aggiundere il redirect al componente del riassunto
         }
     }catch(e)
     {
