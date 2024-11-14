@@ -1,4 +1,6 @@
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
+import { Stack } from 'expo-router'
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Modal} from 'react-native';
 import { IconButton } from 'react-native-paper'
 
@@ -12,6 +14,7 @@ export function SummaryScreen()
 
     return (
         <View style={styles.summaryContainer}>
+            <Link href="/user" style={styles.summaryMiniTitle}>PREMI QUI SE SEI GAY</Link>
             <Modal
                 animationType="fade"
                 transparent={true}
