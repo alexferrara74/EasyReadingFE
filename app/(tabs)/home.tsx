@@ -1,12 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native';
 import { IconButton } from 'react-native-paper'
-import { useNavigation } from 'expo-router';
-import { SummaryScreen } from './summary';
-import { uploadFile } from '../scripts/uploadFile'
+import { uploadFile } from '../../scripts/uploadFile'
 
-export function HomeScreen() {
+export default function HomeScreen() {
 
     return (
       <View style={styles.homeContainer}>

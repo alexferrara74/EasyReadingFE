@@ -1,14 +1,10 @@
 import React from 'react';
-import { Stack } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon, Avatar } from 'react-native-paper'
 
-export function ProfileScreen() {
+export default function ProfileScreen() {
     return (
         <View style={styles.container}>
-            <Stack.Screen name="user" options={{title: "user"}}></Stack.Screen>
             <View style={styles.profileHeader}>
                 <Text style={styles.profileTitle}>Profilo</Text>
                 <Avatar.Text style={styles.profilePicture} size={31} label='ER'/>
