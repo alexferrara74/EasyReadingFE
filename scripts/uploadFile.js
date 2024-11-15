@@ -16,7 +16,8 @@ export const uploadFile = async () => {
             type: 'application/pdf',
             name: result.assets[0].name,
         });
-        const response = await fetch('http://192.168.18.28:3030/upload', {
+        console.log(formData);
+        const response = await fetch('http://192.168.3.28:3030/upload', {
             method: 'POST',
             body: formData,
             headers: {
@@ -27,7 +28,6 @@ export const uploadFile = async () => {
         {
             console.log("ok");
             const data = await response.json();
-            // TODO: Aggiundere il redirect al componente del riassunto
         }
     }catch(e)
     {

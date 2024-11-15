@@ -10,7 +10,6 @@ const Tab = createBottomTabNavigator();
 StatusBar.setHidden(true);
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
      
     <Redirect href={"/(tabs)/home"} />
