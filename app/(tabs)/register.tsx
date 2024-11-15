@@ -2,6 +2,7 @@ import { ScreenContainer } from '@/components/_screenContainer';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import { register } from '../../scripts/register'
 
 export function RegisterScreen(){
     const [email, setEmail] = useState('');
@@ -48,7 +49,7 @@ export function RegisterScreen(){
 
                 <Button 
                     mode='contained' 
-                    onPress={()=>console.log(email,password)} 
+                    onPress={()=>register(email,password,username)} 
                     buttonColor='#e5383b'
                     style={styles.buttonForm}>
                         Registrati

@@ -3,7 +3,7 @@ import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-
+import { login } from '../../scripts/login'
 
 export function LoginScreen(){
     const navigation = useNavigation()
@@ -34,7 +34,7 @@ export function LoginScreen(){
 
                 <Button 
                     mode='contained' 
-                    onPress={()=>console.log(email,password)} 
+                    onPress={()=>login(email,password)} 
                     buttonColor='#e5383b'
                     style={styles.buttonForm}>
                         Accedi
