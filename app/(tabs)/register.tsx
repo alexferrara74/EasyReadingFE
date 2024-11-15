@@ -1,3 +1,4 @@
+import { ScreenContainer } from '@/components/_screenContainer';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
@@ -7,9 +8,8 @@ export function RegisterScreen(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('')
-    return (
-        
-        <View style={styles.container}>
+    return (   
+        <ScreenContainer>
             <View style={styles.homeHeader}>
 
             </View>
@@ -55,19 +55,12 @@ export function RegisterScreen(){
                 </Button>
                 
             </View>
-        </View>
+        </ScreenContainer>
     )
 }
 
 
 const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        backgroundColor: '#232725',
-        
-    },
-
     textInput: {
         width: '70%',
         marginBottom: '10%'

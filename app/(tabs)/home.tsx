@@ -5,10 +5,11 @@ import { IconButton } from 'react-native-paper'
 import { uploadFile } from '../../scripts/uploadFile'
 import { colors_green } from '@/constants/Colors';
 import { Header } from '@/components/_header';
+import { ScreenContainer } from '@/components/_screenContainer';
 
 export default function HomeScreen() {
     return (
-      <View style={styles.homeContainer}>
+      <ScreenContainer>
         <Header mini="Buongiorno" title="Utente!"/>
         <View style={styles.homeSummaryView}>
             <Text style={styles.homeMiniSummary}>Testo da riassumere: </Text>
@@ -24,7 +25,7 @@ export default function HomeScreen() {
                 icon="file-plus" 
                 iconColor='#ffff' onPress={uploadFile}></IconButton>
         </View>
-      </View>
+      </ScreenContainer>
     );
 }  
 

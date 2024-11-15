@@ -1,4 +1,5 @@
 import { Header } from '@/components/_header';
+import { ScreenContainer } from '@/components/_screenContainer';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal} from 'react-native';
 import { IconButton } from 'react-native-paper'
@@ -12,7 +13,7 @@ export default function SummaryScreen()
     }
 
     return (
-        <View style={styles.summaryContainer}>
+        <ScreenContainer>
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -75,31 +76,11 @@ export default function SummaryScreen()
             <IconButton style={styles.summaryBotButton} mode='contained-tonal'
                 icon="robot-confused" 
                 iconColor='#ffff' size={30} onPress={toggleChat}></IconButton>
-        </View>
+        </ScreenContainer>
     );
 }
 
 const styles = StyleSheet.create({
-    summaryContainer:{
-        flex: 1,
-        backgroundColor: '#232725'
-    },
-    summaryHeader: {
-        paddingTop: 40,
-        backgroundColor: '#161d19',
-        paddingBottom: 20,
-        paddingHorizontal: 20
-    },
-    summaryMiniTitle: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: '#FFF'
-    },
-    summaryTitle:{
-        fontSize: 32,
-        fontWeight: 'bold',
-        color: '#FFF'
-    },
     summarySummary:{
         marginTop: 20,
         fontSize: 16,

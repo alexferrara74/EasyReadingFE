@@ -1,3 +1,4 @@
+import { ScreenContainer } from '@/components/_screenContainer';
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -10,8 +11,7 @@ export function LoginScreen(){
     const [password, setPassword] = useState('');
 
     return (
-        
-        <View style={styles.container}>
+        <ScreenContainer>
             <View style={styles.homeHeader}>
 
             </View>
@@ -48,19 +48,12 @@ export function LoginScreen(){
                        Registrati
                 </Button>
             </View>
-        </View>
+        </ScreenContainer>
     )
 }
 
 
 const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        backgroundColor: '#232725',
-        
-    },
-
     textInput: {
         width: '70%',
         marginBottom: '10%'

@@ -1,10 +1,11 @@
+import { ScreenContainer } from '@/components/_screenContainer';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon, Avatar } from 'react-native-paper'
 
 export default function ProfileScreen() {
     return (
-        <View style={styles.container}>
+        <ScreenContainer>
             <View style={styles.profileHeader}>
                 <Text style={styles.profileTitle}>Profilo</Text>
                 <Avatar.Text style={styles.profilePicture} size={31} label='ER'/>
@@ -20,15 +21,11 @@ export default function ProfileScreen() {
                     <Icon source="arrow-right-thin" size={20} color="#FFF" />
                 </TouchableOpacity>
             </View>
-        </View>
+        </ScreenContainer>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#232725',
-    },
     profileHeader: {
         flexDirection: 'row',
         alignItems: 'center',
