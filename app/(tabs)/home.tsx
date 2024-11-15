@@ -3,15 +3,13 @@ import { View, Text, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native';
 import { IconButton } from 'react-native-paper'
 import { uploadFile } from '../../scripts/uploadFile'
+import { colors_green } from '@/constants/Colors';
+import { Header } from '@/components/_header';
 
 export default function HomeScreen() {
-
     return (
       <View style={styles.homeContainer}>
-        <View style={styles.homeHeader}>
-            <Text style={styles.homeMiniTitle}>Buongiorno,</Text>
-            <Text style={styles.homeTitle}>Utente!</Text>
-        </View>
+        <Header mini="Buongiorno" title="Utente!"/>
         <View style={styles.homeSummaryView}>
             <Text style={styles.homeMiniSummary}>Testo da riassumere: </Text>
             <TextInput style={styles.homeTextInput} placeholder='Inserire testo da riassumere' numberOfLines={4} editable multiline/>
@@ -33,37 +31,21 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     homeContainer: {
         flex: 1,
-        backgroundColor: '#232725'
-    },
-    homeHeader: {
-        paddingTop: 40,
-        backgroundColor: '#161d19',
-        paddingBottom: 20,
-        paddingHorizontal: 20
-    },
-    homeMiniTitle: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: '#FFF'
-    },
-    homeTitle:{
-        fontSize: 32,
-        fontWeight: 'bold',
-        color: '#FFF'
+        backgroundColor: colors_green.background
     },
     homeSummaryView: {
         padding: 0
     },
     homeMiniSummary:{
-        fontSize: 20,
+        fontSize: 25,
         marginLeft: 30,
         marginTop: 20,
         marginBottom: 10,
         fontWeight: 'bold',
-        color: '#FFF'
+        color: colors_green['text-light']
     },
     homeTextInput:{
-        backgroundColor: '#FFF',
+        backgroundColor: colors_green['text-light'],
         marginHorizontal: 'auto',
         borderRadius: 20,
         height: '40%',
@@ -85,6 +67,6 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50,
         marginHorizontal: 'auto',
-        backgroundColor: '#e5383b'
+        backgroundColor: colors_green.accent
     },
 })

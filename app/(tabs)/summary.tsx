@@ -1,3 +1,4 @@
+import { Header } from '@/components/_header';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal} from 'react-native';
 import { IconButton } from 'react-native-paper'
@@ -34,10 +35,7 @@ export default function SummaryScreen()
                     icon="robot-confused" 
                     iconColor='#ffff' size={30} onPress={toggleChat}></IconButton>
             </Modal>
-            <View style={styles.summaryHeader}>
-                <Text style={styles.summaryMiniTitle}>Ecco a te il tuo,</Text>
-                <Text style={styles.summaryTitle}>Riassunto</Text>
-            </View>
+            <Header mini='Ecco a te il tuo' title='Riassunto'/>
             <ScrollView >
                 <Text style={styles.summarySummary}>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis, quidem laborum nisi repellat voluptatem assumenda officiis, eum, dignissimos ratione molestiae laboriosam dicta eveniet dolor quaerat. In excepturi fugit ex ratione!
                 Molestias culpa possimus at voluptates sed? Quae voluptatibus facilis eius perferendis. Veritatis rem provident itaque dolor cupiditate doloremque error, totam illo molestias temporibus accusantium! Suscipit temporibus soluta quo ea quis.
