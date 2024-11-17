@@ -6,6 +6,7 @@ import { uploadFile } from '../../scripts/uploadFile'
 import { colors_green } from '@/constants/Colors';
 import { Header } from '@/components/_header';
 import { ScreenContainer } from '@/components/_screenContainer';
+import { Platform } from 'react-native';
 
 export default function HomeScreen() {
     return (
@@ -24,6 +25,7 @@ export default function HomeScreen() {
             <IconButton style={styles.homeUploadButton} mode='contained-tonal'
                 icon="file-plus" 
                 iconColor='#ffff' onPress={uploadFile}></IconButton>
+            
         </View>
       </ScreenContainer>
     );
