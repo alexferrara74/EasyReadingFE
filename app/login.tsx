@@ -3,9 +3,14 @@ import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-import { login } from '../../scripts/login'
+import { login } from '../scripts/login';
+import { UserContext, useUser } from '../scripts/userContext';
 
-export function LoginScreen(){
+export default function LoginScreen(){
+ 
+    const  { user }  = useUser();
+
+    console.log('USER BAABYY', user)
     const navigation = useNavigation()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -34,7 +39,7 @@ export function LoginScreen(){
 
                 <Button 
                     mode='contained' 
-                    onPress={()=>login(email,password)} 
+                    onPress={()=>login(email,password/*,logIn */)} 
                     buttonColor='#e5383b'
                     style={styles.buttonForm}>
                         Accedi
@@ -42,7 +47,7 @@ export function LoginScreen(){
                 <Button 
                     mode='contained' 
                      // @ts-ignore
-                    onPress={() => navigation.navigate('Register')} 
+                    onPress={() => navigation.navigate('register')} 
                     buttonColor='gray'
                     style={styles.buttonForm}>
                        Registrati

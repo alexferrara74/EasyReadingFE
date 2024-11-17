@@ -1,14 +1,18 @@
 import { ScreenContainer } from '@/components/_screenContainer';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-import { register } from '../../scripts/register'
+import { register } from '../scripts/register'
+import { UserContext } from '../scripts/userContext'
 
-export function RegisterScreen(){
+export default function RegisterScreen(){
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [password2, setPassword2] = useState('')
+    const [password2, setPassword2] = useState('');
+
+    const { registerUser } = useContext(UserContext);
+    console.log(registerUser)
     return (   
         <ScreenContainer>
             <View style={styles.homeHeader}>
@@ -49,7 +53,7 @@ export function RegisterScreen(){
 
                 <Button 
                     mode='contained' 
-                    onPress={()=>register(email,password,username)} 
+                    onPress={()=>register(email,password,username, registerUser)} 
                     buttonColor='#e5383b'
                     style={styles.buttonForm}>
                         Registrati

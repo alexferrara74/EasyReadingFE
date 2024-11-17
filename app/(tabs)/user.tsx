@@ -1,14 +1,18 @@
 import { ScreenContainer } from '@/components/_screenContainer';
 import { colors_light_blue } from '@/constants/Colors';
+import {  useUser } from '@/scripts/userContext';
+import { Link } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon, Avatar } from 'react-native-paper'
 
 export default function ProfileScreen() {
+    const { user } = useUser();
+    console.log('USER', user)
     return (
         <ScreenContainer>
             <View style={styles.profileHeader}>
-                <Text style={styles.profileTitle}>Profilo</Text>
+                <Text style={styles.profileTitle}> { user.email } </Text>
                 <Avatar.Text style={styles.profilePicture} size={31} label='ER'/>
             </View>
             <View style={styles.historyContainer}>
@@ -22,6 +26,7 @@ export default function ProfileScreen() {
                     <Icon source="file-eye-outline" size={25} color="00000" />
                 </TouchableOpacity>
             </View>
+            <Link href={'/login'}>LOG IN</Link>
         </ScreenContainer>
     );
 }

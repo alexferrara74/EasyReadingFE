@@ -1,14 +1,20 @@
-export async function login(email,password){
-    const request = { email, password}
-    const response = await fetch('http://192.168.18.28:3030/login',{
-        method: 'POST',
-        body: JSON.stringify(request),
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
 
-    const data = await response.json();
+export async function login(email,password, onLoginSuccess){
 
-    console.log(data);
+    try{
+        const request = { email, password}
+        const response = await fetch('http://192.168.1.121:3030/login',{
+            method: 'POST',
+            body: JSON.stringify(request),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const data = await response.json();
+        onLoginSuccess(data.user);
+    }catch(e){
+        console.log('Errore nel login',e);
+    }
+    
 }
