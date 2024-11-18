@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, Modal } from 'react-native';
 import { TextInput } from 'react-native';
-import { IconButton } from 'react-native-paper'
+import { Icon, IconButton } from 'react-native-paper'
 import { selectFile, uploadFile } from '../../scripts/uploadFile'
 import { colors_green } from '@/constants/Colors';
 import { Header } from '@/components/_header';
@@ -30,9 +30,11 @@ export default function HomeScreen() {
                 icon="file-plus" 
                 iconColor='#ffff' onPress={async()=>{
                     const selectedFile = await selectFile();
-                    setFile(selectedFile);
-                    console.log(file);
-                    if (file != null) setModalVisible(!modalVisible);   
+                    if (selectedFile != null) {
+                        setFile(selectedFile);
+                        setModalVisible(!modalVisible); 
+                    }
+                    else return;  
                  }}></IconButton>
         </View>
         <Modal
@@ -45,7 +47,10 @@ export default function HomeScreen() {
                         <TextInput style={styles.homeTextInput} placeholder='Inserire nome riassunto' value={text} onChangeText={setText}/>
                         <IconButton style={styles.homeUploadButton} mode='contained-tonal'
                         icon="chevron-right" 
-                        iconColor='#ffff' size={35} onPress={()=>{uploadFile(file, text); setModalVisible(!modalVisible)}}></IconButton>
+                        iconColor='#ffff' size={35} onPress={()=>{uploadFile(file, text); setModalVisible(!modalVisible); setText('')}}></IconButton>
+                        <IconButton style={styles.exitModalButton} mode='contained-tonal'
+                        icon="close" 
+                        iconColor='#ffff' size={25} onPress={()=>{setModalVisible(!modalVisible); setText('')}}></IconButton>
                     </View>
                 </View>
             </Modal>
@@ -58,6 +63,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
+    exitModalButton:{
+        width: 30,
+        height: 30,
+        borderRadius: 50,
+        backgroundColor: colors_green.accent,
+        position: 'absolute',
+        top: 0,
+        right: 0
+    },
     nameModal: {
         width: '80%',
         backgroundColor: colors_green.header_background,
@@ -68,6 +82,7 @@ const styles = StyleSheet.create({
         top: '25%',
         left: '10%',
         paddingVertical: 30,
+        paddingTop: 50
     },
     nameModalText: {
         backgroundColor: colors_green['text-light'],
