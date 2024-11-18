@@ -1,7 +1,7 @@
 import * as DocumentPicker from 'expo-document-picker'
 import { Platform } from 'react-native';
 
-export const uploadFile = async (fileBrowser) => {
+export const selectFile = async ()=> {
     try {
         const result = await DocumentPicker.getDocumentAsync({
             type: 'application/pdf',
@@ -9,12 +9,21 @@ export const uploadFile = async (fileBrowser) => {
 
         if (result.canceled) {
             console.log('Selezione annullata');
-            return;
+            return null;
         }
-        
+
+        return result;
+    }catch (e) {
+        console.log('Errore:', e);
+        return null;
+    }
+}
+
+export const uploadFile = async (file, summaryName) => {
+    try {
         if (Platform.OS === 'web') {
             const formData = new FormData();
-            formData.append('file', result.assets[0].file, result.assets[0].name);
+            formData.append('file', file.assets[0].file, summaryName);
             console.log(formData)
             var response = await fetch('http://192.168.3.28:3030/upload', {
                 method: 'POST',
@@ -24,9 +33,9 @@ export const uploadFile = async (fileBrowser) => {
         else {
             const formData = new FormData();
             formData.append('file', {
-                uri: result.assets[0].uri,
+                uri: file.assets[0].uri,
                 type: 'application/pdf',
-                name: result.assets[0].name,
+                name: summaryName,
             });
             console.log('Caricamento file in corso...');
             var response = await fetch('http://192.168.3.28:3030/upload', {
