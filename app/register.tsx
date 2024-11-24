@@ -4,19 +4,30 @@ import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { register } from '../scripts/register'
 import { UserContext } from '../scripts/userContext'
+import { useNavigation } from 'expo-router';
 
 export default function RegisterScreen(){
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [password2, setPassword2] = useState('');
-
+    const navigator = useNavigation();
     const { registerUser } = useContext(UserContext);
-    console.log(registerUser)
+    
+    function registerUserAndRedirect(){
+        register(email,password,username, registerUser);
+        // @ts-ignore
+        navigator.navigate('index');
+    }
+
     return (   
         <ScreenContainer>
             <View style={styles.homeHeader}>
-
+            <Button mode='outlined' 
+                    icon={'arrow-left-thick'}
+                    textColor='black'
+                    style={styles.backButton}
+                    // @ts-ignore
+                    onPress={() => navigator.navigate('index')} >TORNA INDIETRO</Button>
             </View>
             <View style={styles.forms}>
             <TextInput 
@@ -42,18 +53,9 @@ export default function RegisterScreen(){
                     style={styles.textInput}
                     activeOutlineColor={'#e5383b'}/>
 
-                <TextInput 
-                    placeholder="Conferma password"
-                    secureTextEntry={true}
-                    mode='outlined'
-                    value={password2}
-                    onChangeText={password2 => setPassword2(password2)}
-                    style={styles.textInput}
-                    activeOutlineColor={'#e5383b'}/>
-
                 <Button 
                     mode='contained' 
-                    onPress={()=>register(email,password,username, registerUser)} 
+                    onPress={()=> registerUserAndRedirect()} 
                     buttonColor='#e5383b'
                     style={styles.buttonForm}>
                         Registrati
@@ -90,7 +92,12 @@ const styles = StyleSheet.create({
         marginTop: 50,
         justifyContent: 'center',
         alignContent: 'center',
-        alignItems:'center',
-        
+        alignItems:'center'
+    },
+    backButton:{
+        borderColor: '#161d19',
+        width: '25%',
+        padding: 0,
+        borderRadius: 9
     }
 })

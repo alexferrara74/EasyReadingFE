@@ -1,19 +1,28 @@
 import { ScreenContainer } from '@/components/_screenContainer';
+<<<<<<< HEAD
 import { colors_light_blue } from '@/constants/Colors';
 import {  useUser } from '@/scripts/userContext';
 import { Link } from 'expo-router';
+=======
+import { useUser } from '@/scripts/userContext';
+import { Link, Redirect, useNavigation } from 'expo-router';
+>>>>>>> f7a37ea (session fixed and routes auth)
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Icon, Avatar } from 'react-native-paper'
+import { Icon, Avatar, Button } from 'react-native-paper'
 
 export default function ProfileScreen() {
-    const { user } = useUser();
-    console.log('USER', user)
+    const { user, logout } = useUser();
+
+    if(!user){
+        return <Redirect href={'/login'}></Redirect>
+    }
+    const userFirstLetters = user.username.substr(0,2)
     return (
         <ScreenContainer>
             <View style={styles.profileHeader}>
-                <Text style={styles.profileTitle}> { user.email } </Text>
-                <Avatar.Text style={styles.profilePicture} size={31} label='ER'/>
+                <Text style={styles.profileTitle}> {user?.username.toUpperCase()} </Text>
+                <Avatar.Text style={styles.profilePicture} size={31} label={userFirstLetters.toUpperCase()}/>
             </View>
             <View style={styles.historyContainer}>
                 <Text style={styles.historyTitle}>STORICO</Text>
@@ -26,7 +35,10 @@ export default function ProfileScreen() {
                     <Icon source="file-eye-outline" size={25} color="00000" />
                 </TouchableOpacity>
             </View>
-            <Link href={'/login'}>LOG IN</Link>
+            <View style={styles.logoutSection}>
+                <Button onPress={()=>logout()} style={styles.logoutButton} buttonColor='#525252' textColor='white'> LOGOUT </Button>
+            </View>
+            
         </ScreenContainer>
     );
 }
@@ -82,4 +94,11 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: colors_light_blue['text-dark'],
     },
+    logoutButton:{
+        marginTop: 100,
+        width: '50%'
+    },
+    logoutSection:{
+        alignItems: 'center'
+    }
 });

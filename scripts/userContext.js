@@ -11,27 +11,45 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const loadUser = async () => {
-      const userData = await AsyncStorage.getItem('user');
-      if (userData) {
-        setUser(JSON.parse(userData));
+      try {
+        const userData = await AsyncStorage.getItem('user')
+          
+        
+        if(userData){
+          setUser(JSON.parse(userData))
+        }
+          
+        
+        
+      } catch (error) {
+        console.error('Errore durante il caricamento dell\'utente:', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false); // Rimozione dello stato di caricamento
     };
     loadUser();
-  }, []);
+  },[])
 
   const loginUser = async (userData) => {
     await AsyncStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
+
   };
 
   const registerUser = async (userData) => {
     await AsyncStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
+    
+  };
+
+  const logout = async () => {
+    setUser(null);
+    await AsyncStorage.removeItem("user");
+    
   };
 
   return (
-    <UserContext.Provider value={{ user, loginUser, registerUser }}>
+    <UserContext.Provider value={{ user, loginUser, registerUser, logout }}>
       {children}
     </UserContext.Provider>
   );

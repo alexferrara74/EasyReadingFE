@@ -7,15 +7,15 @@ import { colors_light_blue } from '@/constants/Colors';
 import { Header } from '@/components/_header';
 import { ScreenContainer } from '@/components/_screenContainer';
 import { UploadModal } from '@/components/UploadModal';
-
+import { useUser } from '@/scripts/userContext';
 
 export default function HomeScreen() {
     const [modalVisible, setModalVisible] = useState(false);
     const [file, setFile] = useState();
-
+    const { user } = useUser();
     return (
       <ScreenContainer>
-        <Header mini="Buongiorno" title="Utente!"/>
+        <Header mini="Buongiorno" title={user?.username.toUpperCase()}/>
         <View style={styles.homeSummaryView}>
             <Text style={styles.homeMiniSummary}>Testo da riassumere: </Text>
             <TextInput style={styles.homeTextInput} placeholder='Inserire testo da riassumere' numberOfLines={4} editable multiline/>

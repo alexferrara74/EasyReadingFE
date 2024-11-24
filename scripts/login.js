@@ -13,6 +13,7 @@ export async function login(email,password, onLoginSuccess){
 
         const data = await response.json();
         onLoginSuccess(data.user);
+        
     }catch(e){
         console.log('Errore nel login',e);
     }

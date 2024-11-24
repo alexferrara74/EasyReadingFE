@@ -1,24 +1,32 @@
 import { ScreenContainer } from '@/components/_screenContainer';
 import { useNavigation } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { login } from '../scripts/login';
-import { UserContext, useUser } from '../scripts/userContext';
+import { UserContext } from '../scripts/userContext';
 
 export default function LoginScreen(){
  
-    const  { user }  = useUser();
-
-    console.log('USER BAABYY', user)
     const navigation = useNavigation()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { loginUser } = useContext(UserContext);
 
+    function logInAndRedirect(){
+        login(email,password,loginUser);
+        // @ts-ignore
+        navigation.navigate('index')
+    }
     return (
         <ScreenContainer>
             <View style={styles.homeHeader}>
-
+                <Button mode='outlined' 
+                    icon={'arrow-left-thick'}
+                    textColor='black'
+                    style={styles.backButton}
+                     // @ts-ignore
+                    onPress={() => navigation.navigate('index')} >TORNA INDIETRO</Button>
             </View>
             <View style={styles.forms}>
                 <TextInput 
@@ -39,7 +47,7 @@ export default function LoginScreen(){
 
                 <Button 
                     mode='contained' 
-                    onPress={()=>login(email,password/*,logIn */)} 
+                    onPress={()=>logInAndRedirect()} 
                     buttonColor='#e5383b'
                     style={styles.buttonForm}>
                         Accedi
@@ -85,5 +93,11 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems:'center',
         
+    },
+    backButton:{
+        borderColor: '#161d19',
+        width: '25%',
+        padding: 0,
+        borderRadius: 9
     }
 })
