@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors_green } from '@/constants/Colors';
+import { colors_light_blue } from '@/constants/Colors';
 
 interface HeaderProps{
     mini: string;
@@ -19,20 +19,20 @@ export function Header({mini, title} : HeaderProps) {
 const styles = StyleSheet.create({
     header: {
         paddingTop: 40,
-        backgroundColor: colors_green.header_background,
+        backgroundColor: colors_light_blue.header_background,
         paddingBottom: 20,
         paddingHorizontal: 20,
         borderBottomWidth: 1,
-        borderBottomColor: colors_green.accent
+        borderBottomColor: colors_light_blue.accent
     },
     headerMiniTitle: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: colors_green['text-light']
+        color: colors_light_blue['text-dark']
     },
     headerTitle:{
         fontSize: 32,
         fontWeight: 'bold',
-        color: colors_green['text-light']
+        color: colors_light_blue['text-dark']
     },
 })

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Icon } from 'react-native-paper';
-import { colors_green } from '@/constants/Colors';
+import { colors_green, colors_light_blue } from '@/constants/Colors';
 
 export default function TabLayout() {
   return (
@@ -14,7 +14,7 @@ export default function TabLayout() {
           ), 
           tabBarStyle: 
           { 
-            backgroundColor: colors_green.accent,
+            backgroundColor: colors_light_blue.accent,
             width: '95%',
             borderRadius: 10,
             marginHorizontal: 'auto',
@@ -30,7 +30,7 @@ export default function TabLayout() {
           options={{headerShown: false,
           tabBarStyle: 
           { 
-            backgroundColor: colors_green.accent,
+            backgroundColor: colors_light_blue.accent,
             width: '95%',
             borderRadius: 10,
             marginHorizontal: 'auto',
@@ -51,7 +51,7 @@ export default function TabLayout() {
           ),
           tabBarStyle: 
           { 
-            backgroundColor: colors_green.accent,
+            backgroundColor: colors_light_blue.accent,
             width: '95%',
             borderRadius: 10,
             marginHorizontal: 'auto',

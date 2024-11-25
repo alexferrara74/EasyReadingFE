@@ -1,4 +1,5 @@
 import { ScreenContainer } from '@/components/_screenContainer';
+import { colors_light_blue } from '@/constants/Colors';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon, Avatar } from 'react-native-paper'
@@ -14,11 +15,11 @@ export default function ProfileScreen() {
                 <Text style={styles.historyTitle}>STORICO</Text>
                 <TouchableOpacity style={styles.historyItem}>
                     <Text style={styles.historyText}>Conversazione_1</Text>
-                    <Icon source="arrow-right-thin" size={20} color="#FFF" />
+                    <Icon source="file-eye-outline" size={25} color="#00000" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.historyItem}>
                     <Text style={styles.historyText}>Conversazione_2</Text>
-                    <Icon source="arrow-right-thin" size={20} color="#FFF" />
+                    <Icon source="file-eye-outline" size={25} color="00000" />
                 </TouchableOpacity>
             </View>
         </ScreenContainer>
@@ -32,12 +33,14 @@ const styles = StyleSheet.create({
         paddingTop: 40,
         paddingBottom: 20,
         paddingHorizontal: 20,
-        backgroundColor: '#161d19'
+        backgroundColor: colors_light_blue.header_background,
+        borderBottomWidth: 1,
+        borderBottomColor: colors_light_blue.accent
     },
     profileTitle: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#FFF',
+        color: colors_light_blue['text-dark'],
     },
     profilePicture: {
         width: 50,
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
     },
     historyTitle: {
         fontSize: 18,
-        color: '#FFF',
+        color: colors_light_blue['text-dark'],
         marginBottom: 10,
         paddingBottom: 5,
         fontWeight: 'bold',
@@ -68,10 +71,10 @@ const styles = StyleSheet.create({
     },
     historyText: {
         fontSize: 16,
-        color: '#FFF',
+        color: colors_light_blue['text-dark'],
     },
     screenText: {
         fontSize: 24,
-        color: '#FFF',
+        color: colors_light_blue['text-dark'],
     },
 });

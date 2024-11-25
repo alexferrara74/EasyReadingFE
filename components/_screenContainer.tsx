@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors_green } from '@/constants/Colors';
+import { colors_green, colors_light_blue } from '@/constants/Colors';
 
 interface ContainerProps {
     children: React.ReactNode;
@@ -17,6 +17,6 @@ export function ScreenContainer({children}: ContainerProps) {
 const styles = StyleSheet.create({
     Container: {
         flex: 1,
-        backgroundColor: colors_green.background
+        backgroundColor: colors_light_blue.background
     }
 })

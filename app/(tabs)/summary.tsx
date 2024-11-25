@@ -1,5 +1,6 @@
 import { Header } from '@/components/_header';
 import { ScreenContainer } from '@/components/_screenContainer';
+import { colors_light_blue } from '@/constants/Colors';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal} from 'react-native';
 import { IconButton } from 'react-native-paper'
@@ -79,25 +80,25 @@ export default function SummaryScreen()
         </ScreenContainer>
     );
 }
-
+// TODO: DA AGGIUSTARE LO STILE IN TEMA CHIARO
 const styles = StyleSheet.create({
     summarySummary:{
         marginTop: 20,
         fontSize: 16,
-        color: '#FFF',
+        color: colors_light_blue['text-dark'],
         paddingHorizontal: 20,
         width: '90%',
         lineHeight: 25
     },
     summaryBotButton: {
         position: 'absolute',
-        bottom: 15,
+        bottom: 75,
         right: 15,
         width: 50,
         height: 50,
         borderRadius: 50,
         marginHorizontal: 'auto',
-        backgroundColor: '#e5383b',
+        backgroundColor: colors_light_blue.accent,
     },
     summaryUpperModal:{
         position: 'absolute',
@@ -115,13 +116,13 @@ const styles = StyleSheet.create({
     },
     summaryBotButtonModal:{
         position: 'absolute',
-        bottom: 64,
+        bottom: 75,
         right: 15,
         width: 50,
         height: 50,
         borderRadius: 50,
         marginHorizontal: 'auto',
-        backgroundColor: '#e5383b',
+        backgroundColor: colors_light_blue.accent,
     },
     summaryChatContainer: {
         marginLeft: 20,

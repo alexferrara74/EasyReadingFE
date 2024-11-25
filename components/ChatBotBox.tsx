@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert, ScrollView, Modal} from 'react-native';
-import { IconButton } from 'react-native-paper'
+import { colors_light_blue } from '@/constants/Colors';
+import React from 'react';
+import { View, Text, StyleSheet} from 'react-native';
 
 export function ChatBotBox() 
 {
@@ -13,7 +13,7 @@ export function ChatBotBox()
 
 const style = StyleSheet.create({
     chatBotBubble: {
-        backgroundColor: '#e5383b',
+        backgroundColor: colors_light_blue.accent,
         padding: 10,
         paddingHorizontal: 30,
         borderRadius: 10

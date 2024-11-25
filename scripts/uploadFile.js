@@ -56,7 +56,7 @@ export const uploadFile = async (file, summaryName) => {
             const socket = new WebSocket("ws://192.168.3.28:8080");
     
             socket.onopen = () => {
-            console.log('WebSocket connessa');
+                console.log('WebSocket connessa');
             };
   
             const waitForCheck = new Promise((resolve, reject) => {
@@ -70,8 +70,8 @@ export const uploadFile = async (file, summaryName) => {
                         socket.close();
                     }
                     } catch (error) {
-                    reject(new Error('Errore nel parsing della risposta WebSocket'));
-                    socket.close();
+                        reject(new Error('Errore nel parsing della risposta WebSocket'));
+                        socket.close();
                     }
                 };
     

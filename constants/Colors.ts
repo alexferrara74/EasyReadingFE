@@ -21,3 +21,11 @@ export const colors_blue: Color = {
     'text-dark': '#00000',
     'text-light': '#ffff',
 };
+
+export const colors_light_blue: Color = {
+    header_background: '#d4e8ff',
+    background: '#ffff',
+    accent: '#007aff',
+    'text-dark': '#333333',
+    'text-light': '#F4F3F2',
+}
