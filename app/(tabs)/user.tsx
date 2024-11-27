@@ -1,12 +1,7 @@
 import { ScreenContainer } from '@/components/_screenContainer';
-<<<<<<< HEAD
 import { colors_light_blue } from '@/constants/Colors';
-import {  useUser } from '@/scripts/userContext';
-import { Link } from 'expo-router';
-=======
 import { useUser } from '@/scripts/userContext';
-import { Link, Redirect, useNavigation } from 'expo-router';
->>>>>>> f7a37ea (session fixed and routes auth)
+import { Redirect } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon, Avatar, Button } from 'react-native-paper'
