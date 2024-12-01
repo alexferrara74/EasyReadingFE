@@ -22,13 +22,12 @@ export default function HomeScreen() {
             <Text style={styles.homeMiniSummary}>Testo da riassumere: </Text>
             <TextInput style={styles.homeTextInput} placeholder='Inserire testo da riassumere' onChangeText={setText} numberOfLines={4} editable multiline/>
             <Button style={styles.startSummary} textColor={colors_light_blue['text-light']} 
-                mode='contained-tonal' 
-                onPress={async()=>{
+                mode='contained-tonal'
+                onPress={()=>{
                     if (text.length > 0)
                     {
                         setMode(1);
                         setModalVisible(!modalVisible);
-                        setText('');
                     }
                 }}>Riassumi</Button>
         </View>
@@ -36,7 +35,7 @@ export default function HomeScreen() {
         <View style={styles.uploadView}>
             <Text style={styles.homeMiniSummary}>Inviare File</Text>
             <IconButton style={styles.homeUploadButton} mode='contained-tonal'
-                icon="file-plus" 
+                icon="file-plus"  size={25}
                 iconColor='#ffff' onPress={async()=>{
                     const selectedFile = await selectFile();
                     if (selectedFile != null) {
@@ -47,7 +46,7 @@ export default function HomeScreen() {
                     else return;  
                  }}></IconButton>
         </View>
-        <UploadModal modal={modalVisible} context={text} file={file} setModalVisible={setModalVisible} mode={mode}/>
+        <UploadModal modal={modalVisible} context={text} file={file} user={user?.id} setModalVisible={setModalVisible} mode={mode}/>
       </ScreenContainer>
     );
 }  

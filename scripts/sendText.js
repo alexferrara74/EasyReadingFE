@@ -1,21 +1,25 @@
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
-export const sendText = async (context, summaryName) => {
+const conn = Constants.expoConfig.extra.indirizzo;
+
+export const sendText = async (context, summaryName, userID) => {
     try {
-        console.log(context);
         const formData = new FormData();
-        formData.append('context', file.assets[0].file, summaryName);
-        var response = await fetch('http://192.168.3.28:3030/upload', {
+        formData.append('context', context);
+        formData.append('titolo', summaryName);
+        formData.append('idUtente', userID);
+        console.log(formData);
+        var response = await fetch(`http://${conn}:3030/upload?titolo=${summaryName}&idUtente=${userID}`, {
             method: 'POST',
             body: formData
         });
-        console.log('Caricamento file in corso...');
-        console.log(formData)
+        console.log('Caricamento testo in corso...');
         if (response.ok) {
-            console.log('File caricato con successo');
+            console.log('Testo caricato con successo');
             const data = await response.json();
 
-            const socket = new WebSocket("ws://192.168.3.28:8080");
+            const socket = new WebSocket(`ws://${conn}:8080`);
     
             socket.onopen = () => {
                 console.log('WebSocket connessa');
@@ -46,7 +50,7 @@ export const sendText = async (context, summaryName) => {
             console.log('Elaborazione completata:', result);
             return result;
         } else {
-            console.log('Errore durante il caricamento del file');
+            console.log('Errore durante il caricamento del testo');
             return null;
         }
     } catch (e) {

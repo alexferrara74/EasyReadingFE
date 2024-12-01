@@ -13,9 +13,10 @@ interface ModalProps {
     context: string;
     file: DocumentPickerSuccessResult;
     mode: number;
+    userID: string;
 }
 
-export function UploadModal({modal, context, file, setModalVisible, mode}: ModalProps) {
+export function UploadModal({modal, context, file, setModalVisible, mode, userID}: ModalProps) {
     const [text, setText] = useState('');
     return (
         <Modal
@@ -30,9 +31,9 @@ export function UploadModal({modal, context, file, setModalVisible, mode}: Modal
                         icon="chevron-right" 
                         iconColor='#ffff' size={35} onPress={()=>{
                             if(mode == 2)
-                                uploadFile(file, text);
+                                uploadFile(file, text, userID);
                             if(mode == 1)
-                                sendText(context, text);
+                                sendText(context, text, userID);
                             setModalVisible(false); 
                             setText('')
                             }}></IconButton>
