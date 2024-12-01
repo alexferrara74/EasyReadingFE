@@ -12,14 +12,25 @@ import { useUser } from '@/scripts/userContext';
 export default function HomeScreen() {
     const [modalVisible, setModalVisible] = useState(false);
     const [file, setFile] = useState();
+    const [text, setText] = useState('');
+    const [mode, setMode] = useState(0);
     const { user } = useUser();
     return (
       <ScreenContainer>
         <Header mini="Buongiorno" title={user?.username.toUpperCase()}/>
         <View style={styles.homeSummaryView}>
             <Text style={styles.homeMiniSummary}>Testo da riassumere: </Text>
-            <TextInput style={styles.homeTextInput} placeholder='Inserire testo da riassumere' numberOfLines={4} editable multiline/>
-            <Button style={styles.startSummary} textColor={colors_light_blue['text-light']} mode='contained-tonal'>Riassumi</Button>
+            <TextInput style={styles.homeTextInput} placeholder='Inserire testo da riassumere' onChangeText={setText} numberOfLines={4} editable multiline/>
+            <Button style={styles.startSummary} textColor={colors_light_blue['text-light']} 
+                mode='contained-tonal' 
+                onPress={async()=>{
+                    if (text.length > 0)
+                    {
+                        setMode(1);
+                        setModalVisible(!modalVisible);
+                        setText('');
+                    }
+                }}>Riassumi</Button>
         </View>
         <View style={styles.homeDivider}></View>
         <View style={styles.uploadView}>
@@ -30,12 +41,13 @@ export default function HomeScreen() {
                     const selectedFile = await selectFile();
                     if (selectedFile != null) {
                         setFile(selectedFile);
+                        setMode(2);
                         setModalVisible(!modalVisible); 
                     }
                     else return;  
                  }}></IconButton>
         </View>
-        <UploadModal modal={modalVisible} file={file} setModalVisible={setModalVisible}/>
+        <UploadModal modal={modalVisible} context={text} file={file} setModalVisible={setModalVisible} mode={mode}/>
       </ScreenContainer>
     );
 }  

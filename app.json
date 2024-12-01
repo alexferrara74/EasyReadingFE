@@ -1,5 +1,6 @@
 {
   "expo": {
+    "newArchEnabled": true,
     "name": "EasyReading",
     "slug": "EasyReading",
     "version": "1.0.0",

@@ -5,14 +5,17 @@ import { Button, Icon, IconButton } from 'react-native-paper'
 import { uploadFile } from '@/scripts/uploadFile';
 import { colors_green, colors_light_blue } from '@/constants/Colors';
 import { DocumentPickerSuccessResult } from 'expo-document-picker';
+import { sendText } from '@/scripts/sendText';
 
 interface ModalProps {
     modal: boolean;
     setModalVisible: Dispatch<SetStateAction<boolean>>; 
+    context: string;
     file: DocumentPickerSuccessResult;
+    mode: number;
 }
 
-export function UploadModal({modal, setModalVisible, file}: ModalProps) {
+export function UploadModal({modal, context, file, setModalVisible, mode}: ModalProps) {
     const [text, setText] = useState('');
     return (
         <Modal
@@ -25,7 +28,14 @@ export function UploadModal({modal, setModalVisible, file}: ModalProps) {
                     <TextInput style={styles.modalTextInput} placeholder='Inserire nome riassunto' value={text} onChangeText={setText}/>
                     <IconButton style={styles.modalUploadButton} mode='contained-tonal'
                         icon="chevron-right" 
-                        iconColor='#ffff' size={35} onPress={()=>{uploadFile(file, text); setModalVisible(false); setText('')}}></IconButton>
+                        iconColor='#ffff' size={35} onPress={()=>{
+                            if(mode == 2)
+                                uploadFile(file, text);
+                            if(mode == 1)
+                                sendText(context, text);
+                            setModalVisible(false); 
+                            setText('')
+                            }}></IconButton>
                         <IconButton style={styles.exitModalButton} mode='contained-tonal'
                         icon="close" 
                         iconColor='#ffff' size={25} onPress={()=>{setModalVisible(false); setText('')}}></IconButton>
