@@ -35,11 +35,16 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
                     {loading ? (<ActivityIndicator size="large" color="#0000ff" />): (
                     <IconButton style={styles.modalUploadButton} mode='contained-tonal'  icon="chevron-right" iconColor='#ffff'  size={35}
                         onPress={async () => {
-                           const result= await uploadFile(file, text, setLoading);
+                            var result;
+                            if(mode == 2)
+                                result = await uploadFile(file, text, setLoading, userID);
+                            if(mode == 1)
+                                {/*result = await sendText(context, text, setLoading, userID);*/}
                             setText('');
                             {/* REDIRECT */}
                             if (result) {
                                 navigation.navigate('summary');
+                                setModalVisible(false);
                             } else {;
                                 console.log("Caricamento non riuscito.");
                             }
