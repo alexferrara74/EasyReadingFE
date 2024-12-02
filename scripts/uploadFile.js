@@ -23,8 +23,9 @@ export const selectFile = async ()=> {
     }
 }
 
-export const uploadFile = async (file, summaryName, userID) => {
+export const uploadFile = async (file, summaryName, setLoading, userID) => {
     try {
+        setLoading(true);
         console.log(file);
         if (Platform.OS === 'web') {
             const formData = new FormData();
@@ -89,12 +90,15 @@ export const uploadFile = async (file, summaryName, userID) => {
   
             const result = await waitForCheck;
             console.log('Elaborazione completata:', result);
+            setLoading(false); 
             return result;
         } else {
+            setLoading(false);
             console.log('Errore durante il caricamento del file');
             return null;
         }
     } catch (e) {
+        setLoading(false);
         console.log('Errore:', e);
         return null;
     }
