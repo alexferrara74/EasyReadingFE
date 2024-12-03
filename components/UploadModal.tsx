@@ -41,9 +41,8 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
                             if(mode == 1)
                                 {/*result = await sendText(context, text, setLoading, userID);*/}
                             setText('');
-                            {/* REDIRECT */}
                             if (result) {
-                                navigation.navigate('summary');
+                                navigation.navigate('summary', result.fileId);
                                 setModalVisible(false);
                             } else {;
                                 console.log("Caricamento non riuscito.");
