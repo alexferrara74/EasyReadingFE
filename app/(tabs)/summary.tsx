@@ -1,17 +1,19 @@
 import { Header } from '@/components/_header';
 import { ScreenContainer } from '@/components/_screenContainer';
 import { colors_light_blue } from '@/constants/Colors';
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal} from 'react-native';
 import { IconButton } from 'react-native-paper'
 
 export default function SummaryScreen() 
-{
+{   
     const [modalVisible, setModalVisible] = useState(false);
-    
+    const route = useRoute(); 
     const toggleChat = () => {
         setModalVisible(!modalVisible);
-    }
+    };
 
     return (
         <ScreenContainer>

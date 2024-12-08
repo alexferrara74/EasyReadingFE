@@ -29,6 +29,7 @@ export default function HomeScreen() {
                 iconColor='#ffff' onPress={async()=>{
                     const selectedFile = await selectFile();
                     if (selectedFile != null) {
+                        // @ts-ignore
                         setFile(selectedFile);
                         setModalVisible(!modalVisible); 
                     }

@@ -2,9 +2,10 @@ import { ScreenContainer } from '@/components/_screenContainer';
 import { useNavigation } from 'expo-router';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, IconButton, TextInput } from 'react-native-paper';
 import { login } from '../scripts/login';
 import { UserContext } from '../scripts/userContext';
+import { colors_blue, colors_light_blue } from '@/constants/Colors';
 
 export default function LoginScreen(){
  
@@ -12,7 +13,7 @@ export default function LoginScreen(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { loginUser } = useContext(UserContext);
-
+  
     function logInAndRedirect(){
         login(email,password,loginUser);
         // @ts-ignore
@@ -21,12 +22,11 @@ export default function LoginScreen(){
     return (
         <ScreenContainer>
             <View style={styles.homeHeader}>
-                <Button mode='outlined' 
+                <IconButton mode='outlined' 
                     icon={'arrow-left-thick'}
-                    textColor='black'
                     style={styles.backButton}
-                     // @ts-ignore
-                    onPress={() => navigation.navigate('index')} >TORNA INDIETRO</Button>
+                    // @ts-ignore
+                    onPress={() => navigation.navigate('index')} />
             </View>
             <View style={styles.forms}>
                 <TextInput 
@@ -48,7 +48,7 @@ export default function LoginScreen(){
                 <Button 
                     mode='contained' 
                     onPress={()=>logInAndRedirect()} 
-                    buttonColor='#e5383b'
+                    buttonColor={colors_blue.accent}
                     style={styles.buttonForm}>
                         Accedi
                 </Button>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
     homeHeader: {
         paddingTop: 100,
-        backgroundColor: '#161d19',
+        backgroundColor: colors_light_blue.header_background,
         paddingBottom: 20,
         paddingHorizontal: 20,
         width: '100%'
@@ -96,8 +96,7 @@ const styles = StyleSheet.create({
     },
     backButton:{
         borderColor: '#161d19',
-        width: '25%',
-        padding: 0,
         borderRadius: 9
+
     }
 })

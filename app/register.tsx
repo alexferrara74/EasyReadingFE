@@ -1,10 +1,11 @@
 import { ScreenContainer } from '@/components/_screenContainer';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, IconButton, TextInput } from 'react-native-paper';
 import { register } from '../scripts/register'
 import { UserContext } from '../scripts/userContext'
 import { useNavigation } from 'expo-router';
+import { colors_light_blue } from '@/constants/Colors';
 
 export default function RegisterScreen(){
     const [email, setEmail] = useState('');
@@ -22,12 +23,11 @@ export default function RegisterScreen(){
     return (   
         <ScreenContainer>
             <View style={styles.homeHeader}>
-            <Button mode='outlined' 
+            <IconButton mode='outlined' 
                     icon={'arrow-left-thick'}
-                    textColor='black'
                     style={styles.backButton}
                     // @ts-ignore
-                    onPress={() => navigator.navigate('index')} >TORNA INDIETRO</Button>
+                    onPress={() => navigator.navigate('index')} />
             </View>
             <View style={styles.forms}>
             <TextInput 
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
     homeHeader: {
         paddingTop: 100,
-        backgroundColor: '#161d19',
+        backgroundColor: colors_light_blue.header_background,
         paddingBottom: 20,
         paddingHorizontal: 20,
         width: '100%'
@@ -92,12 +92,12 @@ const styles = StyleSheet.create({
         marginTop: 50,
         justifyContent: 'center',
         alignContent: 'center',
-        alignItems:'center'
+        alignItems:'center',
+        
     },
     backButton:{
         borderColor: '#161d19',
-        width: '25%',
-        padding: 0,
         borderRadius: 9
+        
     }
 })

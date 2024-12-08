@@ -26,7 +26,7 @@ export const uploadFile = async (file, summaryName) => {
             const formData = new FormData();
             formData.append('file', file.assets[0].file, summaryName);
             console.log(formData)
-            var response = await fetch('http://192.168.3.28:3030/upload', {
+            var response = await fetch('http://192.168.1.121:3030/upload', {
                 method: 'POST',
                 body: formData
             });
@@ -39,7 +39,7 @@ export const uploadFile = async (file, summaryName) => {
                 name: summaryName,
             });
             console.log('Caricamento file in corso...');
-            var response = await fetch('http://192.168.3.28:3030/upload', {
+            var response = await fetch('http://192.168.1.121:3030/upload', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -53,7 +53,7 @@ export const uploadFile = async (file, summaryName) => {
             console.log('File caricato con successo');
             const data = await response.json();
 
-            const socket = new WebSocket("ws://192.168.3.28:8080");
+            const socket = new WebSocket("ws://192.168.1.121:8080");
     
             socket.onopen = () => {
                 console.log('WebSocket connessa');
