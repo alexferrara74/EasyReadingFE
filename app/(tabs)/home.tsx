@@ -47,7 +47,9 @@ export default function HomeScreen() {
                     else return;  
                  }}></IconButton>
         </View>
-        <UploadModal modal={modalVisible} context={text} file={file} user={user?.id} setModalVisible={setModalVisible} mode={mode}/>
+        <UploadModal modal={modalVisible} context={text} 
+         // @ts-ignore
+         file={file} user={user?.id} setModalVisible={setModalVisible} mode={mode}/>
       </ScreenContainer>
     );
 }  

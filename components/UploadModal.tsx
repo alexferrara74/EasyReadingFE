@@ -39,9 +39,10 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
                             if(mode == 2)
                                 result = await uploadFile(file, text, setLoading, userID);
                             if(mode == 1)
-                                {/*result = await sendText(context, text, setLoading, userID);*/}
+                                result = await sendText(context, text, setLoading, userID);
                             setText('');
                             if (result) {
+                                 // @ts-ignore
                                 navigation.navigate('summary', result.fileId);
                                 setModalVisible(false);
                             } else {;

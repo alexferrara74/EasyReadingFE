@@ -3,8 +3,9 @@ import Constants from 'expo-constants';
 
 const conn = Constants.expoConfig.extra.indirizzo;
 
-export const sendText = async (context, summaryName, userID) => {
+export const sendText = async (context, summaryName, setLoading, userID) => {
     try {
+        setLoading(true);
         const formData = new FormData();
         formData.append('context', context);
         formData.append('titolo', summaryName);
@@ -48,12 +49,15 @@ export const sendText = async (context, summaryName, userID) => {
   
             const result = await waitForCheck;
             console.log('Elaborazione completata:', result);
+            setLoading(false);
             return result;
         } else {
+            setLoading(false);
             console.log('Errore durante il caricamento del testo');
             return null;
         }
     } catch (e) {
+        setLoading(false);
         console.log('Errore:', e);
         return null;
     }
