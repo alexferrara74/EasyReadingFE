@@ -13,6 +13,5 @@ export const retrieveSummary = async (fileId) => {
     } else {
         console.error('Errore durante il recupero del file:', response.statusText);
     }
-    console.log('AAAAAAAAAAAAA',result);
     return result;
 }

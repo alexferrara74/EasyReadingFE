@@ -17,7 +17,6 @@ export default function SummaryScreen()
     const toggleChat = () => {
         setModalVisible(!modalVisible);
     }
-    console.log('file',file);
 
     const [riassunto, setRiassunto] = useState('');
     useEffect(() => {
@@ -25,7 +24,7 @@ export default function SummaryScreen()
             
             try {
                 // @ts-ignore
-                const result = await retrieveSummary(file?.summary);
+                const result = await retrieveSummary(file?.file.fileId);
                 setRiassunto(result)
             } catch (e) {
                 console.log(e);
@@ -35,10 +34,6 @@ export default function SummaryScreen()
         // Chiamata alla funzione asincrona dentro useEffect
         riassuntoTest();
     },[]);
-
-    
-    
-    
 
     return (
         <ScreenContainer>

@@ -8,6 +8,7 @@ import { DocumentPickerSuccessResult } from 'expo-document-picker';
 import { sendText } from '@/scripts/sendText';
 import { ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from 'expo-router';
+import { retrieveFile } from '@/scripts/retrieveFile';
 
 interface ModalProps {
     modal: boolean;
@@ -42,8 +43,9 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
                             setText('');
                             if (result) {
                                 console.log('result',result)
+                                const file = await retrieveFile(result.idResponseTask);
                                  // @ts-ignore
-                                navigation.navigate('summary', {summary: result.idResponseTask});
+                                navigation.navigate('summary', {file: file});
                                 setModalVisible(false);
                             } else {;
                                 console.log("Caricamento non riuscito.");
