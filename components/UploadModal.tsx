@@ -5,15 +5,24 @@ import { Button, Icon, IconButton } from 'react-native-paper'
 import { uploadFile } from '@/scripts/uploadFile';
 import { colors_green, colors_light_blue } from '@/constants/Colors';
 import { DocumentPickerSuccessResult } from 'expo-document-picker';
+import { sendText } from '@/scripts/sendText';
 
+import { ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
+import { useNavigation } from 'expo-router';
 interface ModalProps {
     modal: boolean;
     setModalVisible: Dispatch<SetStateAction<boolean>>; 
+    context: string;
     file: DocumentPickerSuccessResult;
+    mode: number;
+    userID: string;
 }
 
-export function UploadModal({modal, setModalVisible, file}: ModalProps) {
+export function UploadModal({modal, context, file, setModalVisible, mode, userID}: ModalProps) {
     const [text, setText] = useState('');
+
+    const [loading, setLoading] = useState(false);
+    const navigation = useNavigation()
     return (
         <Modal
             animationType='slide'
@@ -23,14 +32,37 @@ export function UploadModal({modal, setModalVisible, file}: ModalProps) {
             <View style={styles.wrapperModal}>
                 <View style={styles.nameModal}>
                     <TextInput style={styles.modalTextInput} placeholder='Inserire nome riassunto' value={text} onChangeText={setText}/>
-                    <IconButton style={styles.modalUploadButton} mode='contained-tonal'
-                        icon="chevron-right" 
-                        iconColor='#ffff' size={35} onPress={()=>{uploadFile(file, text); setModalVisible(false); setText('')}}></IconButton>
-                        <IconButton style={styles.exitModalButton} mode='contained-tonal'
-                        icon="close" 
-                        iconColor='#ffff' size={25} onPress={()=>{setModalVisible(false); setText('')}}></IconButton>
+                    {loading ? (<ActivityIndicator size="large" color="#0000ff" />): (
+                    <IconButton style={styles.modalUploadButton} mode='contained-tonal'  icon="chevron-right" iconColor='#ffff'  size={35}
+                        onPress={async () => {
+                            var result;
+                            if(mode == 2)
+                                result = await uploadFile(file, text, setLoading, userID);
+                            if(mode == 1)
+                                {/*result = await sendText(context, text, setLoading, userID);*/}
+                            setText('');
+                            if (result) {
+                                navigation.navigate('summary', result.fileId);
+                                setModalVisible(false);
+                            } else {;
+                                console.log("Caricamento non riuscito.");
+                            }
+                        }}/>
+                    )}  
+                    <IconButton  style={styles.exitModalButton} mode='contained-tonal' icon="close" iconColor='#ffff' size={25} disabled={loading}  
+                    onPress={() => {
+                        setModalVisible(false);
+                        setText('');
+                    }}/>
+
                 </View>
+            {loading && (
+                <TouchableWithoutFeedback>
+                    <View style={styles.loadingContainer}/>
+                </TouchableWithoutFeedback>
+            )}
             </View>
+            
         </Modal>
     );
 }  
@@ -93,5 +125,11 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginHorizontal: 'auto',
         backgroundColor: colors_light_blue.accent
+    },
+    loadingContainer: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: -50 }, { translateY: -50 }],
     },
 })

@@ -1,9 +1,12 @@
+import Constants from 'expo-constants';
+
+const conn = Constants.expoConfig.extra.indirizzo;
 
 export async function login(email,password, onLoginSuccess){
 
     try{
         const request = { email, password}
-        const response = await fetch('http://192.168.1.121:3030/login',{
+        const response = await fetch(`http://${conn}:3030/login`,{
             method: 'POST',
             body: JSON.stringify(request),
             headers: {

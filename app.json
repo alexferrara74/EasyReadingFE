@@ -1,7 +1,11 @@
 {
   "expo": {
+    "newArchEnabled": true,
     "name": "EasyReading",
     "slug": "EasyReading",
+    "extra": {
+      "indirizzo": "192.168.142.28"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
