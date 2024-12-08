@@ -12,13 +12,13 @@ export default function SummaryScreen()
     const route = useRoute();
     const [modalVisible, setModalVisible] = useState(false);
     
-    const fileId = route.params;
+    const file = route.params;
 
     const toggleChat = () => {
         setModalVisible(!modalVisible);
     }
 
-    const riassunto = retrieveSummary(fileId);
+    const riassunto = retrieveSummary(file.fileId);
     console.log(riassunto);
 
     return (
