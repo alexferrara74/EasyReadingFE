@@ -13,27 +13,11 @@ export default function SummaryScreen()
     const [modalVisible, setModalVisible] = useState(false);
     
     const file = route.params;
-
+    console.log(file)
     const toggleChat = () => {
         setModalVisible(!modalVisible);
     }
 
-    const [riassunto, setRiassunto] = useState('');
-    useEffect(() => {
-        const riassuntoTest = async () => {
-            
-            try {
-                // @ts-ignore
-                const result = await retrieveSummary(file?.file.fileId);
-                setRiassunto(result)
-            } catch (e) {
-                console.log(e);
-            }
-        };
-
-        // Chiamata alla funzione asincrona dentro useEffect
-        riassuntoTest();
-    },[]);
 
     return (
         <ScreenContainer>
@@ -62,7 +46,8 @@ export default function SummaryScreen()
             <Header mini='Ecco a te il tuo' title='Riassunto'/>
             <ScrollView >
                 <Text style={styles.summarySummary}>
-                    {riassunto}
+                    { // @ts-ignore
+                    file?.file.riassunto}
                 </Text>
             </ScrollView>
             <IconButton style={styles.summaryBotButton} mode='contained-tonal'
