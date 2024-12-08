@@ -4,7 +4,7 @@ import { colors_light_blue } from '@/constants/Colors';
 import { useUser } from '@/scripts/userContext';
 import { Redirect } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Avatar, Button } from 'react-native-paper';
 import { getFilesByUser } from '@/scripts/getUserFiles';
 
@@ -55,16 +55,16 @@ export default function ProfileScreen() {
             </View>
 
             <Text style={styles.historyTitle}>STORICO</Text>
-
-            {/* Mappare gli items solo se esistono */}
-            {items.length > 0 ? (
-                items.map((item, index) => (
-                    <UserFile key={index} file={item} />
-                ))
-            ) : (
-                <Text>No files available</Text>
-            )}
-
+            <ScrollView>
+                
+                {items.length > 0 ? (
+                    items.map((item, index) => (
+                        <UserFile key={index} file={item} />
+                    ))
+                ) : (
+                    <Text>No files available</Text>
+                )}
+            </ScrollView>
             <View style={styles.logoutSection}>
                 <Button onPress={() => logout()} style={styles.logoutButton} buttonColor='#525252' textColor='white'>
                     LOGOUT

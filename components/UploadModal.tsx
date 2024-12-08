@@ -6,9 +6,9 @@ import { uploadFile } from '@/scripts/uploadFile';
 import { colors_green, colors_light_blue } from '@/constants/Colors';
 import { DocumentPickerSuccessResult } from 'expo-document-picker';
 import { sendText } from '@/scripts/sendText';
-
 import { ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from 'expo-router';
+
 interface ModalProps {
     modal: boolean;
     setModalVisible: Dispatch<SetStateAction<boolean>>; 
@@ -20,7 +20,6 @@ interface ModalProps {
 
 export function UploadModal({modal, context, file, setModalVisible, mode, userID}: ModalProps) {
     const [text, setText] = useState('');
-
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation()
     return (
@@ -42,8 +41,9 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
                                 result = await sendText(context, text, setLoading, userID);
                             setText('');
                             if (result) {
+                                console.log('result',result)
                                  // @ts-ignore
-                                navigation.navigate('summary', result.fileId);
+                                navigation.navigate('summary', {summary: result.idResponseTask});
                                 setModalVisible(false);
                             } else {;
                                 console.log("Caricamento non riuscito.");

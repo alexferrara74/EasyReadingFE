@@ -3,7 +3,7 @@ import { ScreenContainer } from '@/components/_screenContainer';
 import { colors_light_blue } from '@/constants/Colors';
 import { retrieveSummary } from '@/scripts/retrieveSummary'
 import { useRoute } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal} from 'react-native';
 import { IconButton } from 'react-native-paper'
 
@@ -17,9 +17,28 @@ export default function SummaryScreen()
     const toggleChat = () => {
         setModalVisible(!modalVisible);
     }
+    console.log('file',file);
 
-    const riassunto = retrieveSummary(file.fileId);
-    console.log(riassunto);
+    const [riassunto, setRiassunto] = useState('');
+    useEffect(() => {
+        const riassuntoTest = async () => {
+            
+            try {
+                // @ts-ignore
+                const result = await retrieveSummary(file?.summary);
+                setRiassunto(result)
+            } catch (e) {
+                console.log(e);
+            }
+        };
+
+        // Chiamata alla funzione asincrona dentro useEffect
+        riassuntoTest();
+    },[]);
+
+    
+    
+    
 
     return (
         <ScreenContainer>

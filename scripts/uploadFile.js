@@ -44,7 +44,7 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
                 name: summaryName,
             });
             console.log('Caricamento file in corso...');
-            var response = await fetch('http://192.168.3.28:3030/upload', {
+            var response = await fetch(`http://${conn}:3030/upload?titolo=${summaryName}&idUtente=${userID}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -58,7 +58,7 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
             console.log('File caricato con successo');
             const data = await response.json();
 
-            const socket = new WebSocket("ws://192.168.3.28:8080");
+            const socket = new WebSocket(`ws://${conn}:8080`);
     
             socket.onopen = () => {
                 console.log('WebSocket connessa');
@@ -81,7 +81,8 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
                 };
     
                 socket.onerror = (error) => {
-                    reject(new Error('Errore nella WebSocket'));
+                    console.log(error)
+                    reject(new Error('Errore nella WebSocket',error));
                 };
                 socket.onclose  = (event) => {
                     console.log("Socket chiusa");

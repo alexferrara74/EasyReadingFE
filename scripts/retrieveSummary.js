@@ -6,12 +6,13 @@ export const retrieveSummary = async (fileId) => {
         method: 'GET'
     })
 
-    console.log(response);
+    
     if (response.ok) {
         const data = await response.json();
         result = data.riassunto;
     } else {
         console.error('Errore durante il recupero del file:', response.statusText);
     }
+    console.log('AAAAAAAAAAAAA',result);
     return result;
 }
