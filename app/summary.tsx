@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     backButton:{
         position: 'absolute',
         top: 15,
-        left: 10
+        left: 10,
+        borderRadius: 9
     },
     summarySummary:{
         marginTop: 20,
