@@ -1,11 +1,11 @@
 import { Header } from '@/components/_header';
 import { ScreenContainer } from '@/components/_screenContainer';
 import { colors_light_blue } from '@/constants/Colors';
-import { retrieveSummary } from '@/scripts/retrieveSummary'
 import { useRoute } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal} from 'react-native';
-import { IconButton } from 'react-native-paper'
+import { IconButton } from 'react-native-paper';
+import { useNavigation } from 'expo-router';
 
 export default function SummaryScreen() 
 {
@@ -13,7 +13,9 @@ export default function SummaryScreen()
     const [modalVisible, setModalVisible] = useState(false);
     
     const file = route.params;
-    console.log(file)
+   
+    const navigator = useNavigation();
+
     const toggleChat = () => {
         setModalVisible(!modalVisible);
     }
