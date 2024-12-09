@@ -17,8 +17,7 @@ export default function SummaryScreen()
     const toggleChat = () => {
         setModalVisible(!modalVisible);
     }
-
-
+    
     return (
         <ScreenContainer>
             <Modal
@@ -44,6 +43,11 @@ export default function SummaryScreen()
                     iconColor='#ffff' size={30} onPress={toggleChat}></IconButton>
             </Modal>
             <Header mini='Ecco a te il tuo' title='Riassunto'/>
+            <IconButton mode='outlined' 
+                    icon={'arrow-left-thick'}
+                    style={styles.backButton}
+                    // @ts-ignore
+                    onPress={() => navigator.navigate('index')} />
             <ScrollView >
                 <Text style={styles.summarySummary}>
                     { // @ts-ignore
@@ -58,6 +62,11 @@ export default function SummaryScreen()
 }
 // TODO: DA AGGIUSTARE LO STILE IN TEMA CHIARO
 const styles = StyleSheet.create({
+    backButton:{
+        position: 'absolute',
+        top: 15,
+        left: 10
+    },
     summarySummary:{
         marginTop: 20,
         fontSize: 16,

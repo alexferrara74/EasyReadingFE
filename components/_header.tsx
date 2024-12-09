@@ -18,7 +18,7 @@ export function Header({mini, title} : HeaderProps) {
 
 const styles = StyleSheet.create({
     header: {
-        paddingTop: 40,
+        paddingTop: 60,
         backgroundColor: colors_light_blue.header_background,
         paddingBottom: 20,
         paddingHorizontal: 20,

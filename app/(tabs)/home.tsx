@@ -49,7 +49,7 @@ export default function HomeScreen() {
         </View>
         <UploadModal modal={modalVisible} context={text} 
          // @ts-ignore
-         file={file} userID={user?.id} setModalVisible={setModalVisible} mode={mode}/>
+         file={file} userID={user?._id} setModalVisible={setModalVisible} mode={mode}/>
       </ScreenContainer>
     );
 }  
