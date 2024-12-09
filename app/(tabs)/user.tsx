@@ -31,7 +31,7 @@ export default function ProfileScreen() {
         const getFiles = async () => {
             console.log('user',user)
             try {
-                const result = await getFilesByUser(user.id);
+                const result = await getFilesByUser(user._id);
                 // Controlla se `result` è un array e aggiorna `items`
                 if (Array.isArray(result)) {
                     setItems(result);
