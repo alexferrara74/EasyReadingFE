@@ -4,7 +4,7 @@
     "name": "EasyReading",
     "slug": "EasyReading",
     "extra": {
-      "indirizzo": "192.168.1.121"
+      "indirizzo": "192.168.117.28"
     },
     "version": "1.0.0",
     "orientation": "portrait",
@@ -30,7 +30,8 @@
       "output": "static"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

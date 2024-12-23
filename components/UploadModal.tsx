@@ -3,12 +3,13 @@ import { View, Text, StyleSheet, Modal } from 'react-native';
 import { TextInput } from 'react-native';
 import { Button, Icon, IconButton } from 'react-native-paper'
 import { uploadFile } from '@/scripts/uploadFile';
-import { colors_green, colors_light_blue } from '@/constants/Colors';
+import {colors_light_blue } from '@/constants/Colors';
 import { DocumentPickerSuccessResult } from 'expo-document-picker';
 import { sendText } from '@/scripts/sendText';
 import { ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { retrieveFile } from '@/scripts/retrieveFile';
+import { useTheme } from '@/scripts/ThemeProvider';
 
 interface ModalProps {
     modal: boolean;
@@ -23,6 +24,8 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
     const [text, setText] = useState('');
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation()
+    const { theme, updateTheme } = useTheme();
+
     return (
         <Modal
             animationType='slide'
@@ -30,10 +33,10 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
             visible={modal}
             onRequestClose={()=>{}}>
             <View style={styles.wrapperModal}>
-                <View style={styles.nameModal}>
-                    <TextInput style={styles.modalTextInput} placeholder='Inserire nome riassunto' value={text} onChangeText={setText}/>
+                <View style={[styles.nameModal, {backgroundColor: theme.header_background, borderColor: theme.accent,}]}>
+                    <TextInput style={[styles.modalTextInput,{backgroundColor: theme['text-light'], borderColor: theme.accent}]} placeholder='Inserire nome riassunto' value={text} onChangeText={setText}/>
                     {loading ? (<ActivityIndicator size="large" color="#0000ff" />): (
-                    <IconButton style={styles.modalUploadButton} mode='contained-tonal'  icon="chevron-right" iconColor='#ffff'  size={35}
+                    <IconButton style={[styles.modalUploadButton, {backgroundColor: theme.accent}]} mode='contained-tonal'  icon="chevron-right" iconColor='#ffff'  size={35}
                         onPress={async () => {
                             var result;
                             if(mode == 2)
@@ -52,7 +55,7 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
                             }
                         }}/>
                     )}  
-                    <IconButton  style={styles.exitModalButton} mode='contained-tonal' icon="close" iconColor='#ffff' size={25} disabled={loading}  
+                    <IconButton  style={[styles.exitModalButton, {backgroundColor: theme.accent,}]} mode='contained-tonal' icon="close" iconColor='#ffff' size={25} disabled={loading}  
                     onPress={() => {
                         setModalVisible(false);
                         setText('');
@@ -71,13 +74,6 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
 }  
 
 const styles = StyleSheet.create({
-    startSummary:{
-        width: 120,
-        height: 40,
-        borderRadius: 50,
-        marginHorizontal: 'auto',
-        backgroundColor: colors_light_blue.accent,
-    },
     wrapperModal:{
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)'
@@ -86,16 +82,13 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderRadius: 50,
-        backgroundColor: colors_light_blue.accent,
         position: 'absolute',
         top: 0,
         right: 0
     },
     nameModal: {
         width: '80%',
-        backgroundColor: colors_light_blue.header_background,
         borderWidth: 1,
-        borderColor: colors_light_blue.accent,
         borderRadius: 10,
         position: 'absolute',
         top: '25%',
@@ -103,18 +96,9 @@ const styles = StyleSheet.create({
         paddingVertical: 30,
         paddingTop: 50
     },
-    nameModalText: {
-        backgroundColor: colors_light_blue['text-dark'],
-        marginHorizontal: 'auto',
-        borderRadius: 20,
-        width: '90%',
-        padding: 15,
-    },
     modalTextInput:{
-        backgroundColor: colors_light_blue['text-light'],
         marginHorizontal: 'auto',
         borderWidth: 2,
-        borderColor: colors_light_blue.accent,
         borderRadius: 20,
         height: '40%',
         width: '80%',
@@ -127,7 +111,6 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50,
         marginHorizontal: 'auto',
-        backgroundColor: colors_light_blue.accent
     },
     loadingContainer: {
         position: 'absolute',

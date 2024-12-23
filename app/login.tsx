@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     },
     backButton:{
         borderColor: '#161d19',
-        borderRadius: 9
+        borderRadius: 20
 
     }
 })

@@ -1,16 +1,23 @@
 import { ScreenContainer } from '@/components/_screenContainer';
 import { UserFile } from '@/components/Userfile';
-import { colors_light_blue } from '@/constants/Colors';
+import { colors_blue, colors_light_blue } from '@/constants/Colors';
 import { useUser } from '@/scripts/userContext';
 import { Redirect } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Avatar, Button } from 'react-native-paper';
 import { getFilesByUser } from '@/scripts/getUserFiles';
+import { IconButton } from 'react-native-paper'
+import { useNavigation } from 'expo-router';
+import { useContext } from 'react';
+import { useTheme } from '@/scripts/ThemeProvider';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function ProfileScreen() {
+export default function UserScreen() {
+    const { theme, updateTheme } = useTheme();
     const { user, logout } = useUser();
 
+    const navigation = useNavigation()
     // Definire FileData con tipi specifici per evitare errori di tipo
     interface FileData {
         nameFile?: string;
@@ -23,51 +30,47 @@ export default function ProfileScreen() {
         return <Redirect href={'/login'}></Redirect>;
     }
 
-    // Definisci lo stato `items` come array vuoto
-    const [items, setItems] = useState<FileData[]>([]);
-
-    // Esegui la chiamata API quando il componente viene montato
-    useEffect(() => {
-        const getFiles = async () => {
-            console.log('user',user)
-            try {
-                const result = await getFilesByUser(user._id);
-                // Controlla se `result` è un array e aggiorna `items`
-                if (Array.isArray(result)) {
-                    setItems(result);
-                } else {
-                    console.error('Risultato non è un array:', result);
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        };
-
-        // Chiamata alla funzione asincrona dentro useEffect
-        getFiles();
-    }, [user._id]); // Dipende solo da `user._id`, quindi verrà eseguito una volta per ogni cambiamento dell'id utente
-
     return (
         <ScreenContainer>
-            <View style={styles.profileHeader}>
-                <Text style={styles.profileTitle}> {user?.username.toUpperCase()} </Text>
-                <Avatar.Text style={styles.profilePicture} size={31} label={user.username.substr(0, 2).toUpperCase()} />
+            <View style={[styles.profileHeader, 
+                {backgroundColor: theme.header_background, 
+                borderBottomColor: theme.accent}]}>
+            <IconButton mode='outlined' 
+                    icon={'arrow-left-thick'}
+                    style={[styles.backButton, {borderColor: theme['text-dark']}]}
+                    // @ts-ignore
+                    onPress={() => navigation.navigate('index')} />
+                <View style={styles.userContainer}>
+                    <Avatar.Text style={[styles.profilePicture, {borderColor: theme.accent}]} size={61} label={user.username.substr(0, 2).toUpperCase()} />
+                    <Text style={[styles.profileTitle, {color: theme['header-text']}]}> {user?.username.toUpperCase()} </Text>
+                </View>
             </View>
-
-            <Text style={styles.historyTitle}>STORICO</Text>
-            <ScrollView>
-                
-                {items.length > 0 ? (
-                    items.map((item, index) => (
-                        <UserFile key={index} file={item} />
-                    ))
-                ) : (
-                    <Text>No files available</Text>
-                )}
-            </ScrollView>
+            <View style={styles.themeContainer}>
+                <LinearGradient
+                        style={styles.themeGradient}
+                        colors={['#232725', '#007aff']}
+                        start={{ x: 0.4, y: 0.5 }}
+                        end={{ x: 1, y: 1 }}
+                >
+                    <Button style={[styles.themeButton, {borderWidth: 0.1, borderColor: theme['header-text']}]} onPress={() => {updateTheme(colors_blue)}} buttonColor='#525252'>
+                        <View style={styles.themeButton}></View>
+                    </Button>
+                </LinearGradient>
+                <LinearGradient
+                        style={styles.themeGradient}
+                        colors={['#ffff', '#007aff']}
+                        start={{ x: 0.2, y: 0.5 }}
+                        end={{ x: 1, y: 1 }}
+                >
+                    <Button style={[styles.themeButton, {borderWidth: 0.1, borderColor: theme['header-text']}]} onPress={() => {updateTheme(colors_light_blue)}} buttonColor='#525252'>
+                        <View style={styles.themeButton}></View>
+                    </Button>
+                </LinearGradient>
+            </View>
+            
             <View style={styles.logoutSection}>
-                <Button onPress={() => logout()} style={styles.logoutButton} buttonColor='#525252' textColor='white'>
-                    LOGOUT
+                <Button onPress={() => logout()} style={[styles.logoutButton, {backgroundColor: theme.accent}]} buttonColor='#525252' textColor='white'>
+                    <Text style={[styles.textButton, {color: theme['text-light']}]}>LogOut</Text>
                 </Button>
             </View>
         </ScreenContainer>
@@ -76,46 +79,54 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
     profileHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingTop: 40,
-        paddingBottom: 20,
-        paddingHorizontal: 20,
-        backgroundColor: colors_light_blue.header_background,
-        borderBottomWidth: 1,
-        borderBottomColor: colors_light_blue.accent,
+        paddingTop: 110,
+        borderBottomWidth: 1
+    },
+    backButton:{
+        borderRadius: 20,
+        position: 'absolute',
+        top: 25,
+        left: 25,
+    },
+    userContainer:{
+        position: 'absolute',
+        top: 60,
+        left: '38%',
     },
     profileTitle: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: colors_light_blue['text-dark'],
     },
     profilePicture: {
-        width: 50,
-        height: 50,
+        width: 100,
+        height: 100,
         borderRadius: 50,
-        marginLeft: 'auto',
+        borderWidth: 1
     },
-    historyTitle: {
-        marginTop: 20,
-        marginLeft: 20,
-        fontSize: 18,
-        color: colors_light_blue['text-dark'],
-        marginBottom: 10,
-        paddingBottom: 5,
-        fontWeight: 'bold',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ffffff7a',
+    themeContainer: {
+        marginTop: 100,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: 50
     },
-    screenText: {
-        fontSize: 24,
-        color: colors_light_blue['text-dark'],
+    themeGradient: {
+        overflow: 'hidden',
+        borderRadius: '100%'
+    },
+    themeButton: {
+        borderRadius: '100%',
+        width: 120,
+        height: 120,
+        backgroundColor: 'transparent'
     },
     logoutButton: {
-        marginTop: 100,
-        width: '50%',
+        paddingHorizontal: 20,
+    },
+    textButton:{
+        fontSize: 17
     },
     logoutSection: {
+        marginTop: 50,
         alignItems: 'center',
     },
 });

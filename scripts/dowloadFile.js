@@ -1,14 +1,16 @@
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
+const conn = Constants.expoConfig.extra.indirizzo;
 export async function dowloadUserFile(file){
   console.log(file.id)
   const fileName = file.nameFile
   const localHost = /*Platform.OS === 'android' ? '10.2.2.2' :*/ '192.168.1.121';
 
   const result = await FileSystem.downloadAsync(
-    `http://${localHost}:3030/download/${file.id}`,
+    `http://${conn}:3030/download/${file.id}`,
     
     FileSystem.documentDirectory + fileName,
     {

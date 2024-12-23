@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 15,
         left: 10,
-        borderRadius: 9
+        borderRadius: 20
     },
     summarySummary:{
         marginTop: 20,

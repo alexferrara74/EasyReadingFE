@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors_light_blue } from '@/constants/Colors';
+import { useTheme } from '@/scripts/ThemeProvider';
 
 interface HeaderProps{
     mini: string;
@@ -8,10 +9,11 @@ interface HeaderProps{
 }
 
 export function Header({mini, title} : HeaderProps) {
+    const { theme, updateTheme } = useTheme();
     return (
-        <View style={styles.header}>
-            <Text style={styles.headerMiniTitle}>{mini}</Text>
-            <Text style={styles.headerTitle}>{title}</Text>
+        <View style={[styles.header, {backgroundColor: theme.header_background, borderBottomColor: theme.accent}]}>
+            <Text style={[styles.headerMiniTitle, {color: theme['header-text']}]}>{mini}</Text>
+            <Text style={[styles.headerTitle, {color: theme['header-text']}]}>{title}</Text>
         </View>
     );
 }  
@@ -19,20 +21,16 @@ export function Header({mini, title} : HeaderProps) {
 const styles = StyleSheet.create({
     header: {
         paddingTop: 60,
-        backgroundColor: colors_light_blue.header_background,
         paddingBottom: 20,
         paddingHorizontal: 20,
         borderBottomWidth: 1,
-        borderBottomColor: colors_light_blue.accent
     },
     headerMiniTitle: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: colors_light_blue['text-dark']
     },
     headerTitle:{
         fontSize: 32,
         fontWeight: 'bold',
-        color: colors_light_blue['text-dark']
     },
 })

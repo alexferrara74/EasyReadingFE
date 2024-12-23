@@ -1,31 +1,53 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Icon } from 'react-native-paper';
-import { colors_green, colors_light_blue } from '@/constants/Colors';
+import { colors_light_blue } from '@/constants/Colors';
+import { useTheme } from '@/scripts/ThemeProvider';
 
 export default function TabLayout() {
+  const { theme, updateTheme } = useTheme();
   return (
     <Tabs>
         <Tabs.Screen name="home" 
           options={{headerShown: false, 
           tabBarIcon: ({ color, size }) => 
           (
-            <Icon source={"home"} size={size} color={color}/>
+            <Icon source={"home"} size={30} color={color}/>
           ), 
           tabBarStyle: 
           { 
-            backgroundColor: colors_light_blue.accent,
-            width: '95%',
+            backgroundColor: theme.accent,
+            width: '90%',
             borderRadius: 10,
             marginHorizontal: 'auto',
             position: 'absolute',
-            bottom: 15, left: 10,
+            marginLeft: '5%',
             borderTopColor: 'transparent'
           },
-          tabBarActiveTintColor: colors_green['text-light'],
-          tabBarInactiveTintColor: colors_green['text-dark'],
+          tabBarActiveTintColor: theme['text-light'],
+          tabBarInactiveTintColor: theme['text-dark'],
           tabBarShowLabel: false
           }}/>
+        <Tabs.Screen name="history"
+          options={{headerShown: false, 
+          tabBarIcon: ({ color, size }) => 
+          (
+            <Icon source={"history"} size={30} color={color}/>
+          ),
+          tabBarStyle: 
+          { 
+            backgroundColor: colors_light_blue.accent,
+            width: '90%',
+            borderRadius: 10,
+            marginHorizontal: 'auto',
+            position: 'absolute',
+            marginLeft: '5%',
+            borderTopColor: 'transparent'
+          },
+          tabBarActiveTintColor: theme['text-light'],
+          tabBarInactiveTintColor: theme['text-dark'],
+          tabBarShowLabel: false}} />
+
         <Tabs.Screen name="user"
           options={{headerShown: false, 
           tabBarIcon: ({ color, size }) => 
@@ -35,15 +57,15 @@ export default function TabLayout() {
           tabBarStyle: 
           { 
             backgroundColor: colors_light_blue.accent,
-            width: '95%',
+            width: '90%',
             borderRadius: 10,
             marginHorizontal: 'auto',
             position: 'absolute',
-            bottom: 15, left: 10,
+            marginLeft: '5%',
             borderTopColor: 'transparent'
           },
-          tabBarActiveTintColor: colors_green['text-light'],
-          tabBarInactiveTintColor: colors_green['text-dark'],
+          tabBarActiveTintColor: theme['text-light'],
+          tabBarInactiveTintColor: theme['text-dark'],
           tabBarShowLabel: false}} />
     </Tabs>
   );

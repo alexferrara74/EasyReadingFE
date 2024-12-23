@@ -8,6 +8,7 @@ import { Header } from '@/components/_header';
 import { ScreenContainer } from '@/components/_screenContainer';
 import { UploadModal } from '@/components/UploadModal';
 import { useUser } from '@/scripts/userContext';
+import { useTheme } from '@/scripts/ThemeProvider';
 
 export default function HomeScreen() {
     const [modalVisible, setModalVisible] = useState(false);
@@ -15,13 +16,18 @@ export default function HomeScreen() {
     const [text, setText] = useState('');
     const [mode, setMode] = useState(0);
     const { user } = useUser();
+    const { theme } = useTheme();
+
     return (
       <ScreenContainer>
         <Header mini="Buongiorno" title={user?.username.toUpperCase()}/>
         <View style={styles.homeSummaryView}>
-            <Text style={styles.homeMiniSummary}>Testo da riassumere: </Text>
-            <TextInput style={styles.homeTextInput} placeholder='Inserire testo da riassumere' onChangeText={setText} numberOfLines={4} editable multiline/>
-            <Button style={styles.startSummary} textColor={colors_light_blue['text-light']} 
+            <Text style={[styles.homeMiniSummary, {color: theme['header-text']}]}>Testo da riassumere: </Text>
+            <TextInput style={[styles.homeTextInput, 
+                {backgroundColor: theme.background, borderColor: theme.accent, color: theme['header-text']}]} 
+                placeholder='Inserire testo da riassumere' placeholderTextColor={theme['header-text']} 
+                onChangeText={setText} numberOfLines={4} editable multiline/>
+            <Button style={[styles.startSummary, {backgroundColor: theme.accent}]} textColor={theme['text-light']} 
                 mode='contained-tonal'
                 onPress={()=>{
                     if (text.length > 0)
@@ -31,10 +37,10 @@ export default function HomeScreen() {
                     }
                 }}>Riassumi</Button>
         </View>
-        <View style={styles.homeDivider}></View>
+        <View style={[styles.homeDivider, {borderBottomColor: theme.accent}]}></View>
         <View style={styles.uploadView}>
-            <Text style={styles.homeMiniSummary}>Inviare File</Text>
-            <IconButton style={styles.homeUploadButton} mode='contained-tonal'
+            <Text style={[styles.homeMiniSummary, {color: theme['header-text']}]}>Inviare File</Text>
+            <IconButton style={[styles.homeUploadButton, {backgroundColor: theme.accent}]} mode='contained-tonal'
                 icon="file-plus"  size={25}
                 iconColor='#ffff' onPress={async()=>{
                     const selectedFile = await selectFile();
@@ -59,8 +65,7 @@ const styles = StyleSheet.create({
         width: 120,
         height: 40,
         borderRadius: 50,
-        marginHorizontal: 'auto',
-        backgroundColor: colors_light_blue.accent,
+        marginHorizontal: 'auto'
     },
     homeSummaryView: {
         padding: 0
@@ -71,13 +76,10 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         fontWeight: 'bold',
-        color: colors_light_blue['text-dark']
     },
     homeTextInput:{
-        backgroundColor: colors_light_blue['text-light'],
         marginHorizontal: 'auto',
         borderWidth: 2,
-        borderColor: colors_light_blue.accent,
         borderRadius: 20,
         height: '40%',
         width: '80%',
@@ -86,7 +88,6 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     homeDivider:{
-        borderBottomColor: colors_light_blue.accent,
         borderBottomWidth: StyleSheet.hairlineWidth,
         margin: -100
     },
@@ -98,6 +99,5 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50,
         marginHorizontal: 'auto',
-        backgroundColor: colors_light_blue.accent
     },
 })

@@ -12,8 +12,8 @@ StatusBar.setHidden(true);
 
 export default function App() {
   return (
-    <UserProvider>
-      <Redirect href={"/(tabs)/home"} />
-    </UserProvider>
+      <UserProvider>
+        <Redirect href={"/(tabs)/home"} />
+      </UserProvider>
   );
 }
