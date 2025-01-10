@@ -4,7 +4,8 @@ const conn = Constants.expoConfig.extra.indirizzo;
 
 export async function register(email,password,username, onRegisterSuccess){
     try{
-        const request = { email, password, username}
+        const eta = 24
+        const request = { email, password, username, eta};
         const response = await fetch(`http://${conn}:3030/register`,{
             method: 'POST',
             body: JSON.stringify(request),
