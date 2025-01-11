@@ -16,7 +16,10 @@ const style = StyleSheet.create({
         backgroundColor: colors_light_blue.accent,
         padding: 10,
         paddingHorizontal: 30,
-        borderRadius: 10
+        maxWidth: '80%',
+        alignSelf: 'flex-end',
+        marginVertical: 5,
+        borderRadius: 15,
     },
     chatBotText: {
         color: '#fff',
