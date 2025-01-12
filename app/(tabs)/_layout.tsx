@@ -36,7 +36,7 @@ export default function TabLayout() {
           ),
           tabBarStyle: 
           { 
-            backgroundColor: colors_light_blue.accent,
+            backgroundColor: theme.accent,
             width: '90%',
             borderRadius: 10,
             marginHorizontal: 'auto',
@@ -56,7 +56,7 @@ export default function TabLayout() {
           ),
           tabBarStyle: 
           { 
-            backgroundColor: colors_light_blue.accent,
+            backgroundColor: theme.accent,
             width: '90%',
             borderRadius: 10,
             marginHorizontal: 'auto',

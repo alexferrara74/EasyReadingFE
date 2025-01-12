@@ -12,7 +12,15 @@ const ThemeProvider = ({children}) => {
     const findOldTheme = async () => {
         const themeMode = await AsyncStorage.getItem('themeMode');
         if (themeMode !== null) {
-            themeMode === 'default' ? setTheme(colors_light_blue) : setTheme(colors_blue);
+            if(themeMode === 'default') {
+                setTheme(colors_light_blue);
+            }
+            else if(themeMode === 'dark_blue') {
+                setTheme(colors_blue);
+            }
+            else {
+                setTheme(dark_red);
+            }
             setIsLoadingTheme(false);
           }
         setIsLoadingTheme(false);

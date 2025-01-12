@@ -6,7 +6,6 @@ export const retrieveFile = async (fileId) => {
         method: 'GET'
     })
 
-    
     if (response.ok) {
         const data = await response.json();
         result = data;

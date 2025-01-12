@@ -1,6 +1,6 @@
 import { ScreenContainer } from '@/components/_screenContainer';
 import { UserFile } from '@/components/Userfile';
-import { colors_blue, colors_light_blue } from '@/constants/Colors';
+import { colors_blue, colors_light_blue, colors_red } from '@/constants/Colors';
 import { useUser } from '@/scripts/userContext';
 import { Redirect } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -48,9 +48,10 @@ export default function UserScreen() {
             <View style={styles.themeContainer}>
                 <LinearGradient
                         style={styles.themeGradient}
+                        locations={[0, 0.5, 1]}
                         colors={['#232725', '#007aff']}
-                        start={{ x: 0.4, y: 0.5 }}
-                        end={{ x: 1, y: 1 }}
+                        start={{ x: 0.5, y: 0.4 }}
+                        end={{ x: 1.2, y: 0.9 }}
                 >
                     <Button style={[styles.themeButton, {borderWidth: 0.1, borderColor: theme['header-text']}]} onPress={() => {updateTheme(colors_blue)}} buttonColor='#525252'>
                         <View style={styles.themeButton}></View>
@@ -58,11 +59,23 @@ export default function UserScreen() {
                 </LinearGradient>
                 <LinearGradient
                         style={styles.themeGradient}
+                        locations={[0, 0.5, 1]}
                         colors={['#ffff', '#007aff']}
-                        start={{ x: 0.2, y: 0.5 }}
-                        end={{ x: 1, y: 1 }}
+                        start={{ x: 0.4, y: 0.5 }}
+                        end={{ x: 1.5, y: 1 }}
                 >
                     <Button style={[styles.themeButton, {borderWidth: 0.1, borderColor: theme['header-text']}]} onPress={() => {updateTheme(colors_light_blue)}} buttonColor='#525252'>
+                        <View style={styles.themeButton}></View>
+                    </Button>
+                </LinearGradient>
+                <LinearGradient
+                        style={styles.themeGradient}
+                        locations={[0, 0.5, 1]}
+                        colors={['#232725', '#e5383b']}
+                        start={{ x: 0.5, y: 0.4 }}
+                        end={{ x: 1.2, y: 0.9 }}
+                >
+                    <Button style={[styles.themeButton, {borderWidth: 0.1, borderColor: theme['header-text']}]} onPress={() => {updateTheme(colors_red)}} buttonColor='#525252'>
                         <View style={styles.themeButton}></View>
                     </Button>
                 </LinearGradient>
@@ -107,7 +120,8 @@ const styles = StyleSheet.create({
         marginTop: 100,
         flexDirection: 'row',
         justifyContent: 'center',
-        gap: 50
+        gap: 50,
+        flexWrap: 'wrap'
     },
     themeGradient: {
         overflow: 'hidden',
