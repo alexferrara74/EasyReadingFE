@@ -6,19 +6,36 @@ import { register } from '../scripts/register'
 import { UserContext } from '../scripts/userContext'
 import { useNavigation } from 'expo-router';
 import { colors_light_blue } from '@/constants/Colors';
+import { DatePickerInput } from 'react-native-paper-dates';
+
 
 export default function RegisterScreen(){
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [birthdate, setBirthDate] = useState(new Date());
     const navigator = useNavigation();
     const { registerUser } = useContext(UserContext);
     
     function registerUserAndRedirect(){
-        register(email,password,username, registerUser);
-        // @ts-ignore
+        register(email,password,username,calculateBdDate(), registerUser);
+        //@ts-ignore
         navigator.navigate('index');
     }
+
+    function calculateBdDate(): Number{
+        const today = new Date();
+
+        let age = today.getFullYear() - birthdate.getFullYear();
+
+        const birthdayThisYear = new Date(today.getFullYear(), birthdate.getMonth(), birthdate.getDate());
+
+        if(today < birthdayThisYear){
+            age -= 1;
+        }
+        return age;
+    }
+
 
     return (   
         <ScreenContainer>
@@ -52,7 +69,18 @@ export default function RegisterScreen(){
                     onChangeText={password => setPassword(password)}
                     style={styles.textInput}
                     activeOutlineColor={'#e5383b'}/>
-
+                <View style={styles.textInput}>
+                    <DatePickerInput
+                        locale="it"
+                        label="Data di nascita"
+                        value={birthdate}
+                        //@ts-ignore
+                        onChange={(d) => setBirthDate(d)}
+                        inputMode="start"
+                        style={styles.datePick}
+                        mode="outlined"
+                        />
+                </View>
                 <Button 
                     mode='contained' 
                     onPress={()=> registerUserAndRedirect()} 
@@ -60,7 +88,7 @@ export default function RegisterScreen(){
                     style={styles.buttonForm}>
                         Registrati
                 </Button>
-                
+
             </View>
         </ScreenContainer>
     )
@@ -99,5 +127,10 @@ const styles = StyleSheet.create({
         borderColor: '#161d19',
         borderRadius: 9
         
+    },
+
+    datePick:{
+        width: '30%',
+        marginBottom: 50
     }
 })

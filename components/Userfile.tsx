@@ -18,12 +18,16 @@ export const UserFile = ({ file }) => {
           <IconButton  icon="file-eye"
             // @ts-ignore
            onPress={()=>navigation.navigate('summary', { file: file })} /> 
-          <IconButton
-            icon="file-download"
-            onPress={() => {
-              dowloadUserFile(file);
-            }}
-          />
+
+          { 
+            file.fileContent && 
+            <IconButton
+              icon="file-download"
+              onPress={() => {
+                dowloadUserFile(file);
+              }}/>
+          } 
+          
         </View>
       </TouchableOpacity>
     </View>

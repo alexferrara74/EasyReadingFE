@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 
 const conn = Constants.expoConfig.extra.indirizzo;
 
-export async function register(email,password,username, onRegisterSuccess){
+export async function register(email,password,username, age, onRegisterSuccess){
     try{
         const request = { email, password, username}
         const response = await fetch(`http://${conn}:3030/register`,{
