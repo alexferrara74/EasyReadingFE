@@ -21,6 +21,7 @@ export const domandabot = async (requestData) => {
   try {
     const response = await fetch(`http://${conn}:3030/chat`, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify(requestData),  
     });
 

@@ -1,9 +1,10 @@
 import { Header } from '@/components/_header';
 import { ScreenContainer } from '@/components/_screenContainer';
 import { ChatBotBox } from '@/components/ChatBotBox';
-import { colors_green, colors_light_blue } from '@/constants/Colors';
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Modal } from 'react-native';
+import { useNavigation } from 'expo-router';
+import { colors_light_blue } from '@/constants/Colors';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Modal, Keyboard, KeyboardEvent, Platform } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { TextInput } from 'react-native';
 import { blue, red } from 'react-native-reanimated/lib/typescript/Colors';
@@ -23,7 +24,7 @@ export default function SummaryScreen() {
 
   const route = useRoute();
   const file = route.params;
-
+  const scrollViewRef = useRef(null);
   // Funzione per inviare un messaggio e ricevere una risposta dal bot
   const sendMessage = async () => {
     if (text.trim() === '') return; // Non inviare se il testo è vuoto
@@ -32,6 +33,11 @@ export default function SummaryScreen() {
     const newMessage = { sender: 'user', text: text };
     setChatMessages((prevMessages) => [...prevMessages, newMessage]);
     setText(''); // Pulisce la barra di input
+
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 100);
+
     try {
       console.log('TESTO DA PASSARE AL BACKEND ' + text); // ok fino a nuosvo ciclo di rendering
 
@@ -49,10 +55,31 @@ export default function SummaryScreen() {
       // Aggiorna i messaggi con la risposta del bot
       const botMessage = { sender: 'bot', text: response };
       setChatMessages((prevMessages) => [...prevMessages, botMessage]);
+
+      setTimeout(() => {
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
     } catch (error) {
       console.error('Errore nel recupero della risposta dal bot:', error);
     }
   };
+
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event: KeyboardEvent) => {
+      setKeyboardVisible(true);
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   /*
     const domandabot = async () => {
@@ -79,7 +106,7 @@ export default function SummaryScreen() {
           <View style={styles.summaryChatContainer}>
             <View style={styles.summaryTriangle}></View>
 
-            <ScrollView style={styles.messageContainer}>
+            <ScrollView style={styles.messageContainer} ref={scrollViewRef}>
               <ChatBotBox></ChatBotBox>
               {chatMessages.map((msg, index) => (
                 <View
@@ -92,7 +119,7 @@ export default function SummaryScreen() {
               ))}
             </ScrollView>
 
-            <View style={styles.textBarContainer}>
+            <View style={[styles.textBarContainer, keyboardVisible && { height: 50 }]}>
               <TextInput
                 style={styles.textBar}
                 placeholder='Inserire messaggio'
@@ -105,7 +132,7 @@ export default function SummaryScreen() {
                 style={styles.sendButton}
                 icon='chevron-right'
                 iconColor='#ffffff'
-                size={30}
+                size={25}
                 onPress={sendMessage}
               />
             </View>
@@ -151,6 +178,10 @@ export default function SummaryScreen() {
   );
 }
 const styles = StyleSheet.create({
+  backButton: {
+    position: 'absolute',
+    marginVertical: 20,
+  },
   userMessage: {
     alignSelf: 'flex-start',
     backgroundColor: colors_light_blue['text-light'],
@@ -181,7 +212,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     marginBottom: 70,
     marginRight: 30,
-    marginTop: 20,
+    marginTop: 10,
+    borderRadius: 30,
   },
   messageBubble: {
     maxWidth: '80%',
@@ -197,8 +229,8 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     position: 'absolute',
     bottom: 10,
-    left: 10,
-    right: 25,
+    left: 5,
+    right: 40,
     height: '10%',
   },
   textBar: {
@@ -234,20 +266,20 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   summaryModal: {
-    height: '60%',
+    height: '70%',
     width: '80%',
     position: 'absolute',
     zIndex: 99,
     borderRadius: 50,
     borderWidth: 1,
-    bottom: '12%',
+    bottom: '5%',
     left: 10,
     borderColor: colors_light_blue.accent,
     backgroundColor: colors_light_blue.header_background,
   },
   summaryBotButtonModal: {
     position: 'absolute',
-    bottom: 75,
+    bottom: 28,
     right: 15,
     width: 50,
     height: 50,
@@ -259,7 +291,7 @@ const styles = StyleSheet.create({
   summaryTriangle: {
     width: 0,
     height: 0,
-    borderLeftWidth: 20,
+    borderLeftWidth: 10,
     borderRightWidth: 15,
     borderBottomWidth: 15,
     borderLeftColor: 'transparent',
@@ -269,8 +301,8 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     transform: [{ rotate: '15deg' }],
     position: 'absolute',
-    bottom: 0,
-    right: -10,
+    bottom: 5,
+    right: 15,
   },
   chatBox: {
     backgroundColor: 'transparent',
