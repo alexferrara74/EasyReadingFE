@@ -7,6 +7,7 @@ import { UserContext } from '../scripts/userContext'
 import { useNavigation } from 'expo-router';
 import { colors_light_blue } from '@/constants/Colors';
 import { DatePickerInput } from 'react-native-paper-dates';
+import Constants from 'expo-constants';
 
 
 export default function RegisterScreen(){
@@ -20,7 +21,7 @@ export default function RegisterScreen(){
     function registerUserAndRedirect(){
         register(email,password,username,calculateBdDate(), registerUser);
         //@ts-ignore
-        navigator.navigate('index');
+        navigator.navigate('index'); 
     }
 
     function calculateBdDate(): Number{

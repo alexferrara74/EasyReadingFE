@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 
 import Constants from 'expo-constants';
 
-const conn = Constants.expoConfig.extra.indirizzo;
+const conn = Constants.expoConfig.extra.IP_ADDRESS;
 
 export const selectFile = async ()=> {
     try {

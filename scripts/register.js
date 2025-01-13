@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 
-const conn = Constants.expoConfig.extra.indirizzo;
+const conn = Constants.expoConfig.extra.IP_ADDRESS;
 
 export async function register(email,password,username, age, onRegisterSuccess){
     try{
