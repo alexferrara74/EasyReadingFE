@@ -21,7 +21,7 @@ export default function RegisterScreen(){
     function registerUserAndRedirect(){
         register(email,password,username,calculateBdDate(), registerUser);
         //@ts-ignore
-        navigator.navigate('index'); 
+        navigator.navigate('login'); 
     }
 
     function calculateBdDate(): Number{

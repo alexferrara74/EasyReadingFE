@@ -15,6 +15,7 @@ export default function HomeScreen() {
     const [text, setText] = useState('');
     const [mode, setMode] = useState(0);
     const { user } = useUser();
+    console.log(user)
     return (
       <ScreenContainer>
         <Header mini="Buongiorno" title={user?.username.toUpperCase()}/>

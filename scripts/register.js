@@ -14,7 +14,7 @@ export async function register(email,password,username, age, onRegisterSuccess){
         });
 
         const data = await response.json();
-        onRegisterSuccess(data.user);
+        //onRegisterSuccess(data.user);
         
     }catch(e){
         console.log('Errore nella registrazione', e);
