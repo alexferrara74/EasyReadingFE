@@ -26,7 +26,6 @@ export const selectFile = async ()=> {
 export const uploadFile = async (file, summaryName, setLoading, userID) => {
     try {
         setLoading(true);
-        console.log(file);
         if (Platform.OS === 'web') {
             const formData = new FormData();
             formData.append('file', file.assets[0].file, summaryName);

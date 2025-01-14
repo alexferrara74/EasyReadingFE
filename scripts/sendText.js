@@ -10,6 +10,7 @@ export const sendText = async (context, summaryName, setLoading, userID) => {
         formData.append('context', context);
         formData.append('titolo', summaryName);
         formData.append('idUtente', userID);
+
         console.log(formData);
         var response = await fetch(`http://${conn}:3030/upload?titolo=${summaryName}&idUtente=${userID}`, {
             method: 'POST',

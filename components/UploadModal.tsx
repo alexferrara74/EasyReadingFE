@@ -42,7 +42,6 @@ export function UploadModal({modal, context, file, setModalVisible, mode, userID
                                 result = await sendText(context, text, setLoading, userID);
                             setText('');
                             if (result) {
-                                console.log('result',result)
                                 const file = await retrieveFile(result.idResponseTask);
                                  // @ts-ignore
                                 navigation.navigate('summary', {file: file});

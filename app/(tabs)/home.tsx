@@ -15,7 +15,6 @@ export default function HomeScreen() {
     const [text, setText] = useState('');
     const [mode, setMode] = useState(0);
     const { user } = useUser();
-    console.log(user)
     return (
       <ScreenContainer>
         <Header mini="Buongiorno" title={user?.username.toUpperCase()}/>
@@ -50,7 +49,7 @@ export default function HomeScreen() {
         </View>
         <UploadModal modal={modalVisible} context={text} 
          // @ts-ignore
-         file={file} userID={user?._id} setModalVisible={setModalVisible} mode={mode}/>
+         file={file} userID={user?.id} setModalVisible={setModalVisible} mode={mode}/>
       </ScreenContainer>
     );
 }  
