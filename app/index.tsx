@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { StatusBar } from 'react-native';
 
@@ -12,8 +12,8 @@ StatusBar.setHidden(true);
 
 export default function App() {
   return (
-      <UserProvider>
-        <Redirect href={"/(tabs)/home"} />
-      </UserProvider>
+    <UserProvider>
+      <Redirect href={'/(tabs)/home'} />
+    </UserProvider>
   );
 }

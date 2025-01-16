@@ -24,7 +24,7 @@ export const domandabot = async (requestData) => {
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify(requestData),  
     });
-
+    
     const data = await response.json();
     
     return data.result.response || 'Errore nella risposta del bot';

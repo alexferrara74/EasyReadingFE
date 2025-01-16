@@ -1,9 +1,8 @@
 import React, { useState, SetStateAction, Dispatch } from 'react';
-import { View, Text, StyleSheet, Modal } from 'react-native';
+import { View, StyleSheet, Modal } from 'react-native';
 import { TextInput } from 'react-native';
-import { Button, Icon, IconButton } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import { uploadFile } from '@/scripts/uploadFile';
-import { colors_light_blue } from '@/constants/Colors';
 import { DocumentPickerSuccessResult } from 'expo-document-picker';
 import { sendText } from '@/scripts/sendText';
 import { ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
@@ -31,8 +30,9 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, userI
       <View style={styles.wrapperModal}>
         <View style={[styles.nameModal, { backgroundColor: theme.header_background, borderColor: theme.accent }]}>
           <TextInput
-            style={[styles.modalTextInput, { backgroundColor: theme['text-light'], borderColor: theme.accent }]}
+            style={[styles.modalTextInput, { backgroundColor: theme.background, borderColor: theme.accent }]}
             placeholder='Inserire nome riassunto'
+            placeholderTextColor={theme['header-text']}
             value={text}
             onChangeText={setText}
           />
@@ -52,6 +52,7 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, userI
                 setText('');
                 if (result) {
                   const file = await retrieveFile(result.idResponseTask);
+                  console.log(file);
                   // @ts-ignore
                   navigation.navigate('summary', { file: file });
                   setModalVisible(false);
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
   },
   modalTextInput: {
     marginHorizontal: 'auto',
-    borderWidth: 2,
+    borderWidth: 0.5,
     borderRadius: 20,
     height: '40%',
     width: '80%',

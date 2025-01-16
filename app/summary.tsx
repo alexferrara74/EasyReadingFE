@@ -2,18 +2,16 @@ import { Header } from '@/components/_header';
 import { ScreenContainer } from '@/components/_screenContainer';
 import { ChatBotBox } from '@/components/ChatBotBox';
 import { useNavigation } from 'expo-router';
-import { colors_light_blue } from '@/constants/Colors';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Modal, Keyboard, KeyboardEvent, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Modal, Keyboard, KeyboardEvent } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { TextInput } from 'react-native';
-import { blue, red } from 'react-native-reanimated/lib/typescript/Colors';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { domandabot } from '@/scripts/chat'; // Importa la funzione
 import { useRoute } from '@react-navigation/native';
 
 import { useUser } from '@/scripts/userContext';
 import Markdown from 'react-native-markdown-display';
+import { useTheme } from '@/scripts/ThemeProvider';
 
 export default function SummaryScreen() {
   const navigator = useNavigation();
@@ -21,6 +19,13 @@ export default function SummaryScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
+  const { theme } = useTheme();
+
+  const markdownStyle = {
+    body: {
+      color: theme['header-text'],
+    },
+  };
 
   const route = useRoute();
   const file = route.params;
@@ -31,21 +36,25 @@ export default function SummaryScreen() {
 
     // Aggiorna i messaggi con il testo dell'utente
     const newMessage = { sender: 'user', text: text };
+    // @ts-ignore
     setChatMessages((prevMessages) => [...prevMessages, newMessage]);
     setText(''); // Pulisce la barra di input
 
     setTimeout(() => {
+      // @ts-ignore
       scrollViewRef.current?.scrollToEnd({ animated: true });
     }, 100);
 
     try {
+      // @ts-ignore
       console.log('TESTO DA PASSARE AL BACKEND ' + text); // ok fino a nuosvo ciclo di rendering
 
       const requestData = {
         question: text,
+        // @ts-ignore
         context: file?.file.riassunto, //contenuto file
         response: '',
-        idUtente: user?.id,
+        idUtente: user?._id,
         // @ts-ignore
         idFile: file?.file.id,
       };
@@ -54,9 +63,11 @@ export default function SummaryScreen() {
 
       // Aggiorna i messaggi con la risposta del bot
       const botMessage = { sender: 'bot', text: response };
+      // @ts-ignore
       setChatMessages((prevMessages) => [...prevMessages, botMessage]);
 
       setTimeout(() => {
+        // @ts-ignore
         scrollViewRef.current?.scrollToEnd({ animated: true });
       }, 100);
     } catch (error) {
@@ -102,34 +113,64 @@ export default function SummaryScreen() {
         visible={modalVisible}
         onRequestClose={toggleChat}
         style={styles.summaryUpperModal}>
-        <View style={styles.summaryModal}>
+        <View style={[styles.summaryModal, { borderColor: theme.accent, backgroundColor: theme.background }]}>
           <View style={styles.summaryChatContainer}>
-            <View style={styles.summaryTriangle}></View>
+            <View style={[styles.summaryTriangle, { borderBottomColor: theme.accent }]}></View>
 
             <ScrollView style={styles.messageContainer} ref={scrollViewRef}>
               <ChatBotBox></ChatBotBox>
               {chatMessages.map((msg, index) => (
                 <View
                   key={index}
-                  style={[styles.messageBubble, msg.sender === 'user' ? styles.userMessage : styles.botMessage]}>
-                  <Text style={[styles.messageText, msg.sender === 'bot' ? styles.botText : styles.userText]}>
-                    {msg.text}
+                  style={[
+                    styles.messageBubble,
+                    // @ts-ignore
+                    msg.sender === 'user'
+                      ? [styles.userMessage, { backgroundColor: theme['header-text'] }]
+                      : [styles.botMessage, { backgroundColor: theme.accent }],
+                  ]}>
+                  <Text
+                    style={[
+                      styles.messageText,
+                      // @ts-ignore
+                      msg.sender === 'bot'
+                        ? [
+                            // @ts-ignore
+                            styles.botText,
+                            { color: theme['header-text'] },
+                          ]
+                        : [
+                            // @ts-ignore
+                            styles.userText,
+                            { color: theme.accent },
+                          ],
+                    ]}>
+                    {
+                      // @ts-ignore
+                      msg.text
+                    }
                   </Text>
                 </View>
               ))}
             </ScrollView>
 
-            <View style={[styles.textBarContainer, keyboardVisible && { height: 50 }]}>
+            <View
+              style={[
+                styles.textBarContainer,
+                keyboardVisible && { height: 50 },
+                { backgroundColor: theme.background, borderColor: theme.accent, borderWidth: 0.5 },
+              ]}>
               <TextInput
                 style={styles.textBar}
                 placeholder='Inserire messaggio'
+                placeholderTextColor={theme['header-text']}
                 value={text}
                 onChangeText={setText}
                 onSubmitEditing={sendMessage}
                 returnKeyType='send'
               />
               <IconButton
-                style={styles.sendButton}
+                style={[styles.sendButton, { backgroundColor: theme.accent }]}
                 icon='chevron-right'
                 iconColor='#ffffff'
                 size={25}
@@ -141,7 +182,7 @@ export default function SummaryScreen() {
 
         <IconButton
           // @ts-ignore
-          style={styles.summaryBotButtonModal}
+          style={[styles.summaryBotButtonModal, { backgroundColor: theme.accents }]}
           mode='contained-tonal'
           icon='robot-confused'
           iconColor='#ffff'
@@ -153,14 +194,16 @@ export default function SummaryScreen() {
         mode='outlined'
         icon={'arrow-left-thick'}
         // @ts-ignore
-        style={styles.backButton}
+        style={[styles.backButton, { borderColor: theme.accent }]}
+        iconColor={theme.accent}
         // @ts-ignore
         onPress={() => navigator.navigate('index')}
       />
       <ScrollView // @ts-ignore
-        style={styles.scrollSummary}>
+        contentContainerStyle={{ padding: 16, paddingBottom: '20%' }}
+        style={{ flex: 1 }}>
         <Markdown // @ts-ignore
-          style={styles.summarySummary}>
+          style={markdownStyle}>
           {
             // @ts-ignore
             file?.file.riassunto
@@ -168,7 +211,7 @@ export default function SummaryScreen() {
         </Markdown>
       </ScrollView>
       <IconButton // @ts-ignore
-        style={styles.summaryBotButton}
+        style={[styles.summaryBotButton, { backgroundColor: theme.accent }]}
         mode='contained-tonal'
         icon='robot-confused'
         iconColor='#ffff'
@@ -184,27 +227,18 @@ const styles = StyleSheet.create({
   },
   userMessage: {
     alignSelf: 'flex-start',
-    backgroundColor: colors_light_blue['text-light'],
     borderColor: '#dcdcdc',
     // borderWidth: 1,
   },
   botMessage: {
     alignSelf: 'flex-end',
-    backgroundColor: '#007bff',
   },
   messageText: {
     fontSize: 16,
   },
-  userText: {
-    color: '#000000',
-  },
-  botText: {
-    color: '#ffffff',
-  },
   summaryChatContainer: {
     flex: 1, // Occupa tutto lo spazio disponibile
     marginLeft: 20,
-    borderColor: 'green',
     height: '100%',
     width: '100%',
   },
@@ -240,16 +274,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   sendButton: {
-    backgroundColor: '#007bff',
     borderRadius: 25,
-  },
-  summarySummary: {
-    marginTop: 20,
-    fontSize: 16,
-    color: colors_light_blue['text-dark'],
-    paddingHorizontal: 20,
-    width: '90%',
-    lineHeight: 25,
   },
   summaryBotButton: {
     position: 'absolute',
@@ -259,7 +284,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     marginHorizontal: 'auto',
-    backgroundColor: colors_light_blue.accent,
   },
   summaryUpperModal: {
     position: 'absolute',
@@ -274,8 +298,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     bottom: '5%',
     left: 10,
-    borderColor: colors_light_blue.accent,
-    backgroundColor: colors_light_blue.header_background,
   },
   summaryBotButtonModal: {
     position: 'absolute',
@@ -285,7 +307,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     marginHorizontal: 'auto',
-    backgroundColor: colors_light_blue.accent,
   },
 
   summaryTriangle: {
@@ -296,7 +317,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 15,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderBottomColor: colors_light_blue.accent,
     alignSelf: 'center',
     marginBottom: 0,
     transform: [{ rotate: '15deg' }],

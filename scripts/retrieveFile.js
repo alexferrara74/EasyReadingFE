@@ -8,6 +8,7 @@ export const retrieveFile = async (fileId) => {
 
     if (response.ok) {
         const data = await response.json();
+        data.id = fileId;
         result = data;
     } else {
         console.error('Errore durante il recupero del file:', response.statusText);

@@ -1,28 +1,33 @@
-import { colors_light_blue } from "@/constants/Colors";
-import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
-import { Button, Icon, IconButton } from "react-native-paper";
-import { dowloadUserFile } from "@/scripts/dowloadFile";
-import { useNavigation } from "expo-router";
+import { colors_light_blue } from '@/constants/Colors';
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import { dowloadUserFile } from '@/scripts/dowloadFile';
+import { useNavigation } from 'expo-router';
+import { useTheme } from '@/scripts/ThemeProvider';
 
 // @ts-ignore
 export const UserFile = ({ file }) => {
   const navigation = useNavigation();
-  
+  const { theme } = useTheme();
+
   return (
     <View style={styles.historyContainer}>
       <TouchableOpacity style={styles.historyItem}>
-        
-        <Text style={styles.historyText}>{file.nameFile}</Text>
+        <Text style={[styles.historyText, { color: theme['header-text'] }]}>{file.nameFile}</Text>
 
         <View style={styles.iconsContainer}>
-          <IconButton  icon="file-eye"
-            // @ts-ignore
-           onPress={()=>navigation.navigate('summary', { file: file })} /> 
           <IconButton
-            icon="file-download"
+            icon='file-eye'
+            // @ts-ignore
+            onPress={() => navigation.navigate('summary', { file: file })}
+            iconColor={theme['header-text']}
+          />
+          <IconButton
+            icon='file-download'
             onPress={() => {
               dowloadUserFile(file);
             }}
+            iconColor={theme['header-text']}
           />
         </View>
       </TouchableOpacity>
@@ -36,19 +41,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   historyItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#333",
+    borderBottomColor: '#333',
   },
   historyText: {
     fontSize: 16,
-    color: colors_light_blue["text-dark"],
   },
   iconsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
