@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 
 import Constants from 'expo-constants';
 
-const conn = Constants.expoConfig.extra.indirizzo;
+const conn = Constants.expoConfig.extra.IP_ADDRESS;
 
 export const selectFile = async ()=> {
     try {
@@ -26,7 +26,6 @@ export const selectFile = async ()=> {
 export const uploadFile = async (file, summaryName, setLoading, userID) => {
     try {
         setLoading(true);
-        console.log(summaryName);
         if (Platform.OS === 'web') {
             const formData = new FormData();
             formData.append('file', file.assets[0].file, summaryName);

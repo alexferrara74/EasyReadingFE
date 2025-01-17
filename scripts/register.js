@@ -1,10 +1,9 @@
 import Constants from 'expo-constants';
 
-const conn = Constants.expoConfig.extra.indirizzo;
+const conn = Constants.expoConfig.extra.IP_ADDRESS;
 
-export async function register(email,password,username, onRegisterSuccess){
+export async function register(email,password,username, age, onRegisterSuccess){
     try{
-        const age = 24;
         const request = { email, password, username, age}
         const response = await fetch(`http://${conn}:3030/register`,{
             method: 'POST',
@@ -15,7 +14,7 @@ export async function register(email,password,username, onRegisterSuccess){
         });
 
         const data = await response.json();
-        onRegisterSuccess(data.user);
+        //onRegisterSuccess(data.user);
         
     }catch(e){
         console.log('Errore nella registrazione', e);

@@ -7,33 +7,43 @@ import { UserContext } from '../scripts/userContext';
 import { useNavigation } from 'expo-router';
 import { colors_light_blue } from '@/constants/Colors';
 import { useTheme } from '@/scripts/ThemeProvider';
+import { DatePickerInput } from 'react-native-paper-dates';
+import Constants from 'expo-constants';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [birthdate, setBirthDate] = useState(new Date());
   const navigator = useNavigation();
   const { registerUser } = useContext(UserContext);
-  const { theme } = useTheme();
 
   function registerUserAndRedirect() {
-    register(email, password, username, registerUser);
-    // @ts-ignore
-    navigator.navigate('index');
+    register(email, password, username, calculateBdDate(), registerUser);
+    //@ts-ignore
+    navigator.navigate('login');
+  }
+
+  function calculateBdDate(): Number {
+    const today = new Date();
+
+    let age = today.getFullYear() - birthdate.getFullYear();
+
+    const birthdayThisYear = new Date(today.getFullYear(), birthdate.getMonth(), birthdate.getDate());
+
+    if (today < birthdayThisYear) {
+      age -= 1;
+    }
+    return age;
   }
 
   return (
     <ScreenContainer>
-      <View
-        style={[
-          styles.homeHeader,
-          { backgroundColor: theme.header_background, borderBottomColor: theme.accent, borderBottomWidth: 0.5 },
-        ]}>
+      <View style={styles.homeHeader}>
         <IconButton
           mode='outlined'
           icon={'arrow-left-thick'}
-          iconColor={theme.accent}
-          style={[styles.backButton, { borderColor: theme.accent }]}
+          style={styles.backButton}
           // @ts-ignore
           onPress={() => navigator.navigate('index')}
         />
@@ -41,37 +51,45 @@ export default function RegisterScreen() {
       <View style={styles.forms}>
         <TextInput
           placeholder='Username'
-          placeholderTextColor={theme.accent}
           mode='outlined'
           value={username}
           onChangeText={(username) => setUsername(username)}
-          style={[styles.textInput, { backgroundColor: theme.background }]}
-          activeOutlineColor={theme.accent}
+          style={styles.textInput}
+          activeOutlineColor={'#e5383b'}
         />
         <TextInput
           placeholder='Email'
-          placeholderTextColor={theme.accent}
           mode='outlined'
           value={email}
           onChangeText={(email) => setEmail(email)}
-          style={[styles.textInput, { backgroundColor: theme.background }]}
-          activeOutlineColor={theme.accent}
+          style={styles.textInput}
+          activeOutlineColor={'#e5383b'}
         />
         <TextInput
           placeholder='Password'
-          placeholderTextColor={theme.accent}
           secureTextEntry={true}
           mode='outlined'
           value={password}
           onChangeText={(password) => setPassword(password)}
-          style={[styles.textInput, { backgroundColor: theme.background }]}
-          activeOutlineColor={theme.accent}
+          style={styles.textInput}
+          activeOutlineColor={'#e5383b'}
         />
-
+        <View style={styles.textInput}>
+          <DatePickerInput
+            locale='it'
+            label='Data di nascita'
+            value={birthdate}
+            //@ts-ignore
+            onChange={(d) => setBirthDate(d)}
+            inputMode='start'
+            style={styles.datePick}
+            mode='outlined'
+          />
+        </View>
         <Button
           mode='contained'
           onPress={() => registerUserAndRedirect()}
-          buttonColor={theme.accent}
+          buttonColor='#e5383b'
           style={styles.buttonForm}>
           Registrati
         </Button>
@@ -109,6 +127,11 @@ const styles = StyleSheet.create({
   },
   backButton: {
     borderColor: '#161d19',
-    borderRadius: 20,
+    borderRadius: 9,
+  },
+
+  datePick: {
+    width: '30%',
+    marginBottom: 50,
   },
 });

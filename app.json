@@ -4,7 +4,7 @@
     "name": "EasyReading",
     "slug": "EasyReading",
     "extra": {
-      "indirizzo": "192.168.254.227"
+      "IP_ADDRESS": "192.168.1.121"
     },
     "version": "1.0.0",
     "orientation": "portrait",

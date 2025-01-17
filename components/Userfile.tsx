@@ -22,13 +22,15 @@ export const UserFile = ({ file }) => {
             onPress={() => navigation.navigate('summary', { file: file })}
             iconColor={theme['header-text']}
           />
-          <IconButton
-            icon='file-download'
-            onPress={() => {
-              dowloadUserFile(file);
-            }}
-            iconColor={theme['header-text']}
-          />
+          {file.fileContent && (
+            <IconButton
+              icon='file-download'
+              onPress={() => {
+                dowloadUserFile(file);
+              }}
+            />
+          )}
+          iconColor={theme['header-text']}
         </View>
       </TouchableOpacity>
     </View>

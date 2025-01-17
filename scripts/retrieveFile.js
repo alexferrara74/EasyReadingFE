@@ -1,9 +1,16 @@
 import Constants from 'expo-constants';
-const conn = Constants.expoConfig.extra.indirizzo;
+import { useUser } from './userContext';
+const conn = Constants.expoConfig.extra.IP_ADDRESS;
 
 export const retrieveFile = async (fileId) => {
+    const user = useUser();
+    const token = user.token;
+    console.log('token',token)
     const response = await fetch(`http://${conn}:3030/file/${fileId}`, {
-        method: 'GET'
+        method: 'GET',
+        headers:{
+            Authorization: `Bearer ${token}`,
+        }
     })
 
     if (response.ok) {

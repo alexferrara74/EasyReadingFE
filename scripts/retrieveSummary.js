@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-const conn = Constants.expoConfig.extra.indirizzo;
+const conn = Constants.expoConfig.extra.IP_ADDRESS;
 
 export const retrieveSummary = async (fileId) => {
     const response = await fetch(`http://${conn}:3030/file/${fileId}`, {

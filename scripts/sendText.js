@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-const conn = Constants.expoConfig.extra.indirizzo;
+const conn = Constants.expoConfig.extra.IP_ADDRESS;
 
 export const sendText = async (context, summaryName, setLoading, userID) => {
     try {
@@ -10,6 +10,7 @@ export const sendText = async (context, summaryName, setLoading, userID) => {
         formData.append('context', context);
         formData.append('titolo', summaryName);
         formData.append('idUtente', userID);
+
         console.log(formData);
         var response = await fetch(`http://${conn}:3030/upload?titolo=${summaryName}&idUtente=${userID}`, {
             method: 'POST',
