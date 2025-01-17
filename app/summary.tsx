@@ -54,7 +54,7 @@ export default function SummaryScreen() {
         // @ts-ignore
         context: file?.file.riassunto, //contenuto file
         response: '',
-        idUtente: user?._id,
+        idUtente: user?.id,
         // @ts-ignore
         idFile: file?.file.id,
       };

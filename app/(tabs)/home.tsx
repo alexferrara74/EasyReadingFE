@@ -71,7 +71,7 @@ export default function HomeScreen() {
         context={text}
         // @ts-ignore
         file={file}
-        userID={user?._id}
+        userID={user?.id}
         setModalVisible={setModalVisible}
         mode={mode}
       />

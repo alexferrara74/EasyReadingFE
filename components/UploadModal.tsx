@@ -23,7 +23,7 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, userI
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const { theme, updateTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <Modal animationType='slide' transparent={true} visible={modal} onRequestClose={() => {}}>
@@ -47,10 +47,14 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, userI
               size={35}
               onPress={async () => {
                 var result;
+                console.log('MODE',mode)
                 if (mode == 2) result = await uploadFile(file, text, setLoading, userID);
+
                 if (mode == 1) result = await sendText(context, text, setLoading, userID);
                 setText('');
+                
                 if (result) {
+                  console.log('RESULT',result.idResponseTask)
                   const file = await retrieveFile(result.idResponseTask);
                   console.log(file);
                   // @ts-ignore
