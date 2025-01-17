@@ -15,40 +15,11 @@ export default function UserScreen() {
   const { user, logout } = useUser();
 
   const navigation = useNavigation();
-  // Definire FileData con tipi specifici per evitare errori di tipo
-  interface FileData {
-    nameFile?: string;
-    riassunto?: string;
-    timeStamp?: string;
-  }
 
   // Se `user` non è disponibile, reindirizza alla pagina di login
   if (!user) {
     return <Redirect href={'/login'}></Redirect>;
   }
-
-  // Definisci lo stato `items` come array vuoto
-  const [items, setItems] = useState<FileData[]>([]);
-
-  // Esegui la chiamata API quando il componente viene montato
-  useEffect(() => {
-    const getFiles = async () => {
-      try {
-        const result = await getFilesByUser(user.id);
-        // Controlla se `result` è un array e aggiorna `items`
-        if (Array.isArray(result)) {
-          setItems(result);
-        } else {
-          console.error('Risultato non è un array:', result);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    // Chiamata alla funzione asincrona dentro useEffect
-    getFiles();
-  }, [user.id]); // Dipende solo da `user._id`, quindi verrà eseguito una volta per ogni cambiamento dell'id utente
 
   return (
     <ScreenContainer>

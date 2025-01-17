@@ -16,10 +16,10 @@ interface ModalProps {
   context: string;
   file: DocumentPickerSuccessResult;
   mode: number;
-  userID: string;
+  user: Object;
 }
 
-export function UploadModal({ modal, context, file, setModalVisible, mode, userID }: ModalProps) {
+export function UploadModal({ modal, context, file, setModalVisible, mode, user }: ModalProps) {
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -46,18 +46,23 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, userI
               iconColor='#ffff'
               size={35}
               onPress={async () => {
-                var result;
-                if (mode == 2) result = await uploadFile(file, text, setLoading, userID);
-                if (mode == 1) result = await sendText(context, text, setLoading, userID);
-                setText('');
-                if (result) {
-                  const file = await retrieveFile(result.idResponseTask);
-                  console.log(file);
+                try {
+                  var result;
                   // @ts-ignore
-                  navigation.navigate('summary', { file: file });
-                  setModalVisible(false);
-                } else {
-                  console.log('Caricamento non riuscito.');
+                  if (mode == 2) result = await uploadFile(file, text, setLoading, user.id);
+                  // @ts-ignore
+                  if (mode == 1) result = await sendText(context, text, setLoading, user.id);
+                  setText('');
+                  if (result) {
+                    const file = await retrieveFile(result.idResponseTask, user);
+                    // @ts-ignore
+                    navigation.navigate('summary', { file: file });
+                    setModalVisible(false);
+                  } else {
+                    console.log('Caricamento non riuscito.');
+                  }
+                } catch (error) {
+                  console.error("Errore durante l'onPress:", error);
                 }
               }}
             />

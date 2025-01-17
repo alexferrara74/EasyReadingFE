@@ -32,7 +32,7 @@ export default function HistoryScreen() {
     const getFiles = async () => {
       console.log('user', user);
       try {
-        const result = await getFilesByUser(user._id);
+        const result = await getFilesByUser(user);
         // Controlla se `result` è un array e aggiorna `items`
         if (Array.isArray(result)) {
           setItems(result);
@@ -46,7 +46,7 @@ export default function HistoryScreen() {
 
     // Chiamata alla funzione asincrona dentro useEffect
     getFiles();
-  }, [user._id]); // Dipende solo da `user._id`, quindi verrà eseguito una volta per ogni cambiamento dell'id utente
+  }, [user.id]); // Dipende solo da `user._id`, quindi verrà eseguito una volta per ogni cambiamento dell'id utente
 
   return (
     <ScreenContainer>

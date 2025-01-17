@@ -3,7 +3,7 @@ import { shareAsync } from 'expo-sharing';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-const conn = Constants.expoConfig.extra.indirizzo;
+const conn = Constants.expoConfig.extra.IP_ADDRESS;
 export async function dowloadUserFile(file){
   console.log(file.id)
   const fileName = file.nameFile
