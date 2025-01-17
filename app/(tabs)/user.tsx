@@ -2,13 +2,14 @@ import { ScreenContainer } from '@/components/_screenContainer';
 import { colors_blue, colors_light_blue, colors_red } from '@/constants/Colors';
 import { useUser } from '@/scripts/userContext';
 import { Redirect } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar, Button } from 'react-native-paper';
 import { IconButton } from 'react-native-paper';
 import { useNavigation } from 'expo-router';
 import { useTheme } from '@/scripts/ThemeProvider';
 import { LinearGradient } from 'expo-linear-gradient';
+import { getFilesByUser } from '@/scripts/getUserFiles';
 
 export default function UserScreen() {
   const { theme, updateTheme } = useTheme();

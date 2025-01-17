@@ -9,7 +9,7 @@ import { getFilesByUser } from '@/scripts/getUserFiles';
 import { useTheme } from '@/scripts/ThemeProvider';
 
 export default function HistoryScreen() {
-  const { user, logout } = useUser();
+  const { user } = useUser();
   const { theme } = useTheme();
 
   // Definire FileData con tipi specifici per evitare errori di tipo
@@ -46,7 +46,7 @@ export default function HistoryScreen() {
 
     // Chiamata alla funzione asincrona dentro useEffect
     getFiles();
-  }, [user.id]); // Dipende solo da `user._id`, quindi verrà eseguito una volta per ogni cambiamento dell'id utente
+  }, [user.id]); // Dipende solo da `user.id`, quindi verrà eseguito una volta per ogni cambiamento dell'id utente
 
   return (
     <ScreenContainer>

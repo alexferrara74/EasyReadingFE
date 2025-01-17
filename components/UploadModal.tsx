@@ -23,7 +23,7 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const { theme, updateTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <Modal animationType='slide' transparent={true} visible={modal} onRequestClose={() => {}}>
