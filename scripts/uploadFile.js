@@ -12,7 +12,6 @@ export const selectFile = async ()=> {
         });
 
         if (result.canceled) {
-            console.log('Selezione annullata');
             return null;
         }
 
@@ -27,9 +26,9 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
     try {
         setLoading(true);
         if (Platform.OS === 'web') {
+            
             const formData = new FormData();
             formData.append('file', file.assets[0].file, summaryName);
-            console.log(formData)
             var response = await fetch(`http://${conn}:3030/upload?titolo=${summaryName}&idUtente=${userID}`, {
                 method: 'POST',
                 body: formData,
@@ -37,12 +36,12 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
         } 
         else {
             const formData = new FormData();
+            
             formData.append('file', {
                 uri: file.assets[0].uri,
                 type: 'application/pdf',
-                name: summaryName,
+                name: file.assets[0].name.replace(/[()]/g, ''),
             });
-            console.log('Caricamento file in corso...');
             var response = await fetch(`http://${conn}:3030/upload?titolo=${summaryName}&idUtente=${userID}`, {
                 method: 'POST',
                 body: formData,
@@ -50,11 +49,10 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
                 'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(response)
+
         }
       
         if (response.ok) {
-            console.log('File caricato con successo');
             const data = await response.json();
 
             const socket = new WebSocket(`ws://${conn}:8080`);
@@ -67,8 +65,7 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
                 socket.onmessage = (event) => {
                     try {
                     const response = JSON.parse(event.data);
-                    console.log('Risposta WebSocket:', response);
-        
+    
                     if (response.fileId !== null) {
                         resolve(response);
                         socket.close();
@@ -89,7 +86,6 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
             });
   
             const result = await waitForCheck;
-            console.log('Elaborazione completata:', result);
             setLoading(false); 
             return result;
         } else {

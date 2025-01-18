@@ -30,7 +30,6 @@ export default function HistoryScreen() {
   // Esegui la chiamata API quando il componente viene montato
   useEffect(() => {
     const getFiles = async () => {
-      console.log('user', user);
       try {
         const result = await getFilesByUser(user);
         // Controlla se `result` è un array e aggiorna `items`

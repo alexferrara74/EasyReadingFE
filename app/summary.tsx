@@ -46,9 +46,6 @@ export default function SummaryScreen() {
     }, 100);
 
     try {
-      // @ts-ignore
-      console.log('TESTO DA PASSARE AL BACKEND ' + text); // ok fino a nuosvo ciclo di rendering
-
       const requestData = {
         question: text,
         // @ts-ignore

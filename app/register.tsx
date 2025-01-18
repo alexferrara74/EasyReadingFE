@@ -74,7 +74,7 @@ export default function RegisterScreen() {
           style={styles.textInput}
           activeOutlineColor={'#e5383b'}
         />
-        <View style={styles.textInput}>
+        <View style={styles.datePick}>
           <DatePickerInput
             locale='it'
             label='Data di nascita'
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
 
   buttonForm: {
     marginBottom: '10%',
+    marginTop: '10%',
     width: '70%',
     height: '13%',
     justifyContent: 'center',
@@ -131,7 +132,8 @@ const styles = StyleSheet.create({
   },
 
   datePick: {
-    width: '30%',
-    marginBottom: 50,
+    width: '70%',
+    marginBottom: '10%',
+    marginTop: '7%'
   },
 });
