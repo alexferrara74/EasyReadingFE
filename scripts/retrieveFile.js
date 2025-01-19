@@ -9,7 +9,6 @@ export const retrieveFile = async (fileId, user) => {
             Authorization: `Bearer ${token}`,
         }
     })
-    console.log(response+ "TOKEN: " + JSON.stringify(token));
     if (response.ok) {
         const data = await response.json();
         data.id = fileId;

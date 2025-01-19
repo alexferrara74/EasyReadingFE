@@ -3,25 +3,15 @@ import Constants from 'expo-constants';
 
 const conn = Constants.expoConfig.extra.IP_ADDRESS; 
 
-export const domandabot = async (requestData) => {
- /*
-  {
- const { id, question, context, response, idUtente, idFile } = requestData; 
+export const domandabot = async (requestData,user) => {
 
-  const request = {
-    id,
-    question, 
-    context,
-    response,
-    idUtente,
-    idFile,
-  };
-    }
-  */
   try {
     const response = await fetch(`http://${conn}:3030/chat`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.token}`,
+      },
       body: JSON.stringify(requestData),  
     });
     

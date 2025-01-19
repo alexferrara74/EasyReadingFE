@@ -4,7 +4,6 @@ import { useTheme } from '@/scripts/ThemeProvider';
 
 export function ChatBotBox() {
   const { theme } = useTheme();
-
   return (
     <View style={[style.chatBotBubble, { backgroundColor: theme.accent }]}>
       <Text style={{ color: theme['header-text'] }}>Ciao, come posso aiutarti?</Text>

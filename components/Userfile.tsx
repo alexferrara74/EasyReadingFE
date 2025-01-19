@@ -4,11 +4,13 @@ import { IconButton } from 'react-native-paper';
 import { dowloadUserFile } from '@/scripts/dowloadFile';
 import { useNavigation } from 'expo-router';
 import { useTheme } from '@/scripts/ThemeProvider';
+import { useUser } from '@/scripts/userContext';
 
 // @ts-ignore
 export const UserFile = ({ file }) => {
   const navigation = useNavigation();
   const { theme } = useTheme();
+  const { user } = useUser();
 
   return (
     <View style={styles.historyContainer}>
@@ -22,15 +24,15 @@ export const UserFile = ({ file }) => {
             onPress={() => navigation.navigate('summary', { file: file })}
             iconColor={theme['header-text']}
           />
-          {file.fileContent && (
-            <IconButton
+          {file.isFile && (
+            <IconButton iconColor={theme['header-text']}
               icon='file-download'
               onPress={() => {
-                dowloadUserFile(file);
+                dowloadUserFile(file,user);
               }}
             />
           )}
-          iconColor={theme['header-text']}
+          
         </View>
       </TouchableOpacity>
     </View>

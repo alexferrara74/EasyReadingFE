@@ -4,22 +4,20 @@ import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 const conn = Constants.expoConfig.extra.IP_ADDRESS;
-export async function dowloadUserFile(file){
-  console.log(file.id)
+export async function dowloadUserFile(file,user){
   const fileName = file.nameFile
-  const localHost = /*Platform.OS === 'android' ? '10.2.2.2' :*/ '192.168.1.121';
-
+  
   const result = await FileSystem.downloadAsync(
     `http://${conn}:3030/download/${file.id}`,
     
     FileSystem.documentDirectory + fileName,
     {
-      header:{
-        "Test": "Prova"
+      headers:{
+        Authorization: `Bearer ${user.token}`,
       }
     }
   )
-
+  
   save(result.uri, fileName, result.headers['Content-Type']);
 
 }

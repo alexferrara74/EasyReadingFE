@@ -56,7 +56,7 @@ export default function SummaryScreen() {
         idFile: file?.file.id,
       };
       // Chiama la funzione domandabot() per ottenere la risposta del bot
-      const response = await domandabot(requestData);
+      const response = await domandabot(requestData, user);
 
       // Aggiorna i messaggi con la risposta del bot
       const botMessage = { sender: 'bot', text: response };
