@@ -5,10 +5,8 @@ import { Button, IconButton, TextInput } from 'react-native-paper';
 import { register } from '../scripts/register';
 import { UserContext } from '../scripts/userContext';
 import { useNavigation } from 'expo-router';
-import { colors_light_blue } from '@/constants/Colors';
 import { useTheme } from '@/scripts/ThemeProvider';
 import { DatePickerInput } from 'react-native-paper-dates';
-import Constants from 'expo-constants';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -17,6 +15,7 @@ export default function RegisterScreen() {
   const [birthdate, setBirthDate] = useState(new Date());
   const navigator = useNavigation();
   const { registerUser } = useContext(UserContext);
+  const {theme} = useTheme();
 
   function registerUserAndRedirect() {
     register(email, password, username, calculateBdDate(), registerUser);
@@ -39,11 +38,12 @@ export default function RegisterScreen() {
 
   return (
     <ScreenContainer>
-      <View style={styles.homeHeader}>
+      <View style={[styles.homeHeader, { backgroundColor: theme.header_background }]} >
         <IconButton
           mode='outlined'
+          iconColor={theme.accent}
           icon={'arrow-left-thick'}
-          style={styles.backButton}
+          style={[styles.backButton, { borderColor: theme.accent}]}
           // @ts-ignore
           onPress={() => navigator.navigate('index')}
         />
@@ -51,38 +51,47 @@ export default function RegisterScreen() {
       <View style={styles.forms}>
         <TextInput
           placeholder='Username'
+          placeholderTextColor={theme.accent}
           mode='outlined'
           value={username}
           onChangeText={(username) => setUsername(username)}
-          style={styles.textInput}
-          activeOutlineColor={'#e5383b'}
+          style={[styles.textInput, { borderColor: theme.accent, backgroundColor: theme.background }]}
+          activeOutlineColor={theme.accent}
+          textColor={theme['header-text']}
         />
         <TextInput
           placeholder='Email'
+          placeholderTextColor={theme.accent}
           mode='outlined'
           value={email}
           onChangeText={(email) => setEmail(email)}
-          style={styles.textInput}
-          activeOutlineColor={'#e5383b'}
+          style={[styles.textInput, { borderColor: theme.accent, backgroundColor: theme.background }]}
+          activeOutlineColor={theme.accent}
+          textColor={theme['header-text']}
         />
         <TextInput
           placeholder='Password'
+          placeholderTextColor={theme.accent}
           secureTextEntry={true}
           mode='outlined'
           value={password}
           onChangeText={(password) => setPassword(password)}
-          style={styles.textInput}
-          activeOutlineColor={'#e5383b'}
+          style={[styles.textInput, { borderColor: theme.accent, backgroundColor: theme.background }]}
+          activeOutlineColor={theme.accent}
+          textColor={theme['header-text']}
         />
         <View style={styles.datePick}>
           <DatePickerInput
+            theme={{colors: {surface: theme.accent, onSurface: theme['header-text'], onSurfaceVariant: theme['header-text']}}}
             locale='it'
             label='Data di nascita'
             value={birthdate}
+            activeOutlineColor={theme.accent}
             //@ts-ignore
             onChange={(d) => setBirthDate(d)}
             inputMode='start'
-            style={styles.datePick}
+            iconColor={theme.accent}
+            style={[styles.datePick, { borderColor: theme.accent, backgroundColor: theme.background}]}
             mode='outlined'
           />
         </View>
@@ -90,7 +99,7 @@ export default function RegisterScreen() {
           mode='contained'
           onPress={() => registerUserAndRedirect()}
           buttonColor='#e5383b'
-          style={styles.buttonForm}>
+          style={[styles.buttonForm, { backgroundColor: theme.accent }]}>
           Registrati
         </Button>
       </View>
@@ -115,7 +124,6 @@ const styles = StyleSheet.create({
   },
   homeHeader: {
     paddingTop: 100,
-    backgroundColor: colors_light_blue.header_background,
     paddingBottom: 20,
     paddingHorizontal: 20,
     width: '100%',
@@ -128,7 +136,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     borderColor: '#161d19',
-    borderRadius: 9,
+    borderRadius: 20,
   },
 
   datePick: {

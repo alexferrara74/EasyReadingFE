@@ -30,7 +30,7 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
       <View style={styles.wrapperModal}>
         <View style={[styles.nameModal, { backgroundColor: theme.header_background, borderColor: theme.accent }]}>
           <TextInput
-            style={[styles.modalTextInput, { backgroundColor: theme.background, borderColor: theme.accent }]}
+            style={[styles.modalTextInput, { backgroundColor: theme.background, borderColor: theme.accent, color: theme['header-text'] }]}
             placeholder='Inserire nome riassunto'
             placeholderTextColor={theme['header-text']}
             value={text}

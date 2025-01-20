@@ -45,6 +45,7 @@ export default function LoginScreen() {
           onChangeText={(email) => setEmail(email)}
           style={[styles.textInput, { backgroundColor: theme.background }]}
           activeOutlineColor={theme.accent}
+          textColor={theme['header-text']}
         />
         <TextInput
           placeholder='Password'
@@ -54,7 +55,8 @@ export default function LoginScreen() {
           value={password}
           onChangeText={(password) => setPassword(password)}
           style={[styles.textInput, { backgroundColor: theme.background }]}
-          activeOutlineColor={'#e5383b'}
+          activeOutlineColor={theme.accent}
+          textColor={theme['header-text']}
         />
 
         <Button

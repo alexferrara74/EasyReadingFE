@@ -158,7 +158,7 @@ export default function SummaryScreen() {
                 { backgroundColor: theme.background, borderColor: theme.accent, borderWidth: 0.5 },
               ]}>
               <TextInput
-                style={styles.textBar}
+                style={[styles.textBar, { color: theme['header-text'] }]}
                 placeholder='Inserire messaggio'
                 placeholderTextColor={theme['header-text']}
                 value={text}
