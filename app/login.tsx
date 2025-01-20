@@ -1,11 +1,14 @@
 import { ScreenContainer } from '@/components/_screenContainer';
 import { useNavigation } from 'expo-router';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, IconButton, TextInput } from 'react-native-paper';
 import { login } from '../scripts/login';
 import { UserContext } from '../scripts/userContext';
 import { useTheme } from '@/scripts/ThemeProvider';
+import { useRoute } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import createToastConfig from '@/constants/ToastConfig';
 
 export default function LoginScreen() {
   const { theme } = useTheme();
@@ -14,12 +17,39 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { loginUser } = useContext(UserContext);
+  const route = useRoute();
 
-  function logInAndRedirect() {
-    login(email, password, loginUser);
-    // @ts-ignore
-    navigation.navigate('index');
+  // @ts-ignore
+  const showToast = route?.params;
+
+  async function logInAndRedirect() {
+    const log = await login(email, password, loginUser);
+    if (log?.success === true) {
+      // @ts-ignore
+      navigation.navigate('(tabs)', { screen: 'home', params: { showToast: true, type: 'success' } });
+    } else if (log?.success === false) {
+      // @ts-ignore
+      navigation.navigate('(tabs)', { screen: 'home', params: { showToast: true, type: 'error' } });
+    }
   }
+
+  useEffect(() => {
+    // @ts-ignore
+    if (showToast.showToast && showToast.type === 'success') {
+      Toast.show({
+        type: 'success',
+        text1: 'Ottimo! 👍🏻',
+        text2: 'Registrazione avvenuta con successo!🎉',
+      }); // @ts-ignore
+    } else if (showToast.showToast && showToast.type === 'error') {
+      Toast.show({
+        type: 'error',
+        text1: 'Oh no! 👎🏻',
+        text2: 'Qualcosa è andato storto, riprova più tardi!🥺',
+      });
+    }
+  }, [showToast]);
+
   return (
     <ScreenContainer>
       <View
@@ -75,6 +105,7 @@ export default function LoginScreen() {
           Registrati
         </Button>
       </View>
+      <Toast config={createToastConfig(theme)} />
     </ScreenContainer>
   );
 }

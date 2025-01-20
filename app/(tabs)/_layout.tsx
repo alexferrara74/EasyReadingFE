@@ -4,7 +4,7 @@ import { Icon } from 'react-native-paper';
 import { useTheme } from '@/scripts/ThemeProvider';
 
 export default function TabLayout() {
-  const { theme, updateTheme } = useTheme();
+  const { theme } = useTheme();
   return (
     <Tabs>
       <Tabs.Screen

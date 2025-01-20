@@ -1,5 +1,5 @@
 import { ScreenContainer } from '@/components/_screenContainer';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, IconButton, TextInput } from 'react-native-paper';
 import { register } from '../scripts/register';
@@ -7,6 +7,7 @@ import { UserContext } from '../scripts/userContext';
 import { useNavigation } from 'expo-router';
 import { useTheme } from '@/scripts/ThemeProvider';
 import { DatePickerInput } from 'react-native-paper-dates';
+import Toast from 'react-native-toast-message';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -15,12 +16,17 @@ export default function RegisterScreen() {
   const [birthdate, setBirthDate] = useState(new Date());
   const navigator = useNavigation();
   const { registerUser } = useContext(UserContext);
-  const {theme} = useTheme();
+  const { theme } = useTheme();
 
-  function registerUserAndRedirect() {
-    register(email, password, username, calculateBdDate(), registerUser);
-    //@ts-ignore
-    navigator.navigate('login');
+  async function registerUserAndRedirect() {
+    const res = await register(email, password, username, calculateBdDate(), registerUser);
+    if (res?.success === true) {
+      //@ts-ignore
+      navigator.navigate('login', { showToast: true, type: 'success' });
+    } else if (res?.success === false) {
+      //@ts-ignore
+      navigator.navigate('login', { showToast: true, type: 'error' });
+    }
   }
 
   function calculateBdDate(): Number {
@@ -38,12 +44,12 @@ export default function RegisterScreen() {
 
   return (
     <ScreenContainer>
-      <View style={[styles.homeHeader, { backgroundColor: theme.header_background }]} >
+      <View style={[styles.homeHeader, { backgroundColor: theme.header_background }]}>
         <IconButton
           mode='outlined'
           iconColor={theme.accent}
           icon={'arrow-left-thick'}
-          style={[styles.backButton, { borderColor: theme.accent}]}
+          style={[styles.backButton, { borderColor: theme.accent }]}
           // @ts-ignore
           onPress={() => navigator.navigate('index')}
         />
@@ -82,7 +88,13 @@ export default function RegisterScreen() {
         />
         <View style={styles.datePick}>
           <DatePickerInput
-            theme={{colors: {surface: theme.accent, onSurface: theme['header-text'], onSurfaceVariant: theme['header-text']}}}
+            theme={{
+              colors: {
+                surface: theme.accent,
+                onSurface: theme['header-text'],
+                onSurfaceVariant: theme['header-text'],
+              },
+            }}
             locale='it'
             label='Data di nascita'
             value={birthdate}
@@ -91,7 +103,7 @@ export default function RegisterScreen() {
             onChange={(d) => setBirthDate(d)}
             inputMode='start'
             iconColor={theme.accent}
-            style={[styles.datePick, { borderColor: theme.accent, backgroundColor: theme.background}]}
+            style={[styles.datePick, { borderColor: theme.accent, backgroundColor: theme.background }]}
             mode='outlined'
           />
         </View>
@@ -142,6 +154,6 @@ const styles = StyleSheet.create({
   datePick: {
     width: '70%',
     marginBottom: '10%',
-    marginTop: '7%'
+    marginTop: '7%',
   },
 });

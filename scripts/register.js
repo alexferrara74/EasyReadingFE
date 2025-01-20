@@ -13,6 +13,10 @@ export async function register(email,password,username, age, onRegisterSuccess){
             },
         });
 
+        if(response.status === 200){
+            return { success: true , message: 'Registrazione avvenuta con successo'};
+        }
+        else return { success: false , message: 'Errore nella registrazione'};
         const data = await response.json();
         //onRegisterSuccess(data.user);
         

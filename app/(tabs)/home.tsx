@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native';
 import { Button, IconButton } from 'react-native-paper';
@@ -8,6 +8,10 @@ import { ScreenContainer } from '@/components/_screenContainer';
 import { UploadModal } from '@/components/UploadModal';
 import { useUser } from '@/scripts/userContext';
 import { useTheme } from '@/scripts/ThemeProvider';
+import { useSearchParams } from 'expo-router/build/hooks';
+import Toast from 'react-native-toast-message';
+import { useRoute } from '@react-navigation/native';
+import createToastConfig from '@/constants/ToastConfig';
 
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,6 +20,28 @@ export default function HomeScreen() {
   const [mode, setMode] = useState(0);
   const { user } = useUser();
   const { theme } = useTheme();
+
+  const route = useRoute();
+
+  // @ts-ignore
+  const showToast = route?.params;
+  console.log(showToast);
+  useEffect(() => {
+    // @ts-ignore
+    if (showToast.showToast && showToast.type === 'success') {
+      Toast.show({
+        type: 'success',
+        text1: 'Ottimo! 👍🏻',
+        text2: 'Login avvenuto con successo!🎉',
+      }); // @ts-ignore
+    } else if (showToast.showToast && showToast.type === 'error') {
+      Toast.show({
+        type: 'error',
+        text1: 'Oh no! 👎🏻',
+        text2: 'Qualcosa è andato storto, riprova più tardi!🥺',
+      });
+    }
+  }, [showToast]);
 
   return (
     <ScreenContainer>
@@ -75,6 +101,7 @@ export default function HomeScreen() {
         setModalVisible={setModalVisible}
         mode={mode}
       />
+      <Toast config={createToastConfig(theme)} />
     </ScreenContainer>
   );
 }
