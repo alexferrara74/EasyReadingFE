@@ -12,6 +12,8 @@ import { useRoute } from '@react-navigation/native';
 import { useUser } from '@/scripts/userContext';
 import Markdown from 'react-native-markdown-display';
 import { useTheme } from '@/scripts/ThemeProvider';
+import Toast from 'react-native-toast-message';
+import createToastConfig from '@/constants/ToastConfig';
 
 export default function SummaryScreen() {
   const navigator = useNavigation();
@@ -29,6 +31,21 @@ export default function SummaryScreen() {
 
   const route = useRoute();
   const file = route.params;
+  const showToast = route.params;
+  
+    useEffect(() => {
+      // @ts-ignore
+      if (showToast.showToast && showToast.type === 'success') {
+        Toast.show({
+          type: 'success',
+          text1: 'Ottimo! 👍🏻',
+          text2: 'Riassunto avvenuto con successo!🎉',
+        }); // @ts-ignore
+      }
+    }, [showToast]);
+
+
+
   const scrollViewRef = useRef(null);
   // Funzione per inviare un messaggio e ricevere una risposta dal bot
   const sendMessage = async () => {
@@ -214,6 +231,7 @@ export default function SummaryScreen() {
         iconColor='#ffff'
         size={30}
         onPress={toggleChat}></IconButton>
+      <Toast config={createToastConfig(theme)} />
     </ScreenContainer>
   );
 }

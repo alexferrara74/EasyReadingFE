@@ -1,4 +1,4 @@
-import React, { useState, SetStateAction, Dispatch } from 'react';
+import React, { useState, SetStateAction, Dispatch, useEffect } from 'react';
 import { View, StyleSheet, Modal } from 'react-native';
 import { TextInput } from 'react-native';
 import { IconButton } from 'react-native-paper';
@@ -9,6 +9,8 @@ import { ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { retrieveFile } from '@/scripts/retrieveFile';
 import { useTheme } from '@/scripts/ThemeProvider';
+import Toast from 'react-native-toast-message';
+import createToastConfig from '@/constants/ToastConfig';
 
 interface ModalProps {
   modal: boolean;
@@ -24,6 +26,19 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const { theme } = useTheme();
+
+  const [show, setShow] = useState(false);
+
+  useEffect(()=>{
+    if(show == true){
+      Toast.show({
+        type: 'error',
+        text1: 'Oh no! 👎🏻',
+        text2: 'Qualcosa è andato storto, riprova più tardi!🥺',
+      })
+    }
+  }, [show])
+
 
   return (
     <Modal animationType='slide' transparent={true} visible={modal} onRequestClose={() => {}}>
@@ -55,11 +70,13 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
                   setText('');
                   if (result) {
                     const file = await retrieveFile(result.idResponseTask, user);
+                    setShow(true);
                     // @ts-ignore
-                    navigation.navigate('summary', { file: file });
+                    navigation.navigate('summary', { file: file, showToast: true, type: 'success' });
                     setModalVisible(false);
                   } else {
                     console.log('Caricamento non riuscito.');
+                    
                   }
                 } catch (error) {
                   console.error("Errore durante l'onPress:", error);
@@ -86,6 +103,7 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
           </TouchableWithoutFeedback>
         )}
       </View>
+      <Toast config={createToastConfig(theme)} />
     </Modal>
   );
 }
