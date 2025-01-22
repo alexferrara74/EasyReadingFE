@@ -8,7 +8,7 @@ import { IconButton } from 'react-native-paper';
 import { TextInput } from 'react-native';
 import { domandabot } from '@/scripts/chat'; // Importa la funzione
 import { useRoute } from '@react-navigation/native';
-
+import { retreiveChat } from '@/scripts/getChat' //
 import { useUser } from '@/scripts/userContext';
 import Markdown from 'react-native-markdown-display';
 import { useTheme } from '@/scripts/ThemeProvider';
@@ -47,15 +47,16 @@ export default function SummaryScreen() {
 
 
   const scrollViewRef = useRef(null);
-  // Funzione per inviare un messaggio e ricevere una risposta dal bot
-  const sendMessage = async () => {
-    if (text.trim() === '') return; // Non inviare se il testo è vuoto
 
-    // Aggiorna i messaggi con il testo dell'utente
+  
+  const sendMessage = async () => {
+    if (text.trim() === '') return; 
+
+    await getMessages();
     const newMessage = { sender: 'user', text: text };
     // @ts-ignore
     setChatMessages((prevMessages) => [...prevMessages, newMessage]);
-    setText(''); // Pulisce la barra di input
+    setText('');
 
     setTimeout(() => {
       // @ts-ignore
@@ -66,16 +67,15 @@ export default function SummaryScreen() {
       const requestData = {
         question: text,
         // @ts-ignore
-        context: file?.file.riassunto, //contenuto file
+        context: file?.file.riassunto, 
         response: '',
         idUtente: user?.id,
         // @ts-ignore
         idFile: file?.file.id,
       };
-      // Chiama la funzione domandabot() per ottenere la risposta del bot
+
       const response = await domandabot(requestData, user);
 
-      // Aggiorna i messaggi con la risposta del bot
       const botMessage = { sender: 'bot', text: response };
       // @ts-ignore
       setChatMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -106,14 +106,32 @@ export default function SummaryScreen() {
     };
   }, []);
 
-  /*
-    const domandabot = async () => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve("Questa è una risposta del bot!");
-            }, 1000);  
-        });
-    };*/
+  // recupera chat precedente
+  const getMessages = async () => {
+    try {
+      //@ts-ignore
+      const res = await retreiveChat(file?.file.id);
+     
+     const formattedMessages = res.response.map((item: { question: string, response: string }) => {
+      const userMessage = { sender: 'user', text: item.question }; 
+      const botMessage = { sender: 'bot', text: item.response };  
+
+        return [userMessage, botMessage];
+      }).flat(); // .flat() per appiattire l'array e ottenere una lista di messaggi singoli
+  
+      //@ts-ignore
+      setChatMessages(formattedMessages);
+    } catch (error) {
+      console.error('Errore nel recupero della chat', error);
+    }
+  };
+
+  // Chiamata a getMessages subito dopo il rendering del componente ChatBotBox
+  useEffect(() => {
+    getMessages(); // Recupera i messaggi subito dopo il primo render
+  }, []); // L'effetto si eseguirà solo una volta, dopo il primo render
+
+
 
   const toggleChat = () => {
     setModalVisible(!modalVisible);
