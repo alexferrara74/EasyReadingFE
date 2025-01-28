@@ -6,9 +6,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal, Keyboard, KeyboardEvent } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { TextInput } from 'react-native';
-import { domandabot } from '@/scripts/chat'; // Importa la funzione
+import { domandabot } from '@/scripts/sendMessage'; // invia domanda al be
+import { retreiveMessage } from '@/scripts/getMessage' //prende risposta alla singola domanda
 import { useRoute } from '@react-navigation/native';
-import { retreiveChat } from '@/scripts/getChat' //
+import { retreiveChat } from '@/scripts/getChat' // retrieve chat sul file
 import { useUser } from '@/scripts/userContext';
 import Markdown from 'react-native-markdown-display';
 import { useTheme } from '@/scripts/ThemeProvider';
@@ -52,7 +53,7 @@ export default function SummaryScreen() {
   const sendMessage = async () => {
     if (text.trim() === '') return; 
 
-    await getMessages();
+    //await getMessages();
     const newMessage = { sender: 'user', text: text };
     // @ts-ignore
     setChatMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -74,9 +75,13 @@ export default function SummaryScreen() {
         idFile: file?.file.id,
       };
 
-      const response = await domandabot(requestData, user);
+      console.log("dati da inviare  "+JSON.stringify(requestData));
+      const RESULT = await domandabot(requestData, user);
 
-      const botMessage = { sender: 'bot', text: response };
+      console.log(JSON.stringify(RESULT.id));
+      const resp= await retreiveMessage(RESULT.id);
+
+      const botMessage = { sender: 'bot', text: RESULT.message };
       // @ts-ignore
       setChatMessages((prevMessages) => [...prevMessages, botMessage]);
 
@@ -110,21 +115,32 @@ export default function SummaryScreen() {
   const getMessages = async () => {
     try {
       //@ts-ignore
-      const res = await retreiveChat(file?.file.id);
-     
-     const formattedMessages = res.response.map((item: { question: string, response: string }) => {
-      const userMessage = { sender: 'user', text: item.question }; 
-      const botMessage = { sender: 'bot', text: item.response };  
-
-        return [userMessage, botMessage];
-      }).flat(); // .flat() per appiattire l'array e ottenere una lista di messaggi singoli
-  
+      let id_file_retrieve_chat=file?.file.id;
+      //console.log("prima di fare retrieve user token e:",user.token);
       //@ts-ignore
-      setChatMessages(formattedMessages);
+      const res = await retreiveChat(id_file_retrieve_chat, user);
+      
+      console.log('Response:', res);  // Check the structure of the response
+  
+     // if (Array.isArray(res.response)) {
+        const formattedMessages = res.response.map((item: { question: string, response: string }) => {
+          const userMessage = { sender: 'user', text: item.question }; 
+          const botMessage = { sender: 'bot', text: item.response };  
+  
+          return [userMessage, botMessage];
+        }).flat(); 
+  
+        //@ts-ignore
+        setChatMessages(formattedMessages);
+      /*} else {
+        console.error('Expected res.response to be an array, but got:', res.response);
+      }*/
     } catch (error) {
       console.error('Errore nel recupero della chat', error);
     }
   };
+  
+
 
   // Chiamata a getMessages subito dopo il rendering del componente ChatBotBox
   useEffect(() => {
