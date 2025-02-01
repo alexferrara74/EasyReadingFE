@@ -31,7 +31,7 @@ export const domandabot = async (requestData,user) => {
               const response = JSON.parse(event.data);
   
               console.log("response.id (sendmesssage): ",response.id, " response._id: ", response._id);
-              if (response.id !== null) { //controllo sull'id
+              if (response.done !== false) { //controllo sull'id
                   resolve(response);
                   socket.close();
               }

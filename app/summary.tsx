@@ -7,9 +7,9 @@ import { View, Text, StyleSheet, ScrollView, Modal, Keyboard, KeyboardEvent } fr
 import { IconButton } from 'react-native-paper';
 import { TextInput } from 'react-native';
 import { domandabot } from '@/scripts/sendMessage'; // invia domanda al be
-import { retreiveMessage } from '@/scripts/getMessage' //prende risposta alla singola domanda
+import { retreiveMessage } from '@/scripts/getMessage'; //prende risposta alla singola domanda
 import { useRoute } from '@react-navigation/native';
-import { retreiveChat } from '@/scripts/getChat' // retrieve chat sul file
+import { retreiveChat } from '@/scripts/getChat'; // retrieve chat sul file
 import { useUser } from '@/scripts/userContext';
 import Markdown from 'react-native-markdown-display';
 import { useTheme } from '@/scripts/ThemeProvider';
@@ -49,9 +49,8 @@ export default function SummaryScreen() {
 
   const scrollViewRef = useRef(null);
 
-  
   const sendMessage = async () => {
-    if (text.trim() === '') return; 
+    if (text.trim() === '') return;
 
     //await getMessages();
     const newMessage = { sender: 'user', text: text };
@@ -68,18 +67,18 @@ export default function SummaryScreen() {
       const requestData = {
         question: text,
         // @ts-ignore
-        context: file?.file.riassunto, 
+        context: file?.file.riassunto,
         response: '',
         idUtente: user?.id,
         // @ts-ignore
         idFile: file?.file.id,
       };
 
-      console.log("dati da inviare  "+JSON.stringify(requestData));
+      console.log('dati da inviare  ' + JSON.stringify(requestData));
       const RESULT = await domandabot(requestData, user);
 
       console.log(JSON.stringify(RESULT.id));
-      const resp= await retreiveMessage(RESULT.id);
+      const resp = await retreiveMessage(RESULT.id);
 
       const botMessage = { sender: 'bot', text: RESULT.message };
       // @ts-ignore
@@ -115,23 +114,22 @@ export default function SummaryScreen() {
   const getMessages = async () => {
     try {
       //@ts-ignore
-      let id_file_retrieve_chat=file?.file.id;
+      let id_file_retrieve_chat = file?.file.id;
       //console.log("prima di fare retrieve user token e:",user.token);
       //@ts-ignore
       const res = await retreiveChat(id_file_retrieve_chat, user);
-      
-      console.log('Response:', res);  // Check the structure of the response
-  
-     // if (Array.isArray(res.response)) {
-        const formattedMessages = res.response.map((item: { question: string, response: string }) => {
-          const userMessage = { sender: 'user', text: item.question }; 
-          const botMessage = { sender: 'bot', text: item.response };  
-  
+
+      const formattedMessages = res
+        .map((item: { question: string; response: string }) => {
+          const userMessage = { sender: 'user', text: item.question };
+          const botMessage = { sender: 'bot', text: item.response };
+
           return [userMessage, botMessage];
-        }).flat(); 
-  
-        //@ts-ignore
-        setChatMessages(formattedMessages);
+        })
+        .flat();
+
+      //@ts-ignore
+      setChatMessages(formattedMessages);
       /*} else {
         console.error('Expected res.response to be an array, but got:', res.response);
       }*/
@@ -139,15 +137,11 @@ export default function SummaryScreen() {
       console.error('Errore nel recupero della chat', error);
     }
   };
-  
-
 
   // Chiamata a getMessages subito dopo il rendering del componente ChatBotBox
   useEffect(() => {
     getMessages(); // Recupera i messaggi subito dopo il primo render
   }, []); // L'effetto si eseguirà solo una volta, dopo il primo render
-
-
 
   const toggleChat = () => {
     setModalVisible(!modalVisible);
