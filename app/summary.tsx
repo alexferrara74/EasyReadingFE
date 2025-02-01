@@ -229,7 +229,8 @@ export default function SummaryScreen() {
           icon='robot-confused'
           iconColor='#ffff'
           size={30}
-          onPress={toggleChat}></IconButton>
+          onPress={toggleChat}
+          disabled={!user} ></IconButton>
       </Modal>
       <Header mini='Ecco a te il tuo' title='Riassunto' />
       <IconButton
