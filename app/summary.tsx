@@ -75,10 +75,10 @@ export default function SummaryScreen() {
       };
 
       console.log('dati da inviare  ' + JSON.stringify(requestData));
-      const RESULT = await domandabot(requestData, user);
+      const RESULT = await domandabot(requestData, user); 
 
-      console.log(JSON.stringify(RESULT.id));
-      const resp = await retreiveMessage(RESULT.id);
+      console.log(JSON.stringify(RESULT.idResponseTask));
+      const resp = await retreiveMessage(RESULT.idResponseTask);
 
       const botMessage = { sender: 'bot', text: RESULT.message };
       // @ts-ignore

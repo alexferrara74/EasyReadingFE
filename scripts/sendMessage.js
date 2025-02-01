@@ -30,7 +30,7 @@ export const domandabot = async (requestData,user) => {
               try {
               const response = JSON.parse(event.data);
   
-              console.log("response.id (sendmesssage): ",response.id, " response._id: ", response._id);
+              console.log("response.idResponseTask (sendmesssage): ",response.idResponseTask);
               if (response.done !== false) { //controllo sull'id
                   resolve(response);
                   socket.close();
@@ -56,7 +56,7 @@ export const domandabot = async (requestData,user) => {
     }
   } catch (error) {
     //setLoading(false);
-    console.error('Errore nella comunicazione con il backend:', error);
+    console.error('Errore nella comunicazione con il backend durante l\' invio della domanda:', error);
     return 'Errore nella comunicazione con il backend';
   }
 };

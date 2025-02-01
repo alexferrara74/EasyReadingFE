@@ -19,7 +19,7 @@ export const retreiveMessage = async (id,user) => {
        
        return data.result.response || 'Errore nel recupero della chat';
      } catch (error) {
-       console.error('Errore nella comunicazione con il backend:', error);
+       console.error('Errore nella comunicazione con il backend durante il recupero della risposta:', error);
        return 'Errore nella comunicazione con il backend';
      }
    };
