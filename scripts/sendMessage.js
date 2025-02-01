@@ -30,8 +30,8 @@ export const domandabot = async (requestData,user) => {
               try {
               const response = JSON.parse(event.data);
   
-              console.log("response.idResponseTask (sendmesssage): ",response.idResponseTask);
-              if (response.done !== false) { //controllo sull'id
+              //console.log("response (sendmesssage): ",response);
+              if (response.done !== false) { 
                   resolve(response);
                   socket.close();
               }

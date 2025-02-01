@@ -5,9 +5,8 @@ const conn = Constants.expoConfig.extra.IP_ADDRESS;
 export const retreiveMessage = async (id,user) => {
  
      try {
-       console.log('id file:'+id);
        const response = await fetch(`http://${conn}:3030/chat/${id}`, {
-         method: 'POST',
+         method: 'GET',
          //body: JSON.stringify(id),  
          headers: {
           'Content-Type': 'application/json',
@@ -20,7 +19,7 @@ export const retreiveMessage = async (id,user) => {
        return data.result.response || 'Errore nel recupero della chat';
      } catch (error) {
        console.error('Errore nella comunicazione con il backend durante il recupero della risposta:', error);
-       return 'Errore nella comunicazione con il backend';
+       return 'Errore nella comunicazione con il backend durante il recupero della risposta';
      }
    };
    

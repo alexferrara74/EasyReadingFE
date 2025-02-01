@@ -80,7 +80,8 @@ export default function SummaryScreen() {
       console.log(JSON.stringify(RESULT.idResponseTask));
       const resp = await retreiveMessage(RESULT.idResponseTask);
 
-      const botMessage = { sender: 'bot', text: RESULT.message };
+      console.log("risposta del ,",resp);
+      const botMessage = { sender: 'bot', text: resp.response };
       // @ts-ignore
       setChatMessages((prevMessages) => [...prevMessages, botMessage]);
 
