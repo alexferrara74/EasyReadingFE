@@ -74,13 +74,9 @@ export default function SummaryScreen() {
         idFile: file?.file.id,
       };
 
-      console.log('dati da inviare  ' + JSON.stringify(requestData));
       const RESULT = await domandabot(requestData, user); 
+      const resp = await retreiveMessage(RESULT.idResponseTask,user);
 
-      console.log(JSON.stringify(RESULT.idResponseTask));
-      const resp = await retreiveMessage(RESULT.idResponseTask);
-
-      console.log("risposta del ,",resp);
       const botMessage = { sender: 'bot', text: resp.response };
       // @ts-ignore
       setChatMessages((prevMessages) => [...prevMessages, botMessage]);
