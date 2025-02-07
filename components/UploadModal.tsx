@@ -29,23 +29,25 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
 
   const [show, setShow] = useState(false);
 
-  useEffect(()=>{
-    if(show == true){
+  useEffect(() => {
+    if (show == true) {
       Toast.show({
         type: 'error',
         text1: 'Oh no! 👎🏻',
         text2: 'Qualcosa è andato storto, riprova più tardi!🥺',
-      })
+      });
     }
-  }, [show])
-
+  }, [show]);
 
   return (
     <Modal animationType='slide' transparent={true} visible={modal} onRequestClose={() => {}}>
       <View style={styles.wrapperModal}>
         <View style={[styles.nameModal, { backgroundColor: theme.header_background, borderColor: theme.accent }]}>
           <TextInput
-            style={[styles.modalTextInput, { backgroundColor: theme.background, borderColor: theme.accent, color: theme['header-text'] }]}
+            style={[
+              styles.modalTextInput,
+              { backgroundColor: theme.background, borderColor: theme.accent, color: theme['header-text'] },
+            ]}
             placeholder='Inserire nome riassunto'
             placeholderTextColor={theme['header-text']}
             value={text}
@@ -76,7 +78,6 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
                     setModalVisible(false);
                   } else {
                     console.log('Caricamento non riuscito.');
-                    
                   }
                 } catch (error) {
                   console.error("Errore durante l'onPress:", error);
