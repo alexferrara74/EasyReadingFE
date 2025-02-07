@@ -35,7 +35,7 @@ export function ChangePasswordModal({ modal, setModalVisible, user }: changePass
         <Button
           onPress={async () => {
             // @ts-ignore
-            const result = await changePassword(user.mail, code, password);
+            const result = await changePassword(user.email, code, password);
             if (result) {
               setCode('');
               setPassword('');

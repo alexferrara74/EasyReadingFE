@@ -124,8 +124,8 @@ export default function UserScreen() {
         <Button
           onPress={async () => {
             const res = await sendChangePasswordRequest(user.email);
-            if (res) setModalVisible(true);
-            else console.log('Errore nella send della mail');
+            setModalVisible(true);
+           console.log('Errore nella send della mail');
           }}
           style={[
             styles.logoutButton,
