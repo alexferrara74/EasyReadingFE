@@ -16,10 +16,13 @@ import { useTheme } from '@/scripts/ThemeProvider';
 import Toast from 'react-native-toast-message';
 import createToastConfig from '@/constants/ToastConfig';
 
+import LoadingDots from "react-native-loading-dots";
+
 export default function SummaryScreen() {
   const navigator = useNavigation();
   const { user } = useUser();
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
   const { theme } = useTheme();
@@ -74,8 +77,10 @@ export default function SummaryScreen() {
         idFile: file?.file.id,
       };
 
+      setLoading(true);
       const RESULT = await domandabot(requestData, user); 
       const resp = await retreiveMessage(RESULT.idResponseTask,user);
+      setLoading(false);
 
       const botMessage = { sender: 'bot', text: resp.response };
       // @ts-ignore
@@ -112,7 +117,6 @@ export default function SummaryScreen() {
     try {
       //@ts-ignore
       let id_file_retrieve_chat = file?.file.id;
-      //console.log("prima di fare retrieve user token e:",user.token);
       //@ts-ignore
       const res = await retreiveChat(id_file_retrieve_chat, user);
 
@@ -191,6 +195,15 @@ export default function SummaryScreen() {
                   </Text>
                 </View>
               ))}
+                 {loading && ( 
+                <View
+                style={[styles.dotMessage 
+                ]}>
+                <Text style= {styles.dots}> 
+                 <LoadingDots  dots={3} size={10} bounceHeight={10} colors={[theme.accent]} />
+                </Text>
+              </View>
+                )} 
             </ScrollView>
 
             <View
@@ -274,8 +287,20 @@ const styles = StyleSheet.create({
   botMessage: {
     alignSelf: 'flex-end',
   },
+  dotMessage: {
+    alignSelf: 'flex-end',
+    maxWidth: '80%',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 15,
+  },
   messageText: {
     fontSize: 16,
+  },
+  dots: {
+    marginTop: 10,
+    marginBottom:10,
+    marginRight:15
   },
   summaryChatContainer: {
     flex: 1, // Occupa tutto lo spazio disponibile

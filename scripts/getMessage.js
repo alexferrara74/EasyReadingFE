@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 
 const conn = Constants.expoConfig.extra.IP_ADDRESS;
 
-export const retreiveMessage = async (id,user) => {
+export const retreiveMessage = async (id, user) => {
  
      try {
        const response = await fetch(`http://${conn}:3030/chat/${id}`, {
@@ -15,7 +15,8 @@ export const retreiveMessage = async (id,user) => {
        });
    
        const data = await response.json();
-       console.log("dati ricevuti: ", data)
+       console.log("dati ricevuti. ");
+
        return data || 'Errore nel recupero della chat';
      } catch (error) {
        console.error('Errore nella comunicazione con il backend durante il recupero della risposta:', error);

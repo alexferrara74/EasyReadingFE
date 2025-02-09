@@ -3,8 +3,8 @@ import Constants from 'expo-constants';
 
 const conn = Constants.expoConfig.extra.IP_ADDRESS; 
 
-export const domandabot = async (requestData,user) => {
-  //QUI ININZIA L'ATTESA DELLA RICHIESTA AL BOT
+export const domandabot = async (requestData, user ) => {
+
   try {
     
     const response = await fetch(`http://${conn}:3030/chat`, {
@@ -47,15 +47,13 @@ export const domandabot = async (requestData,user) => {
       });
 
       const result = await waitForCheck;
-     // setLoading(false); 
+ 
       return result;
     } else {
-      // setLoading(false);
         console.log('Errore durante l\' invio della domanda al bot');
         return null;
     }
   } catch (error) {
-    //setLoading(false);
     console.error('Errore nella comunicazione con il backend durante l\' invio della domanda:', error);
     return 'Errore nella comunicazione con il backend';
   }
