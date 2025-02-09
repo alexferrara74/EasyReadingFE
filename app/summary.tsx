@@ -200,7 +200,7 @@ export default function SummaryScreen() {
                 style={[styles.dotMessage 
                 ]}>
                 <Text style= {styles.dots}> 
-                 <LoadingDots  dots={3} size={10} bounceHeight={10} colors={[theme.accent]} />
+                 <LoadingDots  dots={3} size={10} bounceHeight={10} colors={[theme.accent, theme.accent, theme.accent]} />
                 </Text>
               </View>
                 )} 
