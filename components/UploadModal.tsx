@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: '40%',
     width: '80%',
-    textAlignVertical: 'top',
     padding: 15,
     marginBottom: 15,
   },
