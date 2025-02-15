@@ -1,21 +1,24 @@
 import { ScreenContainer } from '@/components/_screenContainer';
 import { colors_blue, colors_light_blue, colors_red } from '@/constants/Colors';
 import { useUser } from '@/scripts/userContext';
+import { sendChangePasswordRequest } from '@/scripts/changePasswordRequest';
 import { Redirect } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Avatar, Button } from 'react-native-paper';
 import { IconButton } from 'react-native-paper';
 import { useNavigation } from 'expo-router';
 import { useTheme } from '@/scripts/ThemeProvider';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getFilesByUser } from '@/scripts/getUserFiles';
+import { ChangePasswordModal } from '@/components/ChangePasswordModal';
 
 export default function UserScreen() {
   const { theme, updateTheme } = useTheme();
   const { user, logout } = useUser();
-
+  const activeTheme = theme.themeMode;
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Se `user` non è disponibile, reindirizza alla pagina di login
   if (!user) {
@@ -24,6 +27,7 @@ export default function UserScreen() {
 
   return (
     <ScreenContainer>
+      <ChangePasswordModal modal={modalVisible} setModalVisible={setModalVisible} user={user} />
       <View
         style={[styles.profileHeader, { backgroundColor: theme.header_background, borderBottomColor: theme.accent }]}>
         <IconButton
@@ -40,10 +44,23 @@ export default function UserScreen() {
             size={61}
             label={user.username.substr(0, 2).toUpperCase()}
           />
-          <Text style={[styles.profileTitle, { color: theme['header-text'] }]}> {user?.username.toUpperCase()} </Text>
+          <Text style={[styles.profileTitle, { color: theme['header-text'], marginHorizontal: 'auto' }]}>
+            {user?.username.toUpperCase()}{' '}
+          </Text>
         </View>
       </View>
-      <View style={styles.themeContainer}>
+      <Text style={[styles.themeText, { color: theme['header-text'], position: 'absolute', top: '26%', left: '3%' }]}>
+        Scegli il tema dell'applicazione:
+      </Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.themeContainer}
+        contentContainerStyle={{
+          alignItems: 'center',
+          flexDirection: 'row',
+          gap: 30,
+        }}>
         <LinearGradient
           style={styles.themeGradient}
           locations={[0, 0.5, 1]}
@@ -51,7 +68,11 @@ export default function UserScreen() {
           start={{ x: 0.5, y: 0.4 }}
           end={{ x: 1.2, y: 0.9 }}>
           <Button
-            style={[styles.themeButton, { borderWidth: 0.1, borderColor: theme['header-text'] }]}
+            style={
+              activeTheme === 'dark_blue'
+                ? [styles.themeButton, { borderWidth: 2, borderColor: theme.accent }]
+                : [styles.themeButton, { borderWidth: 0.1, borderColor: theme['header-text'] }]
+            }
             onPress={() => {
               updateTheme(colors_blue);
             }}
@@ -66,7 +87,11 @@ export default function UserScreen() {
           start={{ x: 0.4, y: 0.5 }}
           end={{ x: 1.5, y: 1 }}>
           <Button
-            style={[styles.themeButton, { borderWidth: 0.1, borderColor: theme['header-text'] }]}
+            style={
+              activeTheme === 'default'
+                ? [styles.themeButton, { borderWidth: 2, borderColor: theme.accent }]
+                : [styles.themeButton, { borderWidth: 0.1, borderColor: theme['header-text'] }]
+            }
             onPress={() => {
               updateTheme(colors_light_blue);
             }}
@@ -81,7 +106,11 @@ export default function UserScreen() {
           start={{ x: 0.5, y: 0.4 }}
           end={{ x: 1.2, y: 0.9 }}>
           <Button
-            style={[styles.themeButton, { borderWidth: 0.1, borderColor: theme['header-text'] }]}
+            style={
+              activeTheme === 'dark_red'
+                ? [styles.themeButton, { borderWidth: 2, borderColor: theme.accent }]
+                : [styles.themeButton, { borderWidth: 0.1, borderColor: theme['header-text'] }]
+            }
             onPress={() => {
               updateTheme(colors_red);
             }}
@@ -89,9 +118,23 @@ export default function UserScreen() {
             <View style={styles.themeButton}></View>
           </Button>
         </LinearGradient>
-      </View>
+      </ScrollView>
 
-      <View style={styles.logoutSection}>
+      <View style={styles.buttonSection}>
+        <Button
+          onPress={async () => {
+            const res = await sendChangePasswordRequest(user.email);
+            setModalVisible(true);
+           console.log('Errore nella send della mail');
+          }}
+          style={[
+            styles.logoutButton,
+            { borderWidth: 0.7, borderColor: theme.accent, backgroundColor: theme.background },
+          ]}
+          buttonColor='#525252'
+          textColor='white'>
+          <Text style={[styles.textButton, { color: theme.accent }]}>Cambia password</Text>
+        </Button>
         <Button
           onPress={() => logout()}
           style={[styles.logoutButton, { backgroundColor: theme.accent }]}
@@ -105,6 +148,15 @@ export default function UserScreen() {
 }
 
 const styles = StyleSheet.create({
+  themeText: {
+    fontSize: 19,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  themeContainer: {
+    maxHeight: 250,
+    marginTop: '27%',
+  },
   profileHeader: {
     paddingTop: 110,
     borderBottomWidth: 1,
@@ -130,13 +182,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 1,
   },
-  themeContainer: {
-    marginTop: 100,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 50,
-    flexWrap: 'wrap',
-  },
   themeGradient: {
     overflow: 'hidden',
     borderRadius: '100%',
@@ -153,8 +198,9 @@ const styles = StyleSheet.create({
   textButton: {
     fontSize: 17,
   },
-  logoutSection: {
-    marginTop: 50,
+  buttonSection: {
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 40,
   },
 });
