@@ -1,5 +1,5 @@
 import React, { useState, SetStateAction, Dispatch, useEffect } from 'react';
-import { View, StyleSheet, Modal } from 'react-native';
+import { View, StyleSheet, Modal, StatusBar } from 'react-native';
 import { TextInput } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { uploadFile } from '@/scripts/uploadFile';
@@ -52,6 +52,7 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
             placeholderTextColor={theme['header-text']}
             value={text}
             onChangeText={setText}
+            editable={!loading} // Disable editing when loading
           />
           {loading ? (
             <ActivityIndicator size='large' color='#0000ff' />
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 'auto',
     borderWidth: 0.5,
     borderRadius: 20,
-    height: '40%',
+    height: 60,
     width: '80%',
     padding: 15,
     marginBottom: 15,

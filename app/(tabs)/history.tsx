@@ -7,6 +7,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Avatar, Button } from 'react-native-paper';
 import { getFilesByUser } from '@/scripts/getUserFiles';
 import { useTheme } from '@/scripts/ThemeProvider';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HistoryScreen() {
   const { user } = useUser();
@@ -28,25 +29,24 @@ export default function HistoryScreen() {
   const [items, setItems] = useState<FileData[]>([]);
 
   // Esegui la chiamata API quando il componente viene montato
-  useEffect(() => {
-    const getFiles = async () => {
-      try {
-        const result = await getFilesByUser(user);
-        // Controlla se `result` è un array e aggiorna `items`
-        if (Array.isArray(result)) {
-          setItems(result);
-        } else {
-          console.error('Risultato non è un array:', result);
+  useFocusEffect(
+    React.useCallback(() => {
+      const getFiles = async () => {
+        try {
+          const result = await getFilesByUser(user);
+
+          if (Array.isArray(result)) {
+            setItems(result);
+          } else {
+            console.error('Result is not an array:', result);
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    // Chiamata alla funzione asincrona dentro useEffect
-    getFiles();
-  }, [user.id]); // Dipende solo da `user.id`, quindi verrà eseguito una volta per ogni cambiamento dell'id utente
-
+      };
+      getFiles();
+    }, [user.id])
+  );
   return (
     <ScreenContainer>
       <View
