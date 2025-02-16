@@ -64,12 +64,12 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
                 try {
                   var result;
                   // @ts-ignore
-                  if (mode == 2) result = await uploadFile(file, text, setLoading, user.id);
+                  if (mode == 2) result = await uploadFile(file, text, setLoading, (user != null ) ? user?.id : null);
                   // @ts-ignore
-                  if (mode == 1) result = await sendText(context, text, setLoading, user.id);
+                  if (mode == 1) result = await sendText(context, text, setLoading, (user != null ) ? user?.id : null);
                   setText('');
                   if (result) {
-                    const file = await retrieveFile(result.idResponseTask, user);
+                    const file = await retrieveFile(result.idResponseTask);
                     setShow(true);
                     // @ts-ignore
                     navigation.navigate('summary', { file: file, showToast: true, type: 'success' });

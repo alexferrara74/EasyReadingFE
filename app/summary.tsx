@@ -4,7 +4,7 @@ import { ChatBotBox } from '@/components/ChatBotBox';
 import { useNavigation } from 'expo-router';
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal, Keyboard, KeyboardEvent } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Switch } from 'react-native-paper';
 import { TextInput } from 'react-native';
 import { domandabot } from '@/scripts/sendMessage'; // invia domanda al be
 import { retreiveMessage } from '@/scripts/getMessage'; //prende risposta alla singola domanda
@@ -15,8 +15,12 @@ import Markdown from 'react-native-markdown-display';
 import { useTheme } from '@/scripts/ThemeProvider';
 import Toast from 'react-native-toast-message';
 import createToastConfig from '@/constants/ToastConfig';
-
 import LoadingDots from "react-native-loading-dots";
+import * as Speech from 'expo-speech';
+import { generaImmagine } from '@/scripts/getImage';
+import { Image } from 'react-native';
+
+
 
 export default function SummaryScreen() {
   const navigator = useNavigation();
@@ -26,7 +30,8 @@ export default function SummaryScreen() {
   const [text, setText] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
   const { theme } = useTheme();
-
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const markdownStyle = {
     body: {
       color: theme['header-text'],
@@ -51,6 +56,37 @@ export default function SummaryScreen() {
 
 
   const scrollViewRef = useRef(null);
+
+
+  const [img, setImg] = useState(null);
+
+  const getImg = async () => {
+
+    const newMessage = { sender: 'user', text: text };
+    // @ts-ignore
+    setChatMessages((prevMessages) => [...prevMessages, newMessage]);
+    setText('');
+
+    setTimeout(() => {
+      // @ts-ignore
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 100);
+
+
+    const imageData = await generaImmagine(text, user);
+    //@ts-ignore
+    setImg(imageData);
+  
+    if (imageData) {
+      const imageMessage = { sender: 'bot', image: imageData };
+      // Aggiungi l'immagine come un messaggio del bot
+      // @ts-ignore
+      setChatMessages((prevMessages) => [...prevMessages, imageMessage]);
+    }
+    setTimeout(() => {//@ts-ignore
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 100);
+  };
 
   const sendMessage = async () => {
     if (text.trim() === '') return;
@@ -148,6 +184,38 @@ export default function SummaryScreen() {
     setModalVisible(!modalVisible);
   };
 
+  
+
+  const speak = async () => {
+    await Speech.isSpeakingAsync().then((speaking:any) =>{
+      if(speaking != true){
+        
+        Speech.speak((file as any).file?.riassunto, {
+          language: 'it-IT',
+          rate: 1.2
+        })
+      }
+    })
+  };
+
+  const stopSpeak = () => {
+    Speech.stop();
+    setIsSpeaking(false);
+  }
+  
+
+  useEffect(() => {
+    const checkSpeakingStatus = async () => {
+      const speaking = await Speech.isSpeakingAsync();
+      setIsSpeaking(speaking);
+    };
+
+    const interval = setInterval(checkSpeakingStatus, 500); // Controlla ogni mezzo secondo
+    return () => clearInterval(interval); // Pulisce l'intervallo quando il componente si smonta
+  }, []);
+
+  
+
   return (
     <ScreenContainer>
       <Modal
@@ -161,50 +229,58 @@ export default function SummaryScreen() {
             <View style={[styles.summaryTriangle, { borderBottomColor: theme.accent }]}></View>
 
             <ScrollView style={styles.messageContainer} ref={scrollViewRef}>
-              <ChatBotBox></ChatBotBox>
-              {chatMessages.map((msg, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.messageBubble,
-                    // @ts-ignore
-                    msg.sender === 'user'
-                      ? [styles.userMessage, { backgroundColor: theme['header-text'] }]
-                      : [styles.botMessage, { backgroundColor: theme.accent }],
-                  ]}>
-                  <Text
-                    style={[
-                      styles.messageText,
-                      // @ts-ignore
-                      msg.sender === 'bot'
-                        ? [
-                            // @ts-ignore
-                            styles.botText,
-                            { color: theme['header-text'] },
-                          ]
-                        : [
-                            // @ts-ignore
-                            styles.userText,
-                            { color: theme.accent },
-                          ],
-                    ]}>
-                    {
-                      // @ts-ignore
-                      msg.text
-                    }
-                  </Text>
-                </View>
-              ))}
-                 {loading && ( 
-                <View
-                style={[styles.dotMessage 
-                ]}>
-                <Text style= {styles.dots}> 
-                 <LoadingDots  dots={3} size={10} bounceHeight={10} colors={[theme.accent, theme.accent, theme.accent]} />
-                </Text>
-              </View>
-                )} 
-            </ScrollView>
+  <ChatBotBox></ChatBotBox>
+  {chatMessages.map((msg, index) => (
+    <View
+      key={index}
+      style={[
+        styles.messageBubble,
+        // @ts-ignore
+        msg.sender === 'user'
+          ? [styles.userMessage, { backgroundColor: theme['header-text'] }]
+          : [styles.botMessage, { backgroundColor: theme.accent }],
+      ]}>
+      {//@ts-ignore
+      msg.text && (
+        <Text
+          style={[
+            styles.messageText,
+            // @ts-ignore
+            msg.sender === 'bot'
+              ? [
+                  // @ts-ignore
+                  styles.botText,
+                  { color: theme['header-text'] },
+                ]
+              : [
+                  // @ts-ignore
+                  styles.userText,
+                  { color: theme.accent },
+                ],
+          ]}>
+          {
+            // @ts-ignore
+            msg.text
+          }
+        </Text>
+      )}
+      
+      {//@ts-ignore
+      msg.image && (
+        <Image source={{ //@ts-ignore
+          uri: msg.image }} style={{ width: 200, height: 200 }} />
+      )}
+    </View>
+  ))}
+
+  {loading && (
+    <View style={[styles.dotMessage]}>
+      <Text style={styles.dots}>
+        <LoadingDots dots={3} size={10} bounceHeight={10} colors={[theme.accent, theme.accent, theme.accent]} />
+      </Text>
+    </View>
+  )}
+</ScrollView>
 
             <View
               style={[
@@ -221,12 +297,19 @@ export default function SummaryScreen() {
                 onSubmitEditing={sendMessage}
                 returnKeyType='send'
               />
+
+
+
+
+
+
+              <Switch value={isSwitchOn} onValueChange={()=>{setIsSwitchOn(!isSwitchOn);}}></Switch>
               <IconButton
                 style={[styles.sendButton, { backgroundColor: theme.accent }]}
                 icon='chevron-right'
                 iconColor='#ffffff'
                 size={25}
-                onPress={sendMessage}
+                onPress={isSwitchOn ? getImg : sendMessage}
               />
             </View>
           </View>
@@ -250,7 +333,7 @@ export default function SummaryScreen() {
         style={[styles.backButton, { borderColor: theme.accent }]}
         iconColor={theme.accent}
         // @ts-ignore
-        onPress={() => navigator.navigate('index')}
+        onPress={() => {stopSpeak();navigator.navigate('index')}}
       />
       <ScrollView // @ts-ignore
         contentContainerStyle={{ padding: 16, paddingBottom: '20%' }}
@@ -263,6 +346,26 @@ export default function SummaryScreen() {
           }
         </Markdown>
       </ScrollView>
+      {isSpeaking ? (
+        <IconButton // @ts-ignore
+        style={[styles.summarySpeakerButton, { backgroundColor: theme.accent }]}
+        mode='contained-tonal'
+        icon='text-to-speech-off'
+        iconColor='#ffff'
+        size={30}
+        onPress={stopSpeak}></IconButton>
+        ) : (
+          <IconButton // @ts-ignore
+            style={[styles.summarySpeakerButton, { backgroundColor: theme.accent }]}
+            mode='contained-tonal'
+            icon='text-to-speech'
+            iconColor='#ffff'
+            size={30}
+            onPress={speak}></IconButton>
+
+        )
+      }
+      
       <IconButton // @ts-ignore
         style={[styles.summaryBotButton, { backgroundColor: theme.accent }]}
         mode='contained-tonal'
@@ -271,6 +374,7 @@ export default function SummaryScreen() {
         size={30}
         onPress={toggleChat}></IconButton>
       <Toast config={createToastConfig(theme)} />
+      
     </ScreenContainer>
   );
 }
@@ -410,5 +514,14 @@ const styles = StyleSheet.create({
   closeButton: {
     marginTop: 20,
     alignSelf: 'flex-end',
+  },
+  summarySpeakerButton: {
+    position: 'absolute',
+    bottom: 130, // Posizionato sopra il pulsante del bot
+    right: 15,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    marginHorizontal: 'auto',
   },
 });

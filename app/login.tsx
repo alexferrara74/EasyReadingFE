@@ -90,18 +90,22 @@ export default function LoginScreen() {
         />
 
         <Button
-          mode='contained'
           onPress={() => logInAndRedirect()}
           buttonColor={theme.accent}
-          style={styles.buttonForm}>
+          style={styles.button}
+          contentStyle={styles.content}>
+
           Accedi
         </Button>
         <Button
-          mode='contained'
+
           // @ts-ignore
           onPress={() => navigation.navigate('register')}
           buttonColor='gray'
-          style={styles.buttonForm}>
+          style={styles.button}
+          contentStyle={styles.content}>
+          
+         
           Registrati
         </Button>
       </View>
@@ -116,13 +120,14 @@ const styles = StyleSheet.create({
     marginBottom: '10%',
   },
 
-  buttonForm: {
-    marginBottom: '10%',
+  button: {
     width: '70%',
-    height: '13%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: '10%',
     borderRadius: 9,
+  },
+  content: {
+    height: 50, 
+    justifyContent: 'center',
   },
   homeHeader: {
     paddingTop: 100,
