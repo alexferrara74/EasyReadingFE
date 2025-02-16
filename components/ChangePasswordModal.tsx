@@ -47,7 +47,7 @@ export function ChangePasswordModal({ modal, setModalVisible, user }: changePass
             )}
           />
           <TextInput
-            placeholder='Inserire la nuova mail'
+            placeholder='Inserire la nuova password'
             placeholderTextColor={theme['header-text']}
             keyboardType='email-address'
             value={password}
@@ -62,14 +62,12 @@ export function ChangePasswordModal({ modal, setModalVisible, user }: changePass
             style={[style.submitButton, { backgroundColor: theme.accent }]}
             onPress={async () => {
               // @ts-ignore
-              const result = await changePassword(user.email, code, password);
-              if (result) {
+              const result = await changePassword(user.email, code, password).then(()=>{
                 setCode('');
                 setPassword('');
                 setModalVisible(false);
-              } else {
-                console.log('Errore: ', result);
-              }
+              }).catch((e)=>console.log(e));
+              
             }}>
             <Text style={{ color: theme['header-text'] }}>Cambia password</Text>
           </Button>

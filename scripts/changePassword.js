@@ -11,8 +11,7 @@ export const changePassword = async (email, cod, newPasw) => {
             },
           
         });
-        const data = await response.json();
-        return data;
+       
     } catch (error) {
         console.error(error);
     }
