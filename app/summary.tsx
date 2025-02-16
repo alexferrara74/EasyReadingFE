@@ -41,19 +41,17 @@ export default function SummaryScreen() {
   const route = useRoute();
   const file = route.params;
   const showToast = route.params;
-  
-    useEffect(() => {
-      // @ts-ignore
-      if (showToast.showToast && showToast.type === 'success') {
-        Toast.show({
-          type: 'success',
-          text1: 'Ottimo! 👍🏻',
-          text2: 'Riassunto avvenuto con successo!🎉',
-        }); // @ts-ignore
-      }
-    }, [showToast]);
 
-
+  useEffect(() => {
+    // @ts-ignore
+    if (showToast.showToast && showToast.type === 'success') {
+      Toast.show({
+        type: 'success',
+        text1: 'Ottimo! 👍🏻',
+        text2: 'Riassunto avvenuto con successo!🎉',
+      }); // @ts-ignore
+    }
+  }, [showToast]);
 
   const scrollViewRef = useRef(null);
 
@@ -224,7 +222,7 @@ export default function SummaryScreen() {
         visible={modalVisible}
         onRequestClose={toggleChat}
         style={styles.summaryUpperModal}>
-        <View style={[styles.summaryModal, { borderColor: theme.accent, backgroundColor: theme.background }]}>
+        <View style={[styles.summaryModal, { borderColor: theme.accent, backgroundColor: theme.header_background }]}>
           <View style={styles.summaryChatContainer}>
             <View style={[styles.summaryTriangle, { borderBottomColor: theme.accent }]}></View>
 
@@ -237,7 +235,13 @@ export default function SummaryScreen() {
         styles.messageBubble,
         // @ts-ignore
         msg.sender === 'user'
-          ? [styles.userMessage, { backgroundColor: theme['header-text'] }]
+          ? [
+                          styles.userMessage,
+                          {
+                            backgroundColor: theme.header_background,
+                            borderColor: theme.accent,
+                          },
+                        ]
           : [styles.botMessage, { backgroundColor: theme.accent }],
       ]}>
       {//@ts-ignore
@@ -255,7 +259,7 @@ export default function SummaryScreen() {
               : [
                   // @ts-ignore
                   styles.userText,
-                  { color: theme.accent },
+                  { color: theme['header-text'] },
                 ],
           ]}>
           {
@@ -386,10 +390,13 @@ const styles = StyleSheet.create({
   userMessage: {
     alignSelf: 'flex-start',
     borderColor: '#dcdcdc',
+    borderWidth: 0.8,
+    padding: 16,
     // borderWidth: 1,
   },
   botMessage: {
     alignSelf: 'flex-end',
+    padding: 16,
   },
   dotMessage: {
     alignSelf: 'flex-end',

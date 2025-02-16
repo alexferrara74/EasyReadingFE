@@ -32,6 +32,7 @@ export const UserProvider = ({ children }) => {
 
   const loginUser = async (userData) => {
     await AsyncStorage.setItem('user', JSON.stringify(userData));
+    await AsyncStorage.setItem('token', JSON.stringify(userData.token))
     setUser(userData);
 
   };
