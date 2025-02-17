@@ -135,7 +135,7 @@ export default function LoginScreen() {
           }}
           style={[styles.logoutButton, { backgroundColor: theme.background }]}
           buttonColor='#525252'
-          textColor='white'>
+          textColor={theme['header-text']}>
           Password dimenticata?
         </Button>
         <Button

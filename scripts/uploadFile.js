@@ -52,7 +52,7 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
 
         }
       
-        if (response.ok) {
+        if (response.status==200) {
             const data = await response.json();
 
             const socket = new WebSocket(`ws://${conn}:8080`);
@@ -88,10 +88,12 @@ export const uploadFile = async (file, summaryName, setLoading, userID) => {
             const result = await waitForCheck;
             setLoading(false); 
             return result;
-        } else {
+        } else if(response.status===404) {
+            return { success: false , message: "File con stesso nome esistente ❌"};
+        }
+        else {
             setLoading(false);
-            console.log('Errore durante il caricamento del file');
-            return null;
+            return { success: false , message: "Errore durante il caricamento del testo ❌"};
         }
     } catch (e) {
         setLoading(false);

@@ -41,8 +41,9 @@ export function ChangePasswordModal({ modal, setModalVisible, mail }: changePass
               <Button
                 style={[style.submitButton, { backgroundColor: theme.accent }]}
                 onPress={async () => {
+                  setRecMail(recMail.toLowerCase());
                   // @ts-ignore
-                  const result = await sendChangePasswordRequest(recMail.toLowerCase()).catch((e) => console.log(e));
+                  const result = await sendChangePasswordRequest(recMail).catch((e) => console.log(e));
                 }}>
                 <Text style={{ color: theme['header-text'] }}>Invia mail</Text>
               </Button>
@@ -87,8 +88,9 @@ export function ChangePasswordModal({ modal, setModalVisible, mail }: changePass
           <Button
             style={[style.submitButton, { backgroundColor: theme.accent }]}
             onPress={async () => {
+              if (mail == null) setRecMail(recMail.toLowerCase);
               // @ts-ignore
-              const result = await changePassword(mail != null ? mail : recMail.toLowerCase, code, password)
+              const result = await changePassword(mail != null ? mail : recMail, code, password)
                 .then(() => {
                   setCode('');
                   setPassword('');

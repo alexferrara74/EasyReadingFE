@@ -24,7 +24,7 @@ interface ModalProps {
 export function UploadModal({ modal, context, file, setModalVisible, mode, user }: ModalProps) {
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { theme } = useTheme();
 
   const [show, setShow] = useState(false);
@@ -62,26 +62,35 @@ export function UploadModal({ modal, context, file, setModalVisible, mode, user 
               mode='contained-tonal'
               icon='chevron-right'
               iconColor='#ffff'
+              disabled={text.trim() === ''}
               size={35}
               onPress={async () => {
                 try {
                   var result;
                   // @ts-ignore
-                  if (mode == 2) result = await uploadFile(file, text, setLoading, (user != null ) ? user?.id : null);
+                  if (mode == 2) result = await uploadFile(file, text, setLoading, user != null ? user?.id : null);
                   // @ts-ignore
-                  if (mode == 1) result = await sendText(context, text, setLoading, (user != null ) ? user?.id : null);
+                  if (mode == 1) result = await sendText(context, text, setLoading, user != null ? user?.id : null);
                   setText('');
-                  if (result) {
+                  if (result.idResponseTask) {
                     const file = await retrieveFile(result.idResponseTask);
                     setShow(true);
                     // @ts-ignore
                     navigation.navigate('summary', { file: file, showToast: true, type: 'success' });
                     setModalVisible(false);
                   } else {
-                    console.log('Caricamento non riuscito.');
+                    Toast.show({
+                      type: 'error',
+                      text1: 'Oh no! 👎🏻',
+                      text2: 'File con stesso nome esistente ❌',
+                    });
                   }
                 } catch (error) {
-                  console.error("Errore durante l'onPress:", error);
+                  Toast.show({
+                    type: 'error',
+                    text1: 'Oh no! 👎🏻',
+                    text2: 'Errore durante il caricamento del testo ❌',
+                  });
                 }
               }}
             />
