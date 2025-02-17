@@ -12,24 +12,45 @@ import createToastConfig from '@/constants/ToastConfig';
 
 export default function LoginScreen() {
   const { theme } = useTheme();
-
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const { loginUser } = useContext(UserContext);
   const route = useRoute();
 
   // @ts-ignore
   const showToast = route?.params;
 
+  useEffect(() => {
+    validateFields();
+  }, [email, password]);
+
+  function validateFields() {
+    setIsButtonDisabled(email.trim() === '' || password.trim() === '');
+  }
+
+  function addOpacityToColor(color: string, opacity: number) {
+    const opacityHex = Math.round(opacity * 255)
+      .toString(16)
+      .padStart(2, '0');
+    return `${color}${opacityHex}`;
+  }
+
   async function logInAndRedirect() {
     const log = await login(email, password, loginUser);
     if (log?.success === true) {
       // @ts-ignore
-      navigation.navigate('(tabs)', { screen: 'home', params: { showToast: true, type: 'success' } });
+      navigation.navigate('(tabs)', {
+        screen: 'home',
+        params: { showToast: true, type: 'success', message: log.message },
+      });
     } else if (log?.success === false) {
       // @ts-ignore
-      navigation.navigate('(tabs)', { screen: 'home', params: { showToast: true, type: 'error' } });
+      navigation.navigate('(tabs)', {
+        screen: 'home',
+        params: { showToast: true, type: 'error', message: log.message },
+      });
     }
   }
 
@@ -39,13 +60,15 @@ export default function LoginScreen() {
       Toast.show({
         type: 'success',
         text1: 'Ottimo! 👍🏻',
-        text2: 'Registrazione avvenuta con successo!🎉',
+        // @ts-ignore
+        text2: showToast?.message,
       }); // @ts-ignore
     } else if (showToast.showToast && showToast.type === 'error') {
       Toast.show({
         type: 'error',
         text1: 'Oh no! 👎🏻',
-        text2: 'Qualcosa è andato storto, riprova più tardi!🥺',
+        // @ts-ignore
+        text2: showToast?.message,
       });
     }
   }, [showToast]);
@@ -90,22 +113,24 @@ export default function LoginScreen() {
         />
 
         <Button
-          onPress={() => logInAndRedirect()}
+          onPress={logInAndRedirect}
           buttonColor={theme.accent}
-          style={styles.button}
-          contentStyle={styles.content}>
-
+          textColor={theme['header-text']}
+          style={[
+            styles.button,
+            { backgroundColor: isButtonDisabled ? addOpacityToColor(theme.accent, 0.5) : theme.accent },
+          ]}
+          contentStyle={styles.content}
+          disabled={isButtonDisabled}>
           Accedi
         </Button>
         <Button
-
           // @ts-ignore
           onPress={() => navigation.navigate('register')}
-          buttonColor='gray'
-          style={styles.button}
+          buttonColor='transparent'
+          textColor={theme['header-text']}
+          style={[styles.button, { borderColor: theme.accent, borderWidth: 0.8 }]}
           contentStyle={styles.content}>
-          
-         
           Registrati
         </Button>
       </View>
@@ -126,7 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: 9,
   },
   content: {
-    height: 50, 
+    height: 50,
     justifyContent: 'center',
   },
   homeHeader: {

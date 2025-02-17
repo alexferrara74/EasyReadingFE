@@ -32,13 +32,15 @@ export default function HomeScreen() {
       Toast.show({
         type: 'success',
         text1: 'Ottimo! 👍🏻',
-        text2: 'Login avvenuto con successo!🎉',
+        // @ts-ignore
+        text2: showToast?.message,
       }); // @ts-ignore
     } else if (showToast.showToast && showToast.type === 'error') {
       Toast.show({
         type: 'error',
         text1: 'Oh no! 👎🏻',
-        text2: 'Qualcosa è andato storto, riprova più tardi!🥺',
+        // @ts-ignore
+        text2: showToast?.message,
       });
     }
   }, [showToast]);

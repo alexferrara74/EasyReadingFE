@@ -1,4 +1,3 @@
-import { ScreenContainer } from '@/components/_screenContainer';
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, IconButton, TextInput } from 'react-native-paper';
@@ -8,25 +7,46 @@ import { useNavigation } from 'expo-router';
 import { useTheme } from '@/scripts/ThemeProvider';
 import { DatePickerInput } from 'react-native-paper-dates';
 import Toast from 'react-native-toast-message';
+import { ScreenContainer } from '@/components/_screenContainer';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [birthdate, setBirthDate] = useState(new Date());
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const navigator = useNavigation();
   const { registerUser } = useContext(UserContext);
   const { theme } = useTheme();
+
+  useEffect(() => {
+    validateFields();
+  }, [email, username, password]);
+
+  function validateFields() {
+    if (username.trim() === '' || email.trim() === '' || password.trim() === '') {
+      setIsButtonDisabled(true);
+    } else {
+      setIsButtonDisabled(false);
+    }
+  }
 
   async function registerUserAndRedirect() {
     const res = await register(email, password, username, calculateBdDate(), registerUser);
     if (res?.success === true) {
       //@ts-ignore
-      navigator.navigate('login', { showToast: true, type: 'success' });
+      navigator.navigate('login', { showToast: true, type: 'success', message: res.message });
     } else if (res?.success === false) {
       //@ts-ignore
-      navigator.navigate('login', { showToast: true, type: 'error' });
+      navigator.navigate('login', { showToast: true, type: 'error', message: res.message });
     }
+  }
+
+  function addOpacityToColor(color: string, opacity: number) {
+    const opacityHex = Math.round(opacity * 255)
+      .toString(16)
+      .padStart(2, '0');
+    return `${color}${opacityHex}`;
   }
 
   function calculateBdDate(): Number {
@@ -109,9 +129,13 @@ export default function RegisterScreen() {
         </View>
         <Button
           mode='contained'
-          onPress={() => registerUserAndRedirect()}
+          onPress={registerUserAndRedirect}
           buttonColor='#e5383b'
-          style={[styles.buttonForm, { backgroundColor: theme.accent }]}>
+          style={[
+            styles.buttonForm,
+            { backgroundColor: isButtonDisabled ? addOpacityToColor(theme.accent, 0.5) : theme.accent },
+          ]}
+          disabled={isButtonDisabled}>
           Registrati
         </Button>
       </View>
