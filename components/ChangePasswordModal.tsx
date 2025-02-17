@@ -4,15 +4,17 @@ import { Modal, View, Text, StyleSheet, TextInput } from 'react-native';
 import { Button, IconButton } from 'react-native-paper';
 import { changePassword } from '@/scripts/changePassword';
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
+import { sendChangePasswordRequest } from '@/scripts/changePasswordRequest';
 
 interface changePasswordProps {
   modal: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
-  user: Object;
+  mail: string | null;
 }
 
-export function ChangePasswordModal({ modal, setModalVisible, user }: changePasswordProps) {
+export function ChangePasswordModal({ modal, setModalVisible, mail }: changePasswordProps) {
   const [password, setPassword] = useState('');
+  const [recMail, setRecMail] = useState('');
   const [code, setCode] = useState('');
   const { theme } = useTheme();
   const ref = useBlurOnFulfill({ value: code, cellCount: 6 });
@@ -22,6 +24,30 @@ export function ChangePasswordModal({ modal, setModalVisible, user }: changePass
     <Modal animationType='slide' transparent={true} visible={modal} onRequestClose={() => {}}>
       <View style={style.wrapperModal}>
         <View style={[style.modal, { backgroundColor: theme.header_background, borderColor: theme.accent }]}>
+          {mail == null ? (
+            <>
+              <TextInput
+                placeholder='Inserire la mail di recupero...'
+                placeholderTextColor={theme['header-text']}
+                keyboardType='email-address'
+                value={recMail}
+                onChangeText={setRecMail}
+                style={[
+                  style.modalTextInput,
+                  { backgroundColor: theme.background, borderColor: theme.accent, color: theme['header-text'] },
+                ]}
+                underlineColorAndroid='transparent'
+              />
+              <Button
+                style={[style.submitButton, { backgroundColor: theme.accent }]}
+                onPress={async () => {
+                  // @ts-ignore
+                  const result = await sendChangePasswordRequest(recMail.toLowerCase()).catch((e) => console.log(e));
+                }}>
+                <Text style={{ color: theme['header-text'] }}>Invia mail</Text>
+              </Button>
+            </>
+          ) : null}
           <CodeField
             ref={ref}
             {...props}
@@ -47,7 +73,7 @@ export function ChangePasswordModal({ modal, setModalVisible, user }: changePass
             )}
           />
           <TextInput
-            placeholder='Inserire la nuova password'
+            placeholder='Inserire la nuova password...'
             placeholderTextColor={theme['header-text']}
             keyboardType='email-address'
             value={password}
@@ -62,12 +88,13 @@ export function ChangePasswordModal({ modal, setModalVisible, user }: changePass
             style={[style.submitButton, { backgroundColor: theme.accent }]}
             onPress={async () => {
               // @ts-ignore
-              const result = await changePassword(user.email, code, password).then(()=>{
-                setCode('');
-                setPassword('');
-                setModalVisible(false);
-              }).catch((e)=>console.log(e));
-              
+              const result = await changePassword(mail != null ? mail : recMail.toLowerCase, code, password)
+                .then(() => {
+                  setCode('');
+                  setPassword('');
+                  setModalVisible(false);
+                })
+                .catch((e) => console.log(e));
             }}>
             <Text style={{ color: theme['header-text'] }}>Cambia password</Text>
           </Button>
@@ -95,6 +122,7 @@ const style = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modal: {
+    height: 'auto',
     width: '80%',
     borderWidth: 0.5,
     borderRadius: 10,
@@ -107,6 +135,7 @@ const style = StyleSheet.create({
     marginHorizontal: 'auto',
     paddingVertical: 2,
     width: '70%',
+    marginBottom: 20,
   },
   exitModalButton: {
     width: 30,
@@ -138,9 +167,9 @@ const style = StyleSheet.create({
     marginHorizontal: 'auto',
     borderWidth: 0.5,
     borderRadius: 20,
-    height: '35%',
+    height: '17%',
     width: '100%',
-    padding: 15,
-    marginBottom: 15,
+    padding: 10,
+    marginBottom: 25,
   },
 });

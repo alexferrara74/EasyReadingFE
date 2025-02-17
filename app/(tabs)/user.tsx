@@ -27,7 +27,7 @@ export default function UserScreen() {
 
   return (
     <ScreenContainer>
-      <ChangePasswordModal modal={modalVisible} setModalVisible={setModalVisible} user={user} />
+      <ChangePasswordModal modal={modalVisible} setModalVisible={setModalVisible} mail={user.email} />
       <View
         style={[styles.profileHeader, { backgroundColor: theme.header_background, borderBottomColor: theme.accent }]}>
         <IconButton
@@ -44,7 +44,6 @@ export default function UserScreen() {
             size={61}
             label={user.username.substr(0, 2).toUpperCase()}
           />
-         
         </View>
       </View>
       <Text style={[styles.themeText, { color: theme['header-text'], position: 'absolute', top: '26%', left: '3%' }]}>
@@ -123,7 +122,7 @@ export default function UserScreen() {
           onPress={async () => {
             const res = await sendChangePasswordRequest(user.email);
             setModalVisible(true);
-           console.log('Errore nella send della mail');
+            console.log('Errore nella send della mail');
           }}
           style={[
             styles.logoutButton,
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     alignItems: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
   },
   profilePicture: {
     width: 100,

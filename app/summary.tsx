@@ -186,10 +186,22 @@ export default function SummaryScreen() {
     setModalVisible(!modalVisible);
   };
 
+  const cleanMarkdown = (markdown: string) => {
+    return markdown
+      .replace(/[#*_`~>\-]/g, '') // Rimuove caratteri speciali
+      .replace(/\[.*?\]\(.*?\)/g, '') // Rimuove link [testo](url)
+      .replace(/!\[.*?\]\(.*?\)/g, '') // Rimuove immagini ![alt](url)
+      .replace(/<\/?[^>]+(>|$)/g, '') // Rimuove tag HTML
+      .replace(/\n+/g, ' '); // Rimuove nuove righe multiple
+  };
+
   const speak = async () => {
+    // @ts-ignore
+    const riassuntoPulito = cleanMarkdown(file?.file.riassunto);
     await Speech.isSpeakingAsync().then((speaking: any) => {
-      if (speaking != true) {
-        Speech.speak((file as any).file?.riassunto, {
+      if (speaking !== true) {
+        // @ts-ignore
+        Speech.speak(riassuntoPulito, {
           language: 'it-IT',
           rate: 1.2,
         });

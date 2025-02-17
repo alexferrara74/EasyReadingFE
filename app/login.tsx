@@ -9,9 +9,12 @@ import { useTheme } from '@/scripts/ThemeProvider';
 import { useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import createToastConfig from '@/constants/ToastConfig';
+import { sendChangePasswordRequest } from '@/scripts/changePasswordRequest';
+import { ChangePasswordModal } from '@/components/ChangePasswordModal';
 
 export default function LoginScreen() {
   const { theme } = useTheme();
+  const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -75,6 +78,7 @@ export default function LoginScreen() {
 
   return (
     <ScreenContainer>
+      <ChangePasswordModal modal={modalVisible} setModalVisible={setModalVisible} mail={null}></ChangePasswordModal>
       <View
         style={[
           styles.homeHeader,
@@ -125,6 +129,16 @@ export default function LoginScreen() {
           Accedi
         </Button>
         <Button
+          onPress={async () => {
+            setModalVisible(true);
+            console.log('Errore nella send della mail');
+          }}
+          style={[styles.logoutButton, { backgroundColor: theme.background }]}
+          buttonColor='#525252'
+          textColor='white'>
+          Password dimenticata?
+        </Button>
+        <Button
           // @ts-ignore
           onPress={() => navigation.navigate('register')}
           buttonColor='transparent'
@@ -144,7 +158,14 @@ const styles = StyleSheet.create({
     width: '70%',
     marginBottom: '10%',
   },
-
+  logoutButton: {
+    width: '80%',
+    marginBottom: '15%',
+    paddingHorizontal: 20,
+  },
+  textButton: {
+    fontSize: 17,
+  },
   button: {
     width: '70%',
     marginBottom: '10%',
