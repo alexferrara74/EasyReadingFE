@@ -7,7 +7,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <UserProvider>
-        <AuthProvider>
+        { /*<AuthProvider> */}
           <Stack>
             <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
             <Stack.Screen name='index' options={{ title: 'Index', headerShown: false }} />
@@ -15,7 +15,7 @@ export default function RootLayout() {
             <Stack.Screen name='register' options={{ title: 'Register', headerShown: false }} />
             <Stack.Screen name='summary' options={{ title: 'Summary', headerShown: false }} />
           </Stack>
-        </AuthProvider>
+        { /*</UserProvider></AuthProvider> */}
       </UserProvider>
     </ThemeProvider>
   );

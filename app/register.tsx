@@ -128,13 +128,15 @@ export default function RegisterScreen() {
           />
         </View>
         <Button
-          mode='contained'
+          
           onPress={registerUserAndRedirect}
           buttonColor='#e5383b'
+          textColor={theme['header-text']}
           style={[
-            styles.buttonForm,
+            styles.button,
             { backgroundColor: isButtonDisabled ? addOpacityToColor(theme.accent, 0.5) : theme.accent },
           ]}
+          contentStyle={styles.content}
           disabled={isButtonDisabled}>
           Registrati
         </Button>
@@ -149,13 +151,9 @@ const styles = StyleSheet.create({
     marginBottom: '10%',
   },
 
-  buttonForm: {
-    marginBottom: '10%',
-    marginTop: '10%',
+  button: {
     width: '70%',
-    height: '13%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: '10%',
     borderRadius: 9,
   },
   homeHeader: {
@@ -179,5 +177,9 @@ const styles = StyleSheet.create({
     width: '70%',
     marginBottom: '10%',
     marginTop: '7%',
+  },
+  content: {
+    height: 50,
+    justifyContent: 'center',
   },
 });

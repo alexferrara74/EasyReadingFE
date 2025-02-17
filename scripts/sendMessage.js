@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 const conn = Constants.expoConfig.extra.IP_ADDRESS; 
 
 export const domandabot = async (requestData, user ) => {
-
+  console.log('uouou',user.token)
   try {
     
     const response = await fetch(`http://${conn}:3030/chat`, {

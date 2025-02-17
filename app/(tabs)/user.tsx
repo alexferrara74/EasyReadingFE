@@ -44,9 +44,7 @@ export default function UserScreen() {
             size={61}
             label={user.username.substr(0, 2).toUpperCase()}
           />
-          <Text style={[styles.profileTitle, { color: theme['header-text'], marginHorizontal: 'auto' }]}>
-            {user?.username.toUpperCase()}{' '}
-          </Text>
+         
         </View>
       </View>
       <Text style={[styles.themeText, { color: theme['header-text'], position: 'absolute', top: '26%', left: '3%' }]}>
@@ -175,6 +173,8 @@ const styles = StyleSheet.create({
   profileTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+    alignItems: 'center',
+    alignContent: 'center'
   },
   profilePicture: {
     width: 100,
